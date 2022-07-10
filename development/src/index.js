@@ -1,18 +1,23 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from "react-router-dom";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { CssBaseline } from '@mui/material';
 
 import './styles/reset.css';
 import './styles/style.css';
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
     <React.StrictMode>
             <Router>
-                <App/>
+                <CssBaseline>
+                    <App/>
+                </CssBaseline>
             </Router>
-    </React.StrictMode>, document.getElementById('root')
+    </React.StrictMode>
 );
 
 reportWebVitals();
