@@ -5,9 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { CssBaseline } from '@mui/material';
 
-import './styles/reset.css';
-import './styles/style.css';
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(

@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -20,7 +19,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Link } from "react-router-dom";
 import Routes from "./routes";
 
-
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -36,6 +34,7 @@ const navItems = [
   { name: "Currencies", to: "/currencies" },
   { name: "NFT", to: "nft" },
 ];
+
 
 function App() {
 
@@ -73,20 +72,22 @@ function App() {
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar component="nav">
-        <Toolbar>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ ml: 0, display: { sm: "none" } }}
+            component="div"
+            size="large"
           >
-            <MenuIcon />
+            <MenuIcon fontSize="inherit" />
           </IconButton>
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{  display: "block" }}
           >
             FIN
           </Typography>
@@ -96,12 +97,13 @@ function App() {
                 {elem.name}
               </Button>
             ))}
-            <div>
-            {theme.palette.mode} mode
-            <IconButton
-              sx={{ ml: 1 }}
+
+          </Box>
+          <IconButton
+              sx={{ mr: 0, }}
               onClick={colorMode.toggleColorMode}
               color="inherit"
+              component="div"
             >
               {theme.palette.mode === "dark" ? (
                 <Brightness7Icon />
@@ -109,8 +111,6 @@ function App() {
                 <Brightness4Icon />
               )}
             </IconButton>
-          </div>
-          </Box>
         </Toolbar>
       </AppBar>
       <Box component="nav">
