@@ -15,7 +15,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeIcon from "@mui/icons-material/Home";
 
-
 import { Link } from "react-router-dom";
 import Routes from "./routes";
 
@@ -24,6 +23,15 @@ import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 
+import {
+  blueGrey,
+  common,
+  green,
+  lime,
+  lightGreen,
+  grey,
+  blue
+} from "@mui/material/colors/";
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 const drawerWidth = 240;
@@ -36,8 +44,8 @@ const navItems = [
 ];
 
 
-function App() {
 
+function App() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
 
@@ -56,18 +64,21 @@ function App() {
       <List>
         {navItems.map((elem, item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'left', ml: 1 }} component={Link} to={elem.to}>
-              <ListItemIcon >
+            <ListItemButton
+              sx={{ textAlign: "left", ml: 1 }}
+              component={Link}
+              to={elem.to}
+            >
+              <ListItemIcon>
                 <HomeIcon></HomeIcon>
               </ListItemIcon>
               <ListItemText primary={elem.name} />
             </ListItemButton>
           </ListItem>
         ))}
-      </List>      
+      </List>
     </Box>
   );
-
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -84,33 +95,35 @@ function App() {
           >
             <MenuIcon fontSize="inherit" />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{  display: "block" }}
-          >
+          <Typography variant="h5" component="div" sx={{ display: "block" }} color="inherit">
             FIN
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((elem, item) => (
-              <Button key={item} sx={{ color: "#fff" }} component={Link} to={elem.to}>
+              <Button
+                key={item}
+                component={Link}
+                to={elem.to}
+                variant="text"
+                color="inherit"
+              >
+
                 {elem.name}
               </Button>
             ))}
-
           </Box>
           <IconButton
-              sx={{ mr: 0, }}
-              onClick={colorMode.toggleColorMode}
-              color="inherit"
-              component="div"
-            >
-              {theme.palette.mode === "dark" ? (
-                <Brightness7Icon />
-              ) : (
-                <Brightness4Icon />
-              )}
-            </IconButton>
+            sx={{ mr: 0 }}
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+            component="div"
+          >
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Box component="nav">
@@ -119,7 +132,7 @@ function App() {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -132,7 +145,7 @@ function App() {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 3 }}>
+      <Box component="main" sx={{ p: 3, width: 1 }}>
         <Toolbar />
         <Routes />
       </Box>
@@ -141,27 +154,46 @@ function App() {
 }
 
 
+/*  blueGrey,
+  common,
+  green,
+  lime,
+  lightGreen,
+  grey,
+  */
+
+const getDesignTokens = (mode) => ({
+  palette: {
+      mode,
+      ...(mode === 'light'
+      ? {
+        primary: {
+          main: blueGrey[500],
+        },
+        background: {
+          default: grey[50],
+          paper: grey[50],
+        },
+        text: {
+          primary: grey[900],
+          secondary: grey[900],
+        }
+      } : {})
+  }
+});
 
 export default function ToggleColorMode() {
-  const [mode, setMode] = React.useState('light');
+  const [mode, setMode] = React.useState("light");
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
       },
     }),
-    [],
+    []
   );
 
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode],
-  );
+  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
