@@ -79,9 +79,9 @@ function App() {
       </List>
     </Box>
   );
-
+  const colorBackground = (theme.palette.mode === 'light' ? '#fafafa' : '#3b3b3b');
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", minHeight: '100vh' }} bgcolor={colorBackground} width="1">
       <AppBar component="nav">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
@@ -168,17 +168,23 @@ const getDesignTokens = (mode) => ({
       ...(mode === 'light'
       ? {
         primary: {
+          light: blueGrey[400],
           main: blueGrey[500],
+          dark: blueGrey[600],
+          contrastText: '#fff',
         },
         background: {
-          default: grey[50],
-          paper: grey[50],
+          paper: grey[200],
         },
         text: {
           primary: grey[900],
           secondary: grey[900],
         }
-      } : {})
+      } : {
+        background: {
+          paper: grey[900],
+        },
+      })
   }
 });
 
