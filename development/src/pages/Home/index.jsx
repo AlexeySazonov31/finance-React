@@ -21,28 +21,23 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { width } from "@mui/system";
 
 const sourcesCategorys = [
     {
         id: "finance",
-        url: "https://api.coinstats.app/public/v1/news/", ///  ?skip=0&limit=20
+        url: "https://api.coinstats.app/public/v1/news/", /// add  '?skip=0&limit=20'
         categorys: ["trending", "latest", "bullish", "bearish"],
     },
     {
         id: "global",
         url: "https://inshorts.deta.dev/news?category=",
         categorys: [
-            "all",
             "business",
             "sports",
             "world",
-            "politics",
             "technology",
             "startup",
             "entertainment",
-            "miscellaneous",
-            "hatke",
             "science",
             "automobile",
         ],
@@ -102,8 +97,8 @@ function Home() {
             sx={{
                 display: "flex",
                 flexDirection: { xs: "column", sm: "row" },
-                border: "1px solid red",
                 width: '1',
+                minHeight: '80vh'
             }}
         >
             <Box
@@ -111,11 +106,15 @@ function Home() {
                     padding: 3,
                     borderRadius: 3,
                     mx: "auto",
+                    height: 'fit-content',
+                    position: {xs: 'block', sm: 'sticky'},
+                    top: {xs: '0', sm: '60px'},
                 }}
             >
                 <Paper
                     sx={{
                         padding: 2,
+
                     }}
                 >
                     <ToggleButtonGroup
@@ -172,9 +171,9 @@ function Home() {
                 </Paper>
             </Box>
 
-            <Box sx={{width: '1', display: 'flex', justifyContent: 'center', my: 'auto' }}>
+            <Box sx={{width: '1', display: 'flex', justifyContent: 'center', my: 'auto', }}>
                 {loading ? (
-                    <CircularProgress />
+                    <CircularProgress size="5rem"/>
                 ) : (
                     <Grid
                         container

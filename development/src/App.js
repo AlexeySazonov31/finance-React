@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeIcon from "@mui/icons-material/Home";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Routes from "./routes";
 
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
@@ -40,7 +40,7 @@ const navItems = [
   { name: "Сryptocurrency", to: "/cryptocurrency" },
   { name: "Stock", to: "/stock" },
   { name: "Currencies", to: "/currencies" },
-  { name: "NFT", to: "nft" },
+  { name: "NFT", to: "/nft" },
 ];
 
 
@@ -50,6 +50,8 @@ function App() {
   const colorMode = React.useContext(ColorModeContext);
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const location = useLocation();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -64,8 +66,18 @@ function App() {
       <List>
         {navItems.map((elem, item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton
-              sx={{ textAlign: "left", ml: 1 }}
+            {location.pathname === elem.to ? (            <ListItemButton
+              sx={{ textAlign: "left", ml: 1, }}
+              component={Link}
+              to={elem.to}
+              selected
+            >
+              <ListItemIcon>
+                <HomeIcon></HomeIcon>
+              </ListItemIcon>
+              <ListItemText primary={elem.name} />
+            </ListItemButton>) : (            <ListItemButton
+              sx={{ textAlign: "left", ml: 1, }}
               component={Link}
               to={elem.to}
             >
@@ -73,7 +85,8 @@ function App() {
                 <HomeIcon></HomeIcon>
               </ListItemIcon>
               <ListItemText primary={elem.name} />
-            </ListItemButton>
+            </ListItemButton>)}
+
           </ListItem>
         ))}
       </List>
@@ -100,7 +113,21 @@ function App() {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((elem, item) => (
-              <Button
+              <>
+              { location.pathname === elem.to ? (
+                <Button
+                key={item}
+                component={Link}
+                to={elem.to}
+                variant="text"
+                color="inherit"
+                disabled
+              >
+
+                {elem.name}
+              </Button>
+              ) : (
+                <Button
                 key={item}
                 component={Link}
                 to={elem.to}
@@ -110,6 +137,9 @@ function App() {
 
                 {elem.name}
               </Button>
+              ) }
+            </>
+
             ))}
           </Box>
           <IconButton
