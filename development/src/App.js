@@ -15,6 +15,12 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeIcon from "@mui/icons-material/Home";
 
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+
 import { Link, useLocation } from "react-router-dom";
 import Routes from "./routes";
 
@@ -22,6 +28,7 @@ import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import NewspaperIcon from "@mui/icons-material/Newspaper";
 
 import {
   blueGrey,
@@ -30,20 +37,19 @@ import {
   lime,
   lightGreen,
   grey,
-  blue
+  blue,
 } from "@mui/material/colors/";
+import { Paper } from "@mui/material";
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 const drawerWidth = 240;
 const navItems = [
-  { name: "Home", to: "/" },
+  { name: "News", to: "/", icon: <NewspaperIcon /> },
   { name: "Сryptocurrency", to: "/cryptocurrency" },
   { name: "Stock", to: "/stock" },
   { name: "Currencies", to: "/currencies" },
   { name: "NFT", to: "/nft" },
 ];
-
-
 
 function App() {
   const theme = useTheme();
@@ -66,37 +72,46 @@ function App() {
       <List>
         {navItems.map((elem, item) => (
           <ListItem key={item} disablePadding>
-            {location.pathname === elem.to ? (            <ListItemButton
-              sx={{ textAlign: "left", ml: 1, }}
-              component={Link}
-              to={elem.to}
-              selected
-            >
-              <ListItemIcon>
-                <HomeIcon></HomeIcon>
-              </ListItemIcon>
-              <ListItemText primary={elem.name} />
-            </ListItemButton>) : (            <ListItemButton
-              sx={{ textAlign: "left", ml: 1, }}
-              component={Link}
-              to={elem.to}
-            >
-              <ListItemIcon>
-                <HomeIcon></HomeIcon>
-              </ListItemIcon>
-              <ListItemText primary={elem.name} />
-            </ListItemButton>)}
-
+            {location.pathname === elem.to ? (
+              <ListItemButton
+                sx={{ textAlign: "left", ml: 1 }}
+                component={Link}
+                to={elem.to}
+                selected
+              >
+                <ListItemIcon>
+                  <HomeIcon></HomeIcon>
+                </ListItemIcon>
+                <ListItemText primary={elem.name} />
+              </ListItemButton>
+            ) : (
+              <ListItemButton
+                sx={{ textAlign: "left", ml: 1 }}
+                component={Link}
+                to={elem.to}
+              >
+                <ListItemIcon>
+                  <HomeIcon></HomeIcon>
+                </ListItemIcon>
+                <ListItemText primary={elem.name} />
+              </ListItemButton>
+            )}
           </ListItem>
         ))}
       </List>
     </Box>
   );
-  const colorBackground = (theme.palette.mode === 'light' ? '#fafafa' : '#3b3b3b');
+
+  const colorBackground =
+    theme.palette.mode === "light" ? "#fafafa" : "#3b3b3b";
   return (
-    <Box sx={{ display: "flex", minHeight: '100vh' }} bgcolor={colorBackground} width="1">
+    <Box
+      sx={{ display: "flex", minHeight: "100vh" }}
+      bgcolor={colorBackground}
+      width="1"
+    >
       <AppBar component="nav">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between", px: { sx: 0, md: 13 } }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -108,40 +123,51 @@ function App() {
           >
             <MenuIcon fontSize="inherit" />
           </IconButton>
-          <Typography variant="h5" component="div" sx={{ display: "block" }} color="inherit">
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{ display: "block" }}
+            color="inherit"
+          >
             FIN
           </Typography>
+
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((elem, item) => (
               <>
-              { location.pathname === elem.to ? (
-                <Button
-                key={item}
-                component={Link}
-                to={elem.to}
-                variant="text"
-                color="inherit"
-                disabled
-              >
-
-                {elem.name}
-              </Button>
-              ) : (
-                <Button
-                key={item}
-                component={Link}
-                to={elem.to}
-                variant="text"
-                color="inherit"
-              >
-
-                {elem.name}
-              </Button>
-              ) }
-            </>
-
+                {location.pathname === elem.to ? (
+                  <Button
+                    key={item}
+                    component={Link}
+                    to={elem.to}
+                    variant="text"
+                    color="inherit"
+                    sx={{
+                      color: theme.palette.mode === "dark" ? blue[200] : "#fff",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {elem.name}
+                  </Button>
+                ) : (
+                  <Button
+                    key={item}
+                    component={Link}
+                    to={elem.to}
+                    variant="text"
+                    color="inherit"
+                    sx={{
+                      color:
+                        theme.palette.mode === "light" ? blueGrey[50] : "#fff",
+                    }}
+                  >
+                    {elem.name}
+                  </Button>
+                )}
+              </>
             ))}
           </Box>
+
           <IconButton
             sx={{ mr: 0 }}
             onClick={colorMode.toggleColorMode}
@@ -175,14 +201,33 @@ function App() {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 3, width: 1 }}>
+
+      <Box component="main" sx={{ width: 1 }}>
         <Toolbar />
-        <Routes />
+
+        <Routes  sx={{padding: { xs: 0, sm: 3 }}}/>
+
+        <Box bgcolor={ ( theme.palette.mode === 'light' ? blueGrey[500] : '#333333' )} sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignContent: 'center',
+          padding: 3,
+          marginTop: {xs: 2, sm: 0},
+        }} >
+          <Typography align="center" sx={{
+            color: grey[400],
+          }} color="#fff" variant="body1">Demonstrative financial React-app. Try a hard reset if you have problems, thanks. For all questions, write to the mail: sazonleha010203@gmail.com</Typography>
+          <Divider sx={{m: 1}}/>
+          <Typography align="center" sx={{
+            color: grey[400],
+          }} color="#fff" variant="body1">© Sazonov A.S., {new Date().getFullYear()}</Typography>
+        </Box>
+
       </Box>
     </Box>
   );
 }
-
 
 /*  blueGrey,
   common,
@@ -194,28 +239,29 @@ function App() {
 
 const getDesignTokens = (mode) => ({
   palette: {
-      mode,
-      ...(mode === 'light'
+    mode,
+    ...(mode === "light"
       ? {
-        primary: {
-          light: blueGrey[400],
-          main: blueGrey[500],
-          dark: blueGrey[600],
-          contrastText: '#fff',
-        },
-        background: {
-          paper: grey[200],
-        },
-        text: {
-          primary: grey[900],
-          secondary: grey[900],
+          primary: {
+            light: blueGrey[400],
+            main: blueGrey[500],
+            dark: blueGrey[600],
+            contrastText: "#fff",
+          },
+          background: {
+            paper: grey[200],
+          },
+          text: {
+            primary: "#000",
+            secondary: "#000",
+          },
         }
-      } : {
-        background: {
-          paper: grey[900],
-        },
-      })
-  }
+      : {
+          background: {
+            paper: grey[900],
+          },
+        }),
+  },
 });
 
 export default function ToggleColorMode() {
