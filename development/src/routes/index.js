@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import Home from "../pages/Home";
+import News from "../pages/News";
 import Сryptocurrency from "../pages/Cryptocurrency";
 import Stock from "../pages/Stock";
 import Currencies from "../pages/Currencies";
@@ -18,7 +18,7 @@ import {
 function AppRoutes() {
     return (
         <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<News />} />
             <Route path='/cryptocurrency' element={<Сryptocurrency />} />
             <Route path='/stock' element={<Stock/>} />
             <Route path='/currencies' element={<Currencies />} />
