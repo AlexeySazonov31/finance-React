@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -50,9 +49,7 @@ function Home() {
   const [category, setCategory] = useState("world");
   const [loading, setLoading] = useState("false");
   const [data, setData] = useState(false);
-  console.log(data);
 
-  console.log(category);
   const handleSource = (event, newSource) => {
     setSource(newSource);
     setCategory(
@@ -87,7 +84,6 @@ function Home() {
     )
       .then((res) => res.json())
       .then((dt) => {
-        console.log(dt);
         if (source === "finance") {
           setData(dt.news.length ? dt.news : []);
         } else {
