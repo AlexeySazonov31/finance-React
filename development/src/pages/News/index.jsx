@@ -50,9 +50,7 @@ function Home() {
   const [category, setCategory] = useState("world");
   const [loading, setLoading] = useState("false");
   const [data, setData] = useState(false);
-  console.log(data);
 
-  console.log(category);
   const handleSource = (event, newSource) => {
     setSource(newSource);
     setCategory(
@@ -87,7 +85,6 @@ function Home() {
     )
       .then((res) => res.json())
       .then((dt) => {
-        console.log(dt);
         if (source === "finance") {
           setData(dt.news.length ? dt.news : []);
         } else {

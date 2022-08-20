@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/Box";
 
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -32,6 +34,7 @@ function Сryptocurrency() {
   }, []);
 
   return (
+
     <Box
       sx={{
         display: "flex",

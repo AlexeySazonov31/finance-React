@@ -15,11 +15,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeIcon from "@mui/icons-material/Home";
 
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 import { Link, useLocation } from "react-router-dom";
 import Routes from "./routes";
@@ -39,8 +34,8 @@ import {
   grey,
   blue,
 } from "@mui/material/colors/";
-import { Paper } from "@mui/material";
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+
+const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 const drawerWidth = 240;
 const navItems = [
@@ -103,7 +98,21 @@ function App() {
   );
 
   const colorBackground =
-    theme.palette.mode === "light" ? "#fafafa" : "#3b3b3b";
+    theme.palette.mode === "light" ? "#fafafa" : "#1f292e";
+
+    function desctopMenuStyle(elem){
+      if(location.pathname === elem.to){
+        return {
+          color: theme.palette.mode === "dark" ? blue[200] : "#fff",
+          fontWeight: 600,
+        }
+      } else {
+        return {
+          color:
+            theme.palette.mode === "dark" ? "#fff" : blueGrey[50],
+        }
+      }
+    }
   return (
     <Box
       sx={{ display: "flex", minHeight: "100vh" }}
@@ -134,37 +143,17 @@ function App() {
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((elem, item) => (
-              <>
-                {location.pathname === elem.to ? (
                   <Button
                     key={item}
                     component={Link}
                     to={elem.to}
                     variant="text"
                     color="inherit"
-                    sx={{
-                      color: theme.palette.mode === "dark" ? blue[200] : "#fff",
-                      fontWeight: 600,
-                    }}
+                    sx={desctopMenuStyle(elem)}
                   >
                     {elem.name}
                   </Button>
-                ) : (
-                  <Button
-                    key={item}
-                    component={Link}
-                    to={elem.to}
-                    variant="text"
-                    color="inherit"
-                    sx={{
-                      color:
-                        theme.palette.mode === "light" ? blueGrey[50] : "#fff",
-                    }}
-                  >
-                    {elem.name}
-                  </Button>
-                )}
-              </>
+
             ))}
           </Box>
 
@@ -205,20 +194,20 @@ function App() {
       <Box component="main" sx={{ width: 1 }}>
         <Toolbar />
 
-        <Routes  sx={{padding: { xs: 0, sm: 3 }}}/>
+        <Routes sx={{ padding: { xs: 0, sm: 3 } }} />
 
-        <Box bgcolor={ ( theme.palette.mode === 'light' ? blueGrey[500] : '#333333' )} sx={{
+        <Box bgcolor={(theme.palette.mode === 'light' ? blueGrey[500] : blueGrey[800])} sx={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignContent: 'center',
           padding: 3,
-          marginTop: {xs: 2, sm: 0},
+          marginTop: { xs: 2, sm: 0 },
         }} >
           <Typography align="center" sx={{
             color: grey[400],
           }} color="#fff" variant="body1">Demonstrative financial React-app. Try a hard reset if you have problems, thanks. For all questions, write to the mail: sazonleha010203@gmail.com</Typography>
-          <Divider sx={{m: 1}}/>
+          <Divider sx={{ m: 1 }} />
           <Typography align="center" sx={{
             color: grey[400],
           }} color="#fff" variant="body1">© Sazonov A.S., {new Date().getFullYear()}</Typography>
@@ -229,43 +218,35 @@ function App() {
   );
 }
 
-/*  blueGrey,
-  common,
-  green,
-  lime,
-  lightGreen,
-  grey,
-  */
-
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
     ...(mode === "light"
       ? {
-          primary: {
-            light: blueGrey[400],
-            main: blueGrey[500],
-            dark: blueGrey[600],
-            contrastText: "#fff",
-          },
-          background: {
-            paper: grey[200],
-          },
-          text: {
-            primary: "#000",
-            secondary: "#000",
-          },
-        }
+        primary: {
+          light: blueGrey[400],
+          main: blueGrey[500],
+          dark: blueGrey[600],
+          contrastText: "#fff",
+        },
+        background: {
+          paper: grey[300],
+        },
+        text: {
+          primary: "#000",
+          secondary: "#000",
+        },
+      }
       : {
-          background: {
-            paper: grey[900],
-          },
-        }),
+        background: {
+          paper: blueGrey[900],
+        },
+      }),
   },
 });
 
 export default function ToggleColorMode() {
-  const [mode, setMode] = React.useState("light");
+  const [mode, setMode] = React.useState("dark");
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
