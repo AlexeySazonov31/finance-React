@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/Box";
 
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { Card, Grid, Paper } from "@mui/material";
+import { Card, Grid } from "@mui/material";
 
 function Сryptocurrency() {
   const [dataGlobal, setDataGlobal] = useState(null);
