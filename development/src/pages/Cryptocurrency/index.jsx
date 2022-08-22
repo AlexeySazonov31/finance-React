@@ -3,23 +3,37 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { Card, Grid } from "@mui/material";
+import TextField from "@mui/material/TextField";
+
+import HeadWidgets from "./HeadWidgets";
+import CoinCard from "./CoinCard";
+
+import {
+  Card,
+  Grid,
+  Paper,
+  Divider,
+  CardActions,
+  CardHeader,
+  CardMedia,
+  Link,
+  Typography,
+} from "@mui/material";
 
 function Сryptocurrency() {
-  const [dataGlobal, setDataGlobal] = useState(null);
   const [dataCoins, setDataCoins] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
-  console.log(loading);
-  useEffect(() => {
-    fetch("https://api.coingecko.com/api/v3/global")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(!data.error ? data : data.error);
-        setDataGlobal(!data.error ? data.data : null);
-      });
+  const [search, setSearch] = useState("");
 
+  const [dataSearch, setDataSearch] = useState(null);
+
+  const handleChangeSearch = (event) => {
+    setSearch(event.target.value);
+  };
+
+  useEffect(() => {
     fetch(
       "https://api.coinstats.app/public/v1/coins?skip=0&limit=100&currency=USD"
     )
@@ -31,113 +45,101 @@ function Сryptocurrency() {
       });
   }, []);
 
-  return (
 
+
+  useEffect(() => {
+    if (search) {
+        fetch(`https://api.coingecko.com/api/v3/search?query=${search}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        })
+
+    }
+  }, [search]);
+
+  return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         width: "1",
-        minHeight: "93vh",
         border: "1px solid red",
+        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 },
       }}
     >
-      {dataGlobal ? (
-        <Grid
-          container
-          spacing={2}
+      <HeadWidgets />
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          width: "1",
+          border: "1px solid orange",
+        }}
+      >
+        <Box
           sx={{
-            width: "2",
-            border: "1px solid green",
-            padding: 1,
+            padding: 3,
+            borderRadius: 3,
+            mx: "auto",
+            height: "fit-content",
+            position: { xs: "block", sm: "sticky" },
+            top: { xs: "0", sm: "60px" },
+            border: "1px solid red",
           }}
         >
-          <Grid item xs={2}>
-            <Card
-              width="fit-content"
-              sx={{
-                p: 0.7,
-                px: 2,
+          <Paper
+            sx={{
+              padding: 2,
+            }}
+          >
+            <TextField
+              id="demo-helper-text-misaligned-no-helper"
+              label="search coin"
+              value={search}
+              onChange={handleChangeSearch}
+            />
+          </Paper>
+          <Divider />
+          <Paper
+            sx={{
+              padding: 2,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            markets
+          </Paper>
+        </Box>
 
-                width: "fit-content",
-                m: "auto",
-              }}
-            >
-              Total coins: {dataGlobal.active_cryptocurrencies}
-            </Card>
-          </Grid>
-
-          <Grid item xs={3}>
-            <Card
-              sx={{
-                p: 0.7,
-                px: 2,
-
-                width: "fit-content",
-                m: "auto",
-              }}
-            >
-              capitalization (24h): {dataGlobal.market_cap_change_percentage_24h_usd.toFixed(2)}%
-            </Card>
-          </Grid>
-
-          <Grid item xs={3}>
-            <Card
-              sx={{
-                p: 0.7,
-                px: 2,
-                width: "fit-content",
-                m: "auto",
-              }}
-            >
-              Total markets: {dataGlobal.markets}
-            </Card>
-          </Grid>
-
-          <Grid item xs={2}>
-            <Card
-              sx={{
-                p: 0.7,
-                px: 2,
-                width: "fit-content",
-                m: "auto",
-              }}
-            >
-              btc: {dataGlobal.market_cap_percentage.btc.toFixed(3)}%
-            </Card>
-          </Grid>
-
-          <Grid item xs={2}>
-            <Card
-              sx={{
-                p: 0.7,
-                px: 2,
-                width: "fit-content",
-                m: "auto",
-              }}
-            >
-              eth: {dataGlobal.market_cap_percentage.eth.toFixed(3)}%
-            </Card>
-          </Grid>
-        </Grid>
-      ) : (
-        <></>
-      )}
-
-      {!loading ? (
         <Box
           sx={{
             width: "1",
             display: "flex",
             justifyContent: "center",
+            minHeight: "93vh",
             my: "auto",
           }}
         >
-          <CircularProgress size="5rem" />
+          {!loading ? (
+            <CircularProgress size="5rem" />
+          ) : (
+            <Grid
+              container
+              sx={{
+                border: "1px solid green",
+                justifyContent: "center",
+                p: { xs: 0, md: 2 },
+              }}
+            >
+              {dataCoins.map((elem, key) => (
+                <CoinCard elem={elem} key={key} />
+              ))}
+            </Grid>
+          )}
         </Box>
-      ) : (
-        "h"
-      )}
+      </Box>
     </Box>
   );
 }

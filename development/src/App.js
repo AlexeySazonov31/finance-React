@@ -194,7 +194,7 @@ function App() {
       <Box component="main" sx={{ width: 1 }}>
         <Toolbar />
 
-        <Routes sx={{ padding: { xs: 0, sm: 3 } }} />
+        <Routes/>
 
         <Box bgcolor={(theme.palette.mode === 'light' ? blueGrey[500] : blueGrey[800])} sx={{
           display: 'flex',

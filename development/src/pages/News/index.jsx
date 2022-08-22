@@ -98,9 +98,10 @@ function Home() {
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
+        flexDirection: { xs: "column", md: "row" },
         width: "1",
         minHeight: "93vh",
+        p: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5}
       }}
     >
       <Box
@@ -110,7 +111,7 @@ function Home() {
           mx: "auto",
           height: "fit-content",
           position: { xs: "block", sm: "sticky" },
-          top: { xs: "0", sm: "60px" },
+          top: { xs: "0", sm: "80px" },
         }}
       >
         <Paper
@@ -143,7 +144,7 @@ function Home() {
             color="primary"
             orientation="vertical"
             sx={{
-              display: { xs: "none", sm: "flex" },
+              display: { xs: "none", md: "flex" },
             }}
           >
             {buttonsFilter}
@@ -152,7 +153,7 @@ function Home() {
           <FormControl
             fullWidth
             sx={{
-              display: { sx: "block", sm: "none" },
+              display: { sx: "block", md: "none" },
             }}
           >
             <InputLabel>Category</InputLabel>
@@ -219,10 +220,10 @@ function Home() {
                   <CardContent>
                     <Typography
                       variant="h6"
-                      color="text.secondary"
                       sx={{
                         fontWeight: "500",
                       }}
+                      paragraph={true}
                     >
                       {elem.content
                         ? decodeHtmlCharCodes(elem.content)
@@ -231,7 +232,7 @@ function Home() {
                   </CardContent>
                   <Divider />
                   <CardActions
-                    sx={{ displat: "flex", justifyContent: "space-between" }}
+                    sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     {elem.date ? elem.date : dateFormat(elem.feedDate)}
                     <Link
