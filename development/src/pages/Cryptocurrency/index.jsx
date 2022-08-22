@@ -84,8 +84,8 @@ function Сryptocurrency() {
             borderRadius: 3,
             mx: "auto",
             height: "fit-content",
-            position: { xs: "block", sm: "sticky" },
-            top: { xs: "0", sm: "60px" },
+            position: { xs: "block", md: "sticky" },
+            top: { xs: "0", sm: "80px" },
             border: "1px solid red",
           }}
         >
@@ -119,7 +119,7 @@ function Сryptocurrency() {
             display: "flex",
             justifyContent: "center",
             minHeight: "93vh",
-            my: "auto",
+            alignItems: 'center',
           }}
         >
           {!loading ? (

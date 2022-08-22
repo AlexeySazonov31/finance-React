@@ -18,8 +18,8 @@ import {
 function AppRoutes() {
     return (
         <Routes>
-            <Route path='/' element={<News />} />
-            <Route path='/cryptocurrency' element={<Сryptocurrency />} />
+            <Route path='/news' element={<News />} />
+            <Route path='/' element={<Сryptocurrency />} />
             <Route path='/stock' element={<Stock/>} />
             <Route path='/currencies' element={<Currencies />} />
             <Route path="/nft" element={<Nft />} />

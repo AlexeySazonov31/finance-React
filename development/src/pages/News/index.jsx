@@ -110,7 +110,7 @@ function Home() {
           borderRadius: 3,
           mx: "auto",
           height: "fit-content",
-          position: { xs: "block", sm: "sticky" },
+          position: { xs: "block", md: "sticky" },
           top: { xs: "0", sm: "80px" },
         }}
       >
