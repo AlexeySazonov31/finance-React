@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 
 import HeadWidgets from "./HeadWidgets";
 import CoinCard from "./CoinCard";
+import CoinSearch from "./CoinSearch";
 
 import {
   Card,
@@ -45,16 +46,16 @@ function Сryptocurrency() {
       });
   }, []);
 
-
-
   useEffect(() => {
     if (search) {
-        fetch(`https://api.coingecko.com/api/v3/search?query=${search}`)
+      setLoading(false);
+      fetch(`https://api.coinpaprika.com/v1/search/?q=${search}&limit=100`)
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-        })
-
+          setDataSearch(data.currencies.length > 0 ? data.currencies : null);
+          setLoading(true);
+        });
     }
   }, [search]);
 
@@ -119,7 +120,7 @@ function Сryptocurrency() {
             display: "flex",
             justifyContent: "center",
             minHeight: "93vh",
-            alignItems: 'center',
+            alignItems: loading ? 'start' : 'center',
           }}
         >
           {!loading ? (
@@ -133,9 +134,15 @@ function Сryptocurrency() {
                 p: { xs: 0, md: 2 },
               }}
             >
-              {dataCoins.map((elem, key) => (
-                <CoinCard elem={elem} key={key} />
-              ))}
+              {search
+                ? dataSearch
+                  ? dataSearch.map((elem, key) => (
+                      <CoinSearch elem={elem} key={key} />
+                    ))
+                  : <Typography>not found</Typography>
+                : dataCoins.map((elem, key) => (
+                    <CoinCard elem={elem} key={key} />
+                  ))}
             </Grid>
           )}
         </Box>

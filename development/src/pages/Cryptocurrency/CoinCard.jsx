@@ -45,7 +45,9 @@ function CoinCard({ elem }) {
 
               <Typography sx={{
                 fontWeight: 600,
-              }}>{elem.name}</Typography>
+                textAlign: 'center',
+              }}>{titleAbbreviation(elem.name)}</Typography>
+
               <Chip label={elem.symbol} variant="outlined" />
             </Box>
             <Box
@@ -185,3 +187,11 @@ export default CoinCard;
 function numberSpace(x){
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 } 
+
+function titleAbbreviation(str){
+  if( str.length <= 16 ){
+    return str;
+  } else {
+    return str.split(' ')[0] + '...';
+  }
+}
