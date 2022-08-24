@@ -163,7 +163,7 @@ function CoinCard({ elem }) {
                 justifyContent: "space-between",
               }}
             >
-              {numberSpace(elem.price.toFixed(2))} $
+              {numberSpace(elem.price.toFixed(3))} $
               <Link
                 href={elem.websiteUrl}
                 rel="noopener"

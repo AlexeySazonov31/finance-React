@@ -19,6 +19,8 @@ import {
   CardMedia,
   Link,
   Typography,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 
 function Сryptocurrency() {
@@ -26,9 +28,11 @@ function Сryptocurrency() {
 
   const [loading, setLoading] = useState(false);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("sfsfsf");
 
   const [dataSearch, setDataSearch] = useState(null);
+
+  const [viewCoins, setViewCoins] = useState("grid");
 
   const handleChangeSearch = (event) => {
     setSearch(event.target.value);
@@ -93,8 +97,27 @@ function Сryptocurrency() {
           <Paper
             sx={{
               padding: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
+            <ToggleButtonGroup
+              value={viewCoins}
+              exclusive
+              onChange={(event) => {
+                setViewCoins(event.target.value);
+              }}
+              color="primary"
+              fullWidth={true}
+              sx={{
+                my: 1,
+              }}
+            >
+              <ToggleButton value="table">Table</ToggleButton>
+              <ToggleButton value="grid">Grid</ToggleButton>
+            </ToggleButtonGroup>
+
             <TextField
               id="demo-helper-text-misaligned-no-helper"
               label="search coin"
@@ -120,7 +143,7 @@ function Сryptocurrency() {
             display: "flex",
             justifyContent: "center",
             minHeight: "93vh",
-            alignItems: loading ? 'start' : 'center',
+            alignItems: loading ? "start" : "center",
           }}
         >
           {!loading ? (
@@ -134,15 +157,46 @@ function Сryptocurrency() {
                 p: { xs: 0, md: 2 },
               }}
             >
-              {search
-                ? dataSearch
-                  ? dataSearch.map((elem, key) => (
-                      <CoinSearch elem={elem} key={key} />
-                    ))
-                  : <Typography>not found</Typography>
-                : dataCoins.map((elem, key) => (
-                    <CoinCard elem={elem} key={key} />
-                  ))}
+              {search ? (
+                dataSearch ? (
+                  dataSearch.map((elem, key) => (
+                    <CoinSearch elem={elem} key={key} />
+                  ))
+                ) : (
+                  <Grid
+                    item
+                    xs={9}
+                    sm={8}
+                    md={8}
+                    lg={6}
+                    xl={5}
+                    sx={{
+                      width: "fit-content",
+                    }}
+                  >
+                    <Card sx={{ px: 3, py: 2 }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <Typography variant="h6">
+                          Sorry. According to your request <strong><u>{search}</u></strong> nothing was
+                          found.
+                        </Typography>
+                        <Divider />
+
+                        <Typography variant="h6">
+                          Try searching for a different name
+                        </Typography>
+                      </Box>
+                    </Card>
+                  </Grid>
+                )
+              ) : (
+                dataCoins.map((elem, key) => <CoinCard elem={elem} key={key} />)
+              )}
             </Grid>
           )}
         </Box>
