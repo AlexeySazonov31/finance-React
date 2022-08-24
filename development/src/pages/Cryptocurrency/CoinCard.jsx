@@ -16,7 +16,7 @@ function CoinCard({ elem }) {
     <>
       <Grid
         item
-        xs={9}
+        xs={10}
         sm={5}
         md={6}
         lg={4}

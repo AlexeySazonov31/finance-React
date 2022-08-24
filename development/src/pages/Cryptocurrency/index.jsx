@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import HeadWidgets from "./HeadWidgets";
 import CoinCard from "./CoinCard";
 import CoinSearch from "./CoinSearch";
+import TableCoins from "./TableCoins";
 
 import {
   Card,
@@ -21,6 +22,13 @@ import {
   Typography,
   ToggleButtonGroup,
   ToggleButton,
+  TableContainer,
+  Table,
+  TableHead,
+  TableCell,
+  TableRow,
+  TableBody,
+  Avatar,
 } from "@mui/material";
 
 function Сryptocurrency() {
@@ -28,11 +36,11 @@ function Сryptocurrency() {
 
   const [loading, setLoading] = useState(false);
 
-  const [search, setSearch] = useState("sfsfsf");
+  const [search, setSearch] = useState("");
 
   const [dataSearch, setDataSearch] = useState(null);
 
-  const [viewCoins, setViewCoins] = useState("grid");
+  const [viewCoins, setViewCoins] = useState("table");
 
   const handleChangeSearch = (event) => {
     setSearch(event.target.value);
@@ -148,7 +156,44 @@ function Сryptocurrency() {
         >
           {!loading ? (
             <CircularProgress size="5rem" />
-          ) : (
+          ) : search ? (
+            dataSearch ? (
+              <Grid
+                container
+                sx={{
+                  border: "1px solid green",
+                  justifyContent: "center",
+                  p: { xs: 0, md: 2 },
+                }}
+              >
+                {dataSearch.map((elem, key) => (
+                  <CoinSearch elem={elem} key={key} />
+                ))}
+              </Grid>
+            ) : (
+              <Card sx={{ px: 3, py: 2, m: 2 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography variant="h6">
+                    Sorry. According to your request{" "}
+                    <strong>
+                      <u>{search}</u>
+                    </strong>{" "}
+                    nothing was found.
+                  </Typography>
+                  <Divider />
+
+                  <Typography variant="h6">
+                    Try searching for a different name
+                  </Typography>
+                </Box>
+              </Card>
+            )
+          ) : viewCoins === "grid" ? (
             <Grid
               container
               sx={{
@@ -157,47 +202,12 @@ function Сryptocurrency() {
                 p: { xs: 0, md: 2 },
               }}
             >
-              {search ? (
-                dataSearch ? (
-                  dataSearch.map((elem, key) => (
-                    <CoinSearch elem={elem} key={key} />
-                  ))
-                ) : (
-                  <Grid
-                    item
-                    xs={9}
-                    sm={8}
-                    md={8}
-                    lg={6}
-                    xl={5}
-                    sx={{
-                      width: "fit-content",
-                    }}
-                  >
-                    <Card sx={{ px: 3, py: 2 }}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <Typography variant="h6">
-                          Sorry. According to your request <strong><u>{search}</u></strong> nothing was
-                          found.
-                        </Typography>
-                        <Divider />
-
-                        <Typography variant="h6">
-                          Try searching for a different name
-                        </Typography>
-                      </Box>
-                    </Card>
-                  </Grid>
-                )
-              ) : (
-                dataCoins.map((elem, key) => <CoinCard elem={elem} key={key} />)
-              )}
+              {dataCoins.map((elem, key) => (
+                <CoinCard elem={elem} key={key} />
+              ))}
             </Grid>
+          ) : (
+            <TableCoins rows={dataCoins} />
           )}
         </Box>
       </Box>
