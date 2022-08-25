@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from "@mui/material/styles";
 
 import {
   Paper,
@@ -14,31 +15,52 @@ import {
   Chip,
 } from "@mui/material";
 
+import { blueGrey, grey } from "@mui/material/colors/";
+
 function TableCoins({ rows }) {
+  const theme = useTheme();
+
   return (
     <>
       <TableContainer
         component={Paper}
         sx={{
           margin: 3,
+          mx: { xs: 1, sm: 3, md: 3, lg: 3, xl: 10 },
         }}
       >
-        <Table
-          sx={{ width: 1, }}
-          aria-label="simple table"
-        >
+        <Table sx={{ width: 1 }} aria-label="simple table">
           <TableHead>
-            <TableRow>
-              <TableCell align="left">rank</TableCell>
+            <TableRow
+              sx={{
+                bgcolor:
+                  theme.palette.mode === "dark" ? "#253036" : blueGrey[100],
+              }}
+            >
+              <TableCell align="left" sx={{
+                    display: { xs: "none", sm: "table-cell" },
+                  }}>rank</TableCell>
 
-              <TableCell>icon</TableCell>
-              <TableCell align="left">name</TableCell>
-              <TableCell align="left">symbol</TableCell>
+              <TableCell align="center">icon</TableCell>
+              <TableCell align="center">name</TableCell>
+              <TableCell
+                align="center"
+                sx={{
+                  display: { xs: "none", lg: "table-cell" },
+                }}
+              >
+                symbol
+              </TableCell>
               <TableCell align="left">price</TableCell>
-              <TableCell align="right">hour</TableCell>
-              <TableCell align="right">day</TableCell>
-              <TableCell align="right">week</TableCell>
-              <TableCell align="right">link</TableCell>
+              <TableCell align="right" sx={{
+                    display: { xs: "none", lg: "table-cell" },
+                  }}>hour</TableCell>
+              <TableCell align="right" sx={{
+                    display: { xs: "none", lg: "table-cell" },
+                  }}>day</TableCell>
+              <TableCell align="right" sx={{
+                    display: { xs: "none", sm: "table-cell" },
+                  }}>week</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -47,23 +69,44 @@ function TableCoins({ rows }) {
                 key={key}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
+                  bgcolor: key % 2 !== 0 ? "#28343b" : "#2e3c42",
                 }}
               >
-                <TableCell align="left">
-                  {" "}
+                <TableCell align="left"  sx={{
+                    display: { xs: "none", sm: "table-cell" },
+                  }}>
                   <Chip label={row.rank} variant="outlined" />
                 </TableCell>
-                <TableCell>
-                  <Avatar src={row.icon} variant="square" />
+                <TableCell align="center">
+                  <Avatar
+                    src={row.icon}
+                    sx={{
+                      width: "32px",
+                      height: "32px",
+                    }}
+                    variant="square"
+                  />
                 </TableCell>
-                <TableCell align="left">{row.name}</TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
+                  {titleAbbreviation(row.name)}
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    display: { xs: "none", lg: "table-cell" },
+                  }}
+                >
                   <Chip label={row.symbol} variant="outlined" />
                 </TableCell>
-                <TableCell align="left">{numberSpace(row.price)} $</TableCell>
+                <TableCell align="left">
+                  {numberSpace(row.price.toFixed(3))} $
+                </TableCell>
 
-                <TableCell align="right">
+                <TableCell align="right" sx={{
+                    display: { xs: "none", lg: "table-cell" },
+                  }}>
                   <Typography
+                    variant="body2"
                     color={row.priceChange1h >= 0 ? "#29cf45" : "red"}
                   >
                     {row.priceChange1h > 0
@@ -73,8 +116,11 @@ function TableCoins({ rows }) {
                   </Typography>
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell align="right" sx={{
+                    display: { xs: "none", lg: "table-cell" },
+                  }}>
                   <Typography
+                    variant="body2"
                     color={row.priceChange1d >= 0 ? "#29cf45" : "red"}
                   >
                     {row.priceChange1d > 0
@@ -84,8 +130,11 @@ function TableCoins({ rows }) {
                   </Typography>
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell align="right" sx={{
+                    display: { xs: "none", sm: "table-cell" },
+                  }}>
                   <Typography
+                    variant="body2"
                     color={row.priceChange1w >= 0 ? "#29cf45" : "red"}
                   >
                     {row.priceChange1w > 0
@@ -93,18 +142,6 @@ function TableCoins({ rows }) {
                       : row.priceChange1w}
                     %
                   </Typography>
-                </TableCell>
-
-                <TableCell align="right">
-                  <Link
-                    href={row.websiteUrl}
-                    rel="noopener"
-                    underline="none"
-                    variant="body1"
-                    target="_blank"
-                  >
-                    site
-                  </Link>
                 </TableCell>
               </TableRow>
             ))}
@@ -134,5 +171,13 @@ function numberSpace(x) {
     );
   } else {
     return ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  }
+}
+
+function titleAbbreviation(str) {
+  if (str.length <= 16) {
+    return str;
+  } else {
+    return str.split(" ")[0] + "...";
   }
 }
