@@ -41,9 +41,7 @@ const drawerWidth = 240;
 const navItems = [
   { name: "News", to: "/news", icon: <NewspaperIcon /> },
   { name: "Сryptocurrency", to: "/" },
-  { name: "Stock", to: "/stock" },
   { name: "Currencies", to: "/currencies" },
-  { name: "NFT", to: "/nft" },
 ];
 
 function App() {

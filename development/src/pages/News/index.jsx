@@ -46,8 +46,8 @@ const sourcesCategorys = [
   },
 ];
 function Home() {
-  const [source, setSource] = useState("global");
-  const [category, setCategory] = useState("world");
+  const [source, setSource] = useState("finance");
+  const [category, setCategory] = useState("trending");
   const [loading, setLoading] = useState("false");
   const [data, setData] = useState(false);
 
