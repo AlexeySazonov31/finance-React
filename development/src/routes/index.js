@@ -5,13 +5,6 @@ import Сryptocurrency from "../pages/Cryptocurrency";
 import Currencies from "../pages/Currencies";
 import NotFound from "../pages/NotFound";
 
-/*
-import {
-    CircularProgress,
-    Container,
-    Grid,
-} from "@mui/material";
-*/
 
 function AppRoutes() {
     return (
