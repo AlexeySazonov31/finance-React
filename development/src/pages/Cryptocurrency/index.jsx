@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 
 import HeadWidgets from "./HeadWidgets";
 import CoinCard from "./CoinCard";
-import CoinSearch from "./CoinSearch";
+import CoinsSearch from "./CoinsSearch";
 import TableCoins from "./TableCoins";
 
 import {
@@ -71,6 +71,9 @@ function Сryptocurrency() {
     }
   }, [search]);
 
+
+  
+
   return (
     <Box
       sx={{
@@ -78,7 +81,7 @@ function Сryptocurrency() {
         flexDirection: "column",
         width: "1",
         border: "1px solid red",
-        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 },
+        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 15 },
       }}
     >
       <HeadWidgets />
@@ -94,12 +97,12 @@ function Сryptocurrency() {
         <Box
           sx={{
             padding: 3,
-            borderRadius: 3,
             mx: "auto",
             height: "fit-content",
             position: { xs: "block", md: "sticky" },
             top: { xs: "0", sm: "80px" },
             border: "1px solid red",
+            width: '350px',
           }}
         >
           <Paper
@@ -158,18 +161,9 @@ function Сryptocurrency() {
             <CircularProgress size="5rem" />
           ) : search ? (
             dataSearch ? (
-              <Grid
-                container
-                sx={{
-                  border: "1px solid green",
-                  justifyContent: "center",
-                  p: { xs: 0, md: 2 },
-                }}
-              >
-                {dataSearch.map((elem, key) => (
-                  <CoinSearch elem={elem} key={key} />
-                ))}
-              </Grid>
+
+                  <CoinsSearch coins={dataSearch} setLoading={setLoading} />
+
             ) : (
               <Card sx={{ px: 3, py: 2, m: 2 }}>
                 <Box

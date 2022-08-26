@@ -23,6 +23,7 @@ function CoinCard({ elem }) {
         xl={3}
         sx={{
           width: "fit-content",
+          alignSelf: 'center',
         }}
       >
         <Card sx={{ px: 2, pt: 1, m: 1 }}>

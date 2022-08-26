@@ -37,44 +37,94 @@ function TableCoins({ rows }) {
                   theme.palette.mode === "dark" ? "#253036" : blueGrey[100],
               }}
             >
-              <TableCell align="left" sx={{
-                    display: { xs: "none", sm: "table-cell" },
-                  }}>rank</TableCell>
+              <TableCell
+                align="left"
+                sx={{
+                  display: { xs: "none", sm: "table-cell" },
+                  fontWeight: "600",
+                }}
+              >
+                RANK
+              </TableCell>
 
-              <TableCell align="center">icon</TableCell>
-              <TableCell align="center">name</TableCell>
+              <TableCell
+                align="center"
+                sx={{
+                  fontWeight: "600",
+                }}
+              >
+                ICON
+              </TableCell>
+              <TableCell
+                align="center"
+                sx={{
+                  fontWeight: "600",
+                }}
+              >
+                NAME
+              </TableCell>
               <TableCell
                 align="center"
                 sx={{
                   display: { xs: "none", lg: "table-cell" },
+                  fontWeight: "600",
                 }}
               >
-                symbol
+                SYMBOL
               </TableCell>
-              <TableCell align="left">price</TableCell>
-              <TableCell align="right" sx={{
-                    display: { xs: "none", lg: "table-cell" },
-                  }}>hour</TableCell>
-              <TableCell align="right" sx={{
-                    display: { xs: "none", lg: "table-cell" },
-                  }}>day</TableCell>
-              <TableCell align="right" sx={{
-                    display: { xs: "none", sm: "table-cell" },
-                  }}>week</TableCell>
+              <TableCell
+                align="left"
+                sx={{
+                  fontWeight: "600",
+                }}
+              >
+                PRICE
+              </TableCell>
+              <TableCell
+                align="right"
+                sx={{
+                  display: { xs: "none", lg: "table-cell" },
+                  fontWeight: "600",
+                }}
+              >
+                HOUR
+              </TableCell>
+              <TableCell
+                align="right"
+                sx={{
+                  display: { xs: "none", lg: "table-cell" },
+                  fontWeight: "600",
+                }}
+              >
+                DAY
+              </TableCell>
+              <TableCell
+                align="right"
+                sx={{
+                  display: { xs: "none", sm: "table-cell" },
+                  fontWeight: "600",
+                }}
+              >
+                WEEK
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row, key) => (
               <TableRow
+                hover={true}
                 key={key}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   bgcolor: key % 2 !== 0 ? "#28343b" : "#2e3c42",
                 }}
               >
-                <TableCell align="left"  sx={{
+                <TableCell
+                  align="left"
+                  sx={{
                     display: { xs: "none", sm: "table-cell" },
-                  }}>
+                  }}
+                >
                   <Chip label={row.rank} variant="outlined" />
                 </TableCell>
                 <TableCell align="center">
@@ -102,9 +152,12 @@ function TableCoins({ rows }) {
                   {numberSpace(row.price.toFixed(3))} $
                 </TableCell>
 
-                <TableCell align="right" sx={{
+                <TableCell
+                  align="right"
+                  sx={{
                     display: { xs: "none", lg: "table-cell" },
-                  }}>
+                  }}
+                >
                   <Typography
                     variant="body2"
                     color={row.priceChange1h >= 0 ? "#29cf45" : "red"}
@@ -116,9 +169,12 @@ function TableCoins({ rows }) {
                   </Typography>
                 </TableCell>
 
-                <TableCell align="right" sx={{
+                <TableCell
+                  align="right"
+                  sx={{
                     display: { xs: "none", lg: "table-cell" },
-                  }}>
+                  }}
+                >
                   <Typography
                     variant="body2"
                     color={row.priceChange1d >= 0 ? "#29cf45" : "red"}
@@ -130,9 +186,12 @@ function TableCoins({ rows }) {
                   </Typography>
                 </TableCell>
 
-                <TableCell align="right" sx={{
+                <TableCell
+                  align="right"
+                  sx={{
                     display: { xs: "none", sm: "table-cell" },
-                  }}>
+                  }}
+                >
                   <Typography
                     variant="body2"
                     color={row.priceChange1w >= 0 ? "#29cf45" : "red"}
