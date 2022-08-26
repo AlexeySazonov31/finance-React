@@ -96,7 +96,7 @@ function App() {
   );
 
   const colorBackground =
-    theme.palette.mode === "light" ? "#fafafa" : "#1f292e";
+    theme.palette.mode === "light" ? "#f2f7fa" : "#1f292e";
 
     function desctopMenuStyle(elem){
       if(location.pathname === elem.to){
@@ -228,7 +228,7 @@ const getDesignTokens = (mode) => ({
           contrastText: "#fff",
         },
         background: {
-          paper: grey[300],
+          paper: '#e1e5e5',
         },
         text: {
           primary: "#000",

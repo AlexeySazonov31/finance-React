@@ -34,11 +34,11 @@ function TableCoins({ rows }) {
             <TableRow
               sx={{
                 bgcolor:
-                  theme.palette.mode === "dark" ? "#253036" : blueGrey[100],
+                  theme.palette.mode === "dark" ? "#253036" : '#d5dcde',
               }}
             >
               <TableCell
-                align="left"
+                align="right"
                 sx={{
                   display: { xs: "none", sm: "table-cell" },
                   fontWeight: "600",
@@ -103,6 +103,7 @@ function TableCoins({ rows }) {
                 sx={{
                   display: { xs: "none", sm: "table-cell" },
                   fontWeight: "600",
+                  pr: 5,
                 }}
               >
                 WEEK
@@ -116,11 +117,11 @@ function TableCoins({ rows }) {
                 key={key}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
-                  bgcolor: key % 2 !== 0 ? "#28343b" : "#2e3c42",
+                  bgcolor: (theme.palette.mode === "dark") ? (key % 2 !== 0 ? "#28343b" : "#2e3c42") : (key % 2 !== 0 ? '#e1eaed' : '#ebf4f7'),
                 }}
               >
                 <TableCell
-                  align="left"
+                  align="right"
                   sx={{
                     display: { xs: "none", sm: "table-cell" },
                   }}
@@ -195,6 +196,9 @@ function TableCoins({ rows }) {
                   <Typography
                     variant="body2"
                     color={row.priceChange1w >= 0 ? "#29cf45" : "red"}
+                    sx={{
+                      mr: 3
+                    }}
                   >
                     {row.priceChange1w > 0
                       ? "+" + row.priceChange1w
@@ -202,6 +206,9 @@ function TableCoins({ rows }) {
                     %
                   </Typography>
                 </TableCell>
+
+
+
               </TableRow>
             ))}
           </TableBody>

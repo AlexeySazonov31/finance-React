@@ -7,7 +7,6 @@ import TextField from "@mui/material/TextField";
 
 import HeadWidgets from "./HeadWidgets";
 import CoinCard from "./CoinCard";
-import CoinsSearch from "./CoinsSearch";
 import TableCoins from "./TableCoins";
 
 import {
@@ -65,14 +64,36 @@ function Сryptocurrency() {
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          setDataSearch(data.currencies.length > 0 ? data.currencies : null);
-          setLoading(true);
+          if( data.currencies.length ){
+            let arr = [];
+            for( let el of data.currencies ){
+              arr.push(fetch( `https://api.coinstats.app/public/v1/coins/${el.id.replace( /[a-z]+-/, '' )}?currency=USD`) );
+            }
+        
+            Promise.all(arr)
+              .then(responses => Promise.all(responses.map(r => r.json())))
+              .then( coinsData => {
+                let arr = [];
+                for( let coin of coinsData ){
+                  if( coin.coin ){
+                    arr.push(coin.coin);
+                  }
+                }
+                setDataSearch(arr.length ? arr : null );
+                setLoading(true);
+                
+              } );
+          } else {
+            setDataSearch(null);
+            setLoading(true);
+          }
+
         });
     }
   }, [search]);
 
+console.log(dataSearch);
 
-  
 
   return (
     <Box
@@ -81,7 +102,7 @@ function Сryptocurrency() {
         flexDirection: "column",
         width: "1",
         border: "1px solid red",
-        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 15 },
+        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 13 },
       }}
     >
       <HeadWidgets />
@@ -161,8 +182,23 @@ function Сryptocurrency() {
             <CircularProgress size="5rem" />
           ) : search ? (
             dataSearch ? (
+              viewCoins === 'grid' ? (
+                <Grid
+                container
+                sx={{
+                  border: "1px solid green",
+                  justifyContent: "center",
+                  p: { xs: 0, md: 2 },
+                }}
+              >
+                  {dataSearch.map((elem, key) => <CoinCard elem={elem} key={key} />)}
+              </Grid>
+              ) : (
+                <TableCoins rows={dataSearch} />
 
-                  <CoinsSearch coins={dataSearch} setLoading={setLoading} />
+              )
+
+
 
             ) : (
               <Card sx={{ px: 3, py: 2, m: 2 }}>
