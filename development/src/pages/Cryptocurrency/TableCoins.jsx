@@ -11,17 +11,19 @@ import {
   TableRow,
   TableBody,
   Avatar,
-  Link,
   Chip,
+  IconButton,
+  Button,
 } from "@mui/material";
 
-import { useState } from "react";
+import SortIcon from "@mui/icons-material/Sort";
 
 
 function TableCoins({ rows }) {
 
-  
+
   const theme = useTheme();
+
 
   return (
     <>
@@ -36,8 +38,7 @@ function TableCoins({ rows }) {
           <TableHead>
             <TableRow
               sx={{
-                bgcolor:
-                  theme.palette.mode === "dark" ? "#253036" : '#d5dcde',
+                bgcolor: theme.palette.mode === "dark" ? "#253036" : "#d5dcde",
               }}
             >
               <TableCell
@@ -47,7 +48,12 @@ function TableCoins({ rows }) {
                   fontWeight: "600",
                 }}
               >
-                RANK
+                <Button
+                  endIcon={<SortIcon />}
+
+                >
+                  RANK
+                </Button>
               </TableCell>
 
               <TableCell
@@ -82,6 +88,7 @@ function TableCoins({ rows }) {
                 }}
               >
                 PRICE
+
               </TableCell>
               <TableCell
                 align="right"
@@ -117,10 +124,17 @@ function TableCoins({ rows }) {
             {rows.map((row, key) => (
               <TableRow
                 hover={true}
-                key={key}
+                key={row.id}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
-                  bgcolor: (theme.palette.mode === "dark") ? (key % 2 !== 0 ? "#28343b" : "#2e3c42") : (key % 2 !== 0 ? '#e1eaed' : '#ebf4f7'),
+                  bgcolor:
+                    theme.palette.mode === "dark"
+                      ? key % 2 !== 0
+                        ? "#28343b"
+                        : "#2e3c42"
+                      : key % 2 !== 0
+                      ? "#e1eaed"
+                      : "#ebf4f7",
                 }}
               >
                 <TableCell
@@ -200,7 +214,7 @@ function TableCoins({ rows }) {
                     variant="body2"
                     color={row.priceChange1w >= 0 ? "#29cf45" : "red"}
                     sx={{
-                      mr: 3
+                      mr: 3,
                     }}
                   >
                     {row.priceChange1w > 0
@@ -209,9 +223,6 @@ function TableCoins({ rows }) {
                     %
                   </Typography>
                 </TableCell>
-
-
-
               </TableRow>
             ))}
           </TableBody>
@@ -250,3 +261,11 @@ function titleAbbreviation(str) {
     return str.split(" ")[0] + "...";
   }
 }
+
+
+
+
+
+
+
+

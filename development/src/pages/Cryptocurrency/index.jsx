@@ -14,21 +14,19 @@ import {
   Grid,
   Paper,
   Divider,
-  CardActions,
-  CardHeader,
-  CardMedia,
-  Link,
   Typography,
   ToggleButtonGroup,
   ToggleButton,
-  TableContainer,
-  Table,
-  TableHead,
-  TableCell,
-  TableRow,
-  TableBody,
-  Avatar,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  IconButton,
+  Button,
 } from "@mui/material";
+
+import SouthIcon from "@mui/icons-material/South";
+import NorthIcon from "@mui/icons-material/North";
 
 function Сryptocurrency() {
   const [dataCoins, setDataCoins] = useState(null);
@@ -40,6 +38,10 @@ function Сryptocurrency() {
   const [dataSearch, setDataSearch] = useState(null);
 
   const [viewCoins, setViewCoins] = useState("table");
+
+  const [sorting, setSorting] = useState("");
+
+  const [sortType, setSortType] = useState(true);
 
   const handleChangeSearch = (event) => {
     setSearch(event.target.value);
@@ -64,36 +66,56 @@ function Сryptocurrency() {
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          if( data.currencies.length ){
+          if (data.currencies.length) {
             let arr = [];
-            for( let el of data.currencies ){
-              arr.push(fetch( `https://api.coinstats.app/public/v1/coins/${el.id.replace( /[a-z]+-/, '' )}?currency=USD`) );
+            for (let el of data.currencies) {
+              arr.push(
+                fetch(
+                  `https://api.coinstats.app/public/v1/coins/${el.id.replace(
+                    /[a-z]+-/,
+                    ""
+                  )}?currency=USD`
+                )
+              );
             }
-        
+
             Promise.all(arr)
-              .then(responses => Promise.all(responses.map(r => r.json())))
-              .then( coinsData => {
+              .then((responses) => Promise.all(responses.map((r) => r.json())))
+              .then((coinsData) => {
                 let arr = [];
-                for( let coin of coinsData ){
-                  if( coin.coin ){
+                for (let coin of coinsData) {
+                  if (coin.coin) {
                     arr.push(coin.coin);
                   }
                 }
-                setDataSearch(arr.length ? arr : null );
+                setDataSearch(arr.length ? arr : null);
                 setLoading(true);
-                
-              } );
+              });
           } else {
             setDataSearch(null);
             setLoading(true);
           }
-
         });
     }
   }, [search]);
 
-console.log(dataSearch);
+  useEffect(() => {
+    if (sorting !== "") {
+      let copy = dataCoins;
+      copy = copy.sort(sort_by(sorting, !sortType));
+      setDataCoins(copy);
+    }
+  }, [sorting]);
 
+  useEffect(() => {
+    if (sorting !== "") {
+      let copy = dataCoins;
+      copy = copy.sort(sort_by(sorting, !sortType));
+      setDataCoins(copy);
+    }
+  }, [sortType]);
+
+  console.log(dataCoins);
 
   return (
     <Box
@@ -123,7 +145,7 @@ console.log(dataSearch);
             position: { xs: "block", md: "sticky" },
             top: { xs: "0", sm: "80px" },
             border: "1px solid red",
-            width: '350px',
+            width: "350px",
           }}
         >
           <Paper
@@ -149,6 +171,45 @@ console.log(dataSearch);
               <ToggleButton value="table">Table</ToggleButton>
               <ToggleButton value="grid">Grid</ToggleButton>
             </ToggleButtonGroup>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                mb: 1,
+                width: 1,
+              }}
+            >
+              <FormControl sx={{ width: 1 }} size="small">
+                <InputLabel id="demo-select-small">sorting</InputLabel>
+                <Select
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  value={sorting}
+                  label="Age"
+                  onChange={(event) => {
+                    setSorting(event.target.value);
+                  }}
+                >
+                  <MenuItem value="">none</MenuItem>
+                  <MenuItem value="rank">rank</MenuItem>
+                  <MenuItem value="price">price</MenuItem>
+                  <MenuItem value="priceChange1h">hour</MenuItem>
+                  <MenuItem value="priceChange1d">day</MenuItem>
+                  <MenuItem value="priceChange1w">week</MenuItem>
+                </Select>
+              </FormControl>
+
+              <IconButton
+                disabled={sorting === "" ? true : false}
+                onClick={() => {
+                  setSortType(!sortType);
+                }}
+                variant="outlined"
+              >
+                {sortType ? <SouthIcon /> : <NorthIcon />}
+              </IconButton>
+            </Box>
 
             <TextField
               id="demo-helper-text-misaligned-no-helper"
@@ -182,24 +243,22 @@ console.log(dataSearch);
             <CircularProgress size="5rem" />
           ) : search ? (
             dataSearch ? (
-              viewCoins === 'grid' ? (
+              viewCoins === "grid" ? (
                 <Grid
-                container
-                sx={{
-                  border: "1px solid green",
-                  justifyContent: "center",
-                  p: { xs: 0, md: 2 },
-                }}
-              >
-                  {dataSearch.map((elem, key) => <CoinCard elem={elem} key={key} />)}
-              </Grid>
+                  container
+                  sx={{
+                    border: "1px solid green",
+                    justifyContent: "center",
+                    p: { xs: 0, md: 2 },
+                  }}
+                >
+                  {dataSearch.map((elem, key) => (
+                    <CoinCard elem={elem} key={key} />
+                  ))}
+                </Grid>
               ) : (
-                <TableCoins rows={dataSearch} />
-
+                <TableCoins data={dataSearch} />
               )
-
-
-
             ) : (
               <Card sx={{ px: 3, py: 2, m: 2 }}>
                 <Box
@@ -246,3 +305,19 @@ console.log(dataSearch);
 }
 
 export default Сryptocurrency;
+
+const sort_by = (field, reverse, primer) => {
+  const key = primer
+    ? function (x) {
+        return primer(x[field]);
+      }
+    : function (x) {
+        return x[field];
+      };
+
+  reverse = !reverse ? 1 : -1;
+
+  return function (a, b) {
+    return (a = key(a)), (b = key(b)), reverse * ((a > b) - (b > a));
+  };
+};
