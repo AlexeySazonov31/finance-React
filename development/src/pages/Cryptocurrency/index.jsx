@@ -35,17 +35,9 @@ function Сryptocurrency() {
 
   const [search, setSearch] = useState("");
 
-  const [dataSearch, setDataSearch] = useState(null);
-
   const [viewCoins, setViewCoins] = useState("table");
 
-  const [sorting, setSorting] = useState("");
-
-  const [sortType, setSortType] = useState(true);
-
-  const handleChangeSearch = (event) => {
-    setSearch(event.target.value);
-  };
+  const [sorting, setSorting] = useState({ name: "", reverse: false });
 
   useEffect(() => {
     fetch(
@@ -53,19 +45,21 @@ function Сryptocurrency() {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setDataCoins(data.coins.length > 30 ? data.coins : null);
         setLoading(true);
       });
   }, []);
 
   useEffect(() => {
-    if (search) {
-      setLoading(false);
-      fetch(`https://api.coinpaprika.com/v1/search/?q=${search}&limit=100`)
+    setLoading(false);
+    let controller = new AbortController();
+
+    if (search.length >= 1) {
+      fetch(`https://api.coinpaprika.com/v1/search/?q=${search}&limit=100`, {
+        signal: controller.signal,
+      })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           if (data.currencies.length) {
             let arr = [];
             for (let el of data.currencies) {
@@ -88,34 +82,57 @@ function Сryptocurrency() {
                     arr.push(coin.coin);
                   }
                 }
-                setDataSearch(arr.length ? arr : null);
+                if (search) {
+                  setDataCoins(arr.length ? arr : null);
+                }
                 setLoading(true);
               });
           } else {
-            setDataSearch(null);
+            setDataCoins(null);
             setLoading(true);
           }
+
+          controller = null;
+        });
+    } else {
+      fetch(
+        "https://api.coinstats.app/public/v1/coins?skip=0&limit=100&currency=USD",
+        { signal: controller.signal }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setDataCoins(data.coins.length > 30 ? data.coins : null);
+          setLoading(true);
+          controller = null;
         });
     }
+
+    return () => controller?.abort();
   }, [search]);
 
-  useEffect(() => {
-    if (sorting !== "") {
-      let copy = dataCoins;
-      copy = copy.sort(sort_by(sorting, !sortType));
-      setDataCoins(copy);
-    }
-  }, [sorting]);
+  const handleChangeSearch = (event) => {
+    setSearch(event.target.value);
+  };
 
-  useEffect(() => {
-    if (sorting !== "") {
-      let copy = dataCoins;
-      copy = copy.sort(sort_by(sorting, !sortType));
-      setDataCoins(copy);
+  const changeSorting = (event) => {
+    if (event.target.name === "name") {
+      setSorting({ ...sorting, [event.target.name]: event.target.value });
+    } else {
+      setSorting({ ...sorting, reverse: !sorting.reverse });
     }
-  }, [sortType]);
+  };
 
-  console.log(dataCoins);
+  const changeViewCoins = (event) => {
+    setViewCoins(event.target.value);
+  }
+
+  let finishData;
+  if( sorting.name === '' ){
+    if( dataCoins ) finishData = dataCoins.sort(sort_by("rank", false));
+  } else {
+    finishData = dataCoins.sort(sort_by(sorting.name, sorting.reverse));
+  }
+
 
   return (
     <Box
@@ -159,9 +176,7 @@ function Сryptocurrency() {
             <ToggleButtonGroup
               value={viewCoins}
               exclusive
-              onChange={(event) => {
-                setViewCoins(event.target.value);
-              }}
+              onChange={changeViewCoins}
               color="primary"
               fullWidth={true}
               sx={{
@@ -185,11 +200,10 @@ function Сryptocurrency() {
                 <Select
                   labelId="demo-select-small"
                   id="demo-select-small"
-                  value={sorting}
+                  name="name"
+                  value={sorting.name}
                   label="Age"
-                  onChange={(event) => {
-                    setSorting(event.target.value);
-                  }}
+                  onChange={changeSorting}
                 >
                   <MenuItem value="">none</MenuItem>
                   <MenuItem value="rank">rank</MenuItem>
@@ -201,13 +215,11 @@ function Сryptocurrency() {
               </FormControl>
 
               <IconButton
-                disabled={sorting === "" ? true : false}
-                onClick={() => {
-                  setSortType(!sortType);
-                }}
+                disabled={sorting.name === "" ? true : false}
+                onClick={changeSorting}
                 variant="outlined"
               >
-                {sortType ? <SouthIcon /> : <NorthIcon />}
+                {sorting.reverse ? <SouthIcon /> : <NorthIcon />}
               </IconButton>
             </Box>
 
@@ -241,6 +253,76 @@ function Сryptocurrency() {
         >
           {!loading ? (
             <CircularProgress size="5rem" />
+          ) : finishData ? (
+            viewCoins === "grid" ? (
+              <Grid
+                container
+                sx={{
+                  border: "1px solid green",
+                  justifyContent: "center",
+                  p: { xs: 0, md: 2 },
+                }}
+              >
+                {finishData.map((elem) => (
+                  <CoinCard elem={elem} key={elem.id} />
+                ))}
+              </Grid>
+            ) : (
+              <TableCoins rows={finishData} changeSorting={changeSorting} />
+            )
+          ) : (
+            <Card sx={{ px: 3, py: 2, m: 2 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Typography variant="h6">
+                  Sorry. According to your request{" "}
+                  <strong>
+                    <u>{search}</u>
+                  </strong>{" "}
+                  nothing was found.
+                </Typography>
+                <Divider />
+
+                <Typography variant="h6">
+                  Try searching for a different name
+                </Typography>
+              </Box>
+            </Card>
+          )}
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
+export default Сryptocurrency;
+
+const sort_by = (field, reverse, primer) => {
+  const key = primer
+    ? function (x) {
+        return primer(x[field]);
+      }
+    : function (x) {
+        return x[field];
+      };
+
+  reverse = !reverse ? 1 : -1;
+
+  return function (a, b) {
+    return (a = key(a)), (b = key(b)), reverse * ((a > b) - (b > a));
+  };
+};
+
+/*
+
+
+
+          {!loading ? (
+            <CircularProgress size="5rem" />
           ) : search ? (
             dataSearch ? (
               viewCoins === "grid" ? (
@@ -252,8 +334,8 @@ function Сryptocurrency() {
                     p: { xs: 0, md: 2 },
                   }}
                 >
-                  {dataSearch.map((elem, key) => (
-                    <CoinCard elem={elem} key={key} />
+                  {dataSearch.map((elem) => (
+                    <CoinCard elem={elem} key={elem.id} />
                   ))}
                 </Grid>
               ) : (
@@ -291,33 +373,13 @@ function Сryptocurrency() {
                 p: { xs: 0, md: 2 },
               }}
             >
-              {dataCoins.map((elem, key) => (
-                <CoinCard elem={elem} key={key} />
+              {dataCoins.map((elem) => (
+                <CoinCard elem={elem} key={elem.id} />
               ))}
             </Grid>
           ) : (
             <TableCoins rows={dataCoins} />
           )}
-        </Box>
-      </Box>
-    </Box>
-  );
-}
 
-export default Сryptocurrency;
 
-const sort_by = (field, reverse, primer) => {
-  const key = primer
-    ? function (x) {
-        return primer(x[field]);
-      }
-    : function (x) {
-        return x[field];
-      };
-
-  reverse = !reverse ? 1 : -1;
-
-  return function (a, b) {
-    return (a = key(a)), (b = key(b)), reverse * ((a > b) - (b > a));
-  };
-};
+*/

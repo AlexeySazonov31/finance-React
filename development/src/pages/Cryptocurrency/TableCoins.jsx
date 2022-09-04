@@ -17,9 +17,16 @@ import {
 } from "@mui/material";
 
 import SortIcon from "@mui/icons-material/Sort";
+import { useState } from "react";
 
 
-function TableCoins({ rows }) {
+function TableCoins({ rows, changeSorting }) {
+
+  const [sort, setSort] = useState({name: '', active: false}); // active: false/true/reverse
+
+  const changeSort = (name) => {
+    setSort( { ...sort, name: name, active: '???' } );
+  }
 
 
   const theme = useTheme();
@@ -50,7 +57,10 @@ function TableCoins({ rows }) {
               >
                 <Button
                   endIcon={<SortIcon />}
-
+                  onClick={() => {
+                    changeSorting( {target: {name: 'name', value: 'rank'}} );
+                    //changeSorting( {target: {name: 'reverse'}} );
+                  }}
                 >
                   RANK
                 </Button>
