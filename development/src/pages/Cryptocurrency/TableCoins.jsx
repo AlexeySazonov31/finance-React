@@ -16,21 +16,27 @@ import {
   Button,
 } from "@mui/material";
 
-import SortIcon from "@mui/icons-material/Sort";
 import { useState } from "react";
 
+import SouthIcon from "@mui/icons-material/South";
+import NorthIcon from "@mui/icons-material/North";
+import Sort from "@mui/icons-material/Sort";
 
-function TableCoins({ rows, changeSorting }) {
-
-  const [sort, setSort] = useState({name: '', active: false}); // active: false/true/reverse
-
-  const changeSort = (name) => {
-    setSort( { ...sort, name: name, active: '???' } );
-  }
-
-
+function TableCoins({ rows, sorting, changeSorting }) {
   const theme = useTheme();
 
+  const changeButton = (name) => {
+    if (sorting.name !== name) {
+      changeSorting({ target: { name: "name", value: "" } });
+      changeSorting({ target: { name: "name", value: name } });
+    } else {
+      if (!sorting.reverse) {
+        changeSorting({ target: {  } });
+      } else {
+        changeSorting({ target: { name: "name", value: "" } });
+      }
+    }
+  };
 
   return (
     <>
@@ -53,14 +59,29 @@ function TableCoins({ rows, changeSorting }) {
                 sx={{
                   display: { xs: "none", sm: "table-cell" },
                   fontWeight: "600",
+                  px: 1,
                 }}
               >
                 <Button
-                  endIcon={<SortIcon />}
-                  onClick={() => {
-                    changeSorting( {target: {name: 'name', value: 'rank'}} );
-                    //changeSorting( {target: {name: 'reverse'}} );
+                  variant={sorting.name === "rank" ? "outlined" : "string"}
+                  endIcon={
+                    sorting.name === "rank" ? (
+                      sorting.reverse ? (
+                        <SouthIcon />
+                      ) : (
+                        <NorthIcon />
+                      )
+                    ) : (
+                      <Sort />
+                    )
+                  }
+                  onClick={ () => changeButton('rank') }
+                  sx={{
+                    m: 0,
+                    fontWeight: "600",
+                    px: 1
                   }}
+                  size="small"
                 >
                   RANK
                 </Button>
@@ -95,38 +116,139 @@ function TableCoins({ rows, changeSorting }) {
                 align="left"
                 sx={{
                   fontWeight: "600",
+                  px: 1,
                 }}
               >
-                PRICE
-
+                <Button
+                  variant={sorting.name === "price" ? "outlined" : "string"}
+                  name="price"
+                  endIcon={
+                    sorting.name === "price" ? (
+                      sorting.reverse ? (
+                        <SouthIcon />
+                      ) : (
+                        <NorthIcon />
+                      )
+                    ) : (
+                      <Sort />
+                    )
+                  }
+                  onClick={ () => changeButton('price') }
+                  sx={{
+                    m: 0,
+                    fontWeight: "600",
+                    px: 1
+                  }}
+                  size="small"
+                >
+                  PRICE
+                </Button>
               </TableCell>
               <TableCell
                 align="right"
                 sx={{
                   display: { xs: "none", lg: "table-cell" },
                   fontWeight: "600",
+                  px: 1,
                 }}
               >
-                HOUR
+                <Button
+                  variant={
+                    sorting.name === "priceChange1h" ? "outlined" : "string"
+                  }
+                  name="priceChange1h"
+                  endIcon={
+                    sorting.name === "priceChange1h" ? (
+                      sorting.reverse ? (
+                        <SouthIcon />
+                      ) : (
+                        <NorthIcon />
+                      )
+                    ) : (
+                      <Sort />
+                    )
+                  }
+                  onClick={ () => changeButton('priceChange1h') }
+                  sx={{
+                    m: 0,
+                    fontWeight: "600",
+                    px: 1
+                  }}
+                  size="small"
+                >
+                  HOUR
+                </Button>
               </TableCell>
               <TableCell
                 align="right"
                 sx={{
                   display: { xs: "none", lg: "table-cell" },
                   fontWeight: "600",
+                  px: 1,
                 }}
               >
-                DAY
+                <Button
+                  variant={
+                    sorting.name === "priceChange1d" ? "outlined" : "string"
+                  }
+                  name="priceChange1d"
+                  endIcon={
+                    sorting.name === "priceChange1d" ? (
+                      sorting.reverse ? (
+                        <SouthIcon />
+                      ) : (
+                        <NorthIcon />
+                      )
+                    ) : (
+                      <Sort />
+                    )
+                  }
+                  onClick={ () => changeButton('priceChange1d') }
+                  sx={{
+                    m: 0,
+                    fontWeight: "600",
+                    px: 1,
+                  }}
+                  size="small"
+                >
+                  DAY
+                </Button>
               </TableCell>
               <TableCell
                 align="right"
                 sx={{
                   display: { xs: "none", sm: "table-cell" },
                   fontWeight: "600",
-                  pr: 5,
+                  px: 1,
                 }}
               >
-                WEEK
+                <Button
+                  variant={
+                    sorting.name === "priceChange1w" ? "outlined" : "string"
+                  }
+                  name="priceChange1w"
+                  endIcon={
+                    sorting.name === "priceChange1w" ? (
+                      sorting.reverse ? (
+                        <SouthIcon />
+                      ) : (
+                        <NorthIcon />
+                      )
+                    ) : (
+                      <Sort />
+                    )
+                  }
+                  onClick={ () => changeButton('priceChange1w') }
+                  sx={{
+                    m: 0,
+                    fontWeight: "600",
+                    px: 1,
+                    pr: 3,
+                  }}
+                  size="small"
+                >
+                  WEEK
+                </Button>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -224,7 +346,7 @@ function TableCoins({ rows, changeSorting }) {
                     variant="body2"
                     color={row.priceChange1w >= 0 ? "#29cf45" : "red"}
                     sx={{
-                      mr: 3,
+                      mr: 4,
                     }}
                   >
                     {row.priceChange1w > 0
@@ -271,11 +393,3 @@ function titleAbbreviation(str) {
     return str.split(" ")[0] + "...";
   }
 }
-
-
-
-
-
-
-
-

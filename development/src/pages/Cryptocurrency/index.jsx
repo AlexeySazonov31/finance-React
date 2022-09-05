@@ -116,7 +116,11 @@ function Сryptocurrency() {
 
   const changeSorting = (event) => {
     if (event.target.name === "name") {
-      setSorting({ ...sorting, [event.target.name]: event.target.value });
+      if( event.target.value === "" ){
+        setSorting({name: '', reverse: false});
+      } else {
+        setSorting({ ...sorting, [event.target.name]: event.target.value });
+      }
     } else {
       setSorting({ ...sorting, reverse: !sorting.reverse });
     }
@@ -132,6 +136,8 @@ function Сryptocurrency() {
   } else {
     finishData = dataCoins.sort(sort_by(sorting.name, sorting.reverse));
   }
+
+  console.log(sorting);
 
 
   return (
@@ -201,6 +207,7 @@ function Сryptocurrency() {
                   labelId="demo-select-small"
                   id="demo-select-small"
                   name="name"
+                  defaultValue=""
                   value={sorting.name}
                   label="Age"
                   onChange={changeSorting}
@@ -228,6 +235,9 @@ function Сryptocurrency() {
               label="search coin"
               value={search}
               onChange={handleChangeSearch}
+              sx={{
+                width: 1,
+              }}
             />
           </Paper>
           <Divider />
@@ -268,7 +278,7 @@ function Сryptocurrency() {
                 ))}
               </Grid>
             ) : (
-              <TableCoins rows={finishData} changeSorting={changeSorting} />
+              <TableCoins rows={finishData} sorting={sorting} changeSorting={changeSorting} />
             )
           ) : (
             <Card sx={{ px: 3, py: 2, m: 2 }}>
