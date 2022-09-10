@@ -1,6 +1,9 @@
 import React from "react";
 import { useTheme } from "@mui/material/styles";
 
+import { Link, useLocation } from "react-router-dom";
+
+
 import {
   Paper,
   Typography,
@@ -15,6 +18,8 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
+
+import LinkElem from '@mui/material/Link';
 
 import { useState } from "react";
 
@@ -243,15 +248,31 @@ function TableCoins({ rows, sorting, changeSorting }) {
                     m: 0,
                     fontWeight: "600",
                     px: 1,
-                    pr: 3,
                   }}
                   size="small"
                 >
                   WEEK
                 </Button>
               </TableCell>
+
+
+              <TableCell
+                align="center"
+                sx={{
+                  display: { xs: "none", lg: "table-cell" },
+                  fontWeight: "600",
+                }}
+              >
+                SITE
+              </TableCell>
+
+
+
             </TableRow>
           </TableHead>
+
+
+
           <TableBody>
             {rows.map((row, key) => (
               <TableRow
@@ -268,6 +289,10 @@ function TableCoins({ rows, sorting, changeSorting }) {
                       ? "#e1eaed"
                       : "#ebf4f7",
                 }}
+
+
+                component={Link}
+                to={('cryptocurrency/' + row.id)}
               >
                 <TableCell
                   align="right"
@@ -345,9 +370,6 @@ function TableCoins({ rows, sorting, changeSorting }) {
                   <Typography
                     variant="body2"
                     color={row.priceChange1w >= 0 ? "#29cf45" : "red"}
-                    sx={{
-                      mr: 4,
-                    }}
                   >
                     {row.priceChange1w > 0
                       ? "+" + row.priceChange1w
@@ -355,6 +377,25 @@ function TableCoins({ rows, sorting, changeSorting }) {
                     %
                   </Typography>
                 </TableCell>
+
+
+                <TableCell
+                align="center"
+                sx={{
+                  display: { xs: "none", lg: "table-cell" },
+                  fontWeight: "600",
+                }}
+              >
+                              <LinkElem
+                href={row.websiteUrl}
+                rel="noopener"
+                underline="none"
+                variant="body1"
+                target="_blank"
+              >
+                link
+              </LinkElem>
+              </TableCell>
               </TableRow>
             ))}
           </TableBody>

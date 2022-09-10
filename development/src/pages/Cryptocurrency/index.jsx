@@ -136,8 +136,6 @@ function Сryptocurrency() {
     finishData = dataCoins.sort(sort_by(sorting.name, sorting.reverse));
   }
 
-  console.log(sorting);
-
 
   return (
     <Box
@@ -182,7 +180,7 @@ function Сryptocurrency() {
               color="primary"
               fullWidth={true}
               sx={{
-                my: 1,
+                my: 0,
               }}
             >
               <ToggleButton value="table">Table</ToggleButton>
@@ -193,8 +191,8 @@ function Сryptocurrency() {
               sx={{
                 display: "flex",
                 flexDirection: "row",
-                mb: 1,
                 width: 1,
+                mt: 1
               }}
             >
               <FormControl sx={{ width: 1 }} size="small">
@@ -226,6 +224,22 @@ function Сryptocurrency() {
               </IconButton>
             </Box>
 
+            </Paper>
+
+            <Divider/>
+
+            <Paper
+            sx={{
+              padding: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+
+
+
+
             <TextField
               id="demo-helper-text-misaligned-no-helper"
               label="search coin"
@@ -236,16 +250,7 @@ function Сryptocurrency() {
               }}
             />
           </Paper>
-          <Divider />
-          <Paper
-            sx={{
-              padding: 2,
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            markets
-          </Paper>
+
         </Box>
 
         <Box

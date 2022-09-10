@@ -11,7 +11,6 @@ function HeadWidgets() {
     fetch("https://api.coingecko.com/api/v3/global")
       .then((res) => res.json())
       .then((data) => {
-        console.log(!data.error ? data : data.error);
         setDataGlobal(!data.error ? data.data : null);
       });
   }, []);

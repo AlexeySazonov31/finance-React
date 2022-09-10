@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from "@mui/material/styles";
 
 import {
   Grid,
@@ -12,6 +13,8 @@ import {
 } from "@mui/material";
 
 function CoinCard({ elem }) {
+  const theme = useTheme();
+
   return (
     <>
       <Grid
@@ -23,10 +26,30 @@ function CoinCard({ elem }) {
         xl={3}
         sx={{
           width: "fit-content",
-          alignSelf: 'center',
+          alignSelf: "center",
         }}
       >
-        <Card sx={{ px: 2, pt: 1, m: 1 }}>
+        <Card
+          sx={{
+            px: 2,
+            pt: 1,
+            m: 1,
+            "&:hover": {
+              boxShadow:
+                theme.palette.mode === "dark"
+                  ? "0px 0px 17px 6px rgba(14, 18, 21, 1)"
+                  : "0px 0px 17px 6px rgba(182, 182, 182, 1)",
+              '-webkit-box-shadow':
+                theme.palette.mode === "dark"
+                  ? "0px 0px 17px 6px rgba(14, 18, 21, 1)"
+                  : "0px 0px 17px 6px rgba(182, 182, 182, 1)",
+              '-moz-box-shadow':
+                theme.palette.mode === "dark"
+                  ? "0px 0px 17px 6px rgba(14, 18, 21, 1)"
+                  : "0px 0px 17px 6px rgba(182, 182, 182, 1)",
+            },
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -39,15 +62,20 @@ function CoinCard({ elem }) {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
-                alignItems: 'center'
+                alignItems: "center",
               }}
             >
               <Chip label={elem.rank} variant="outlined" />
 
-              <Typography sx={{
-                fontWeight: 600,
-                textAlign: 'center',
-              }}>{titleAbbreviation(elem.name)}</Typography>
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  textAlign: "center",
+                  mx: 1,
+                }}
+              >
+                {titleAbbreviation(elem.name)}
+              </Typography>
 
               <Chip label={elem.symbol} variant="outlined" />
             </Box>
@@ -184,15 +212,14 @@ function CoinCard({ elem }) {
 
 export default CoinCard;
 
+function numberSpace(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
 
-function numberSpace(x){
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-} 
-
-function titleAbbreviation(str){
-  if( str.length <= 16 ){
+function titleAbbreviation(str) {
+  if (str.length <= 16) {
     return str;
   } else {
-    return str.split(' ')[0] + '...';
+    return str.split(" ")[0] + "...";
   }
 }

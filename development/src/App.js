@@ -213,7 +213,7 @@ function App() {
             justifyContent: "center",
             alignContent: "center",
             padding: 3,
-            marginTop: { xs: 2, sm: 0 },
+            marginTop: 2,
           }}
         >
           <Typography
