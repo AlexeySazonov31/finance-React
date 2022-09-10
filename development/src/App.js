@@ -1,3 +1,5 @@
+import "./styles/scrollBar.css";
+
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,7 +16,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeIcon from "@mui/icons-material/Home";
-
 
 import { Link, useLocation } from "react-router-dom";
 import Routes from "./routes";
@@ -35,7 +36,7 @@ import {
   blue,
 } from "@mui/material/colors/";
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 const drawerWidth = 240;
 const navItems = [
@@ -98,19 +99,18 @@ function App() {
   const colorBackground =
     theme.palette.mode === "light" ? "#f2f7fa" : "#1f292e";
 
-    function desctopMenuStyle(elem){
-      if(location.pathname === elem.to){
-        return {
-          color: theme.palette.mode === "dark" ? blue[200] : "#fff",
-          fontWeight: 600,
-        }
-      } else {
-        return {
-          color:
-            theme.palette.mode === "dark" ? "#fff" : blueGrey[50],
-        }
-      }
+  function desctopMenuStyle(elem) {
+    if (location.pathname === elem.to) {
+      return {
+        color: theme.palette.mode === "dark" ? blue[200] : "#fff",
+        fontWeight: 600,
+      };
+    } else {
+      return {
+        color: theme.palette.mode === "dark" ? "#fff" : blueGrey[50],
+      };
     }
+  }
   return (
     <Box
       sx={{ display: "flex", minHeight: "100vh" }}
@@ -118,7 +118,13 @@ function App() {
       width="1"
     >
       <AppBar component="nav">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between", px: { sx: 0, md: 13 } }}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            px: { sx: 0, md: 13 },
+          }}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -141,17 +147,16 @@ function App() {
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((elem, item) => (
-                  <Button
-                    key={item}
-                    component={Link}
-                    to={elem.to}
-                    variant="text"
-                    color="inherit"
-                    sx={desctopMenuStyle(elem)}
-                  >
-                    {elem.name}
-                  </Button>
-
+              <Button
+                key={item}
+                component={Link}
+                to={elem.to}
+                variant="text"
+                color="inherit"
+                sx={desctopMenuStyle(elem)}
+              >
+                {elem.name}
+              </Button>
             ))}
           </Box>
 
@@ -192,25 +197,45 @@ function App() {
       <Box component="main" sx={{ width: 1 }}>
         <Toolbar />
 
-        <Routes/>
+        <Routes />
 
-        <Box bgcolor={(theme.palette.mode === 'light' ? blueGrey[500] : blueGrey[800])} sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignContent: 'center',
-          padding: 3,
-          marginTop: { xs: 2, sm: 0 },
-        }} >
-          <Typography align="center" sx={{
-            color: grey[400],
-          }} color="#fff" variant="body1">Demonstrative financial React-app. Try a hard reset if you have problems, thanks. For all questions, write to the mail: sazonleha010203@gmail.com</Typography>
+        <Box
+          bgcolor={
+            theme.palette.mode === "light" ? blueGrey[500] : blueGrey[800]
+          }
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignContent: "center",
+            padding: 3,
+            marginTop: { xs: 2, sm: 0 },
+          }}
+        >
+          <Typography
+            align="center"
+            sx={{
+              color: grey[400],
+            }}
+            color="#fff"
+            variant="body1"
+          >
+            Demonstrative financial React-app. Try a hard reset if you have
+            problems, thanks. For all questions, write to the mail:
+            sazonleha010203@gmail.com
+          </Typography>
           <Divider sx={{ m: 1 }} />
-          <Typography align="center" sx={{
-            color: grey[400],
-          }} color="#fff" variant="body1">© Sazonov A.S., {new Date().getFullYear()}</Typography>
+          <Typography
+            align="center"
+            sx={{
+              color: grey[400],
+            }}
+            color="#fff"
+            variant="body1"
+          >
+            © Sazonov A.S., {new Date().getFullYear()}
+          </Typography>
         </Box>
-
       </Box>
     </Box>
   );
@@ -221,25 +246,25 @@ const getDesignTokens = (mode) => ({
     mode,
     ...(mode === "light"
       ? {
-        primary: {
-          light: blueGrey[400],
-          main: blueGrey[500],
-          dark: blueGrey[600],
-          contrastText: "#fff",
-        },
-        background: {
-          paper: '#e1e5e5',
-        },
-        text: {
-          primary: "#000",
-          secondary: "#000",
-        },
-      }
+          primary: {
+            light: blueGrey[400],
+            main: blueGrey[500],
+            dark: blueGrey[600],
+            contrastText: "#fff",
+          },
+          background: {
+            paper: "#e1e5e5",
+          },
+          text: {
+            primary: "#000",
+            secondary: "#000",
+          },
+        }
       : {
-        background: {
-          paper: blueGrey[900],
-        },
-      }),
+          background: {
+            paper: blueGrey[900],
+          },
+        }),
   },
 });
 
