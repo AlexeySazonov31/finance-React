@@ -43,7 +43,7 @@ function TableCoins({ rows, sorting, changeSorting }) {
       <TableContainer
         component={Paper}
         sx={{
-          margin: 3,
+          my: 1,
           mx: { xs: 1, sm: 3, md: 3, lg: 3, xl: 10 },
         }}
       >

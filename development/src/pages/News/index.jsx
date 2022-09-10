@@ -101,17 +101,17 @@ function Home() {
         flexDirection: { xs: "column", md: "row" },
         width: "1",
         minHeight: "93vh",
-        p: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5}
+        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5},
       }}
     >
       <Box
         sx={{
-          padding: 3,
           borderRadius: 3,
           mx: "auto",
           height: "fit-content",
           position: { xs: "block", md: "sticky" },
-          top: { xs: "0", sm: "80px" },
+          top: { xs: "0", sm: "90px" },
+          my: 1
         }}
       >
         <Paper
@@ -176,6 +176,7 @@ function Home() {
           display: "flex",
           justifyContent: "center",
           my: "auto",
+          mx: { xs: 1, sm: 3, md: 3, lg: 3, xl: 10 },
         }}
       >
         {loading ? (
@@ -184,7 +185,7 @@ function Home() {
           <Grid
             container
             spacing={2}
-            sx={{ px: {xs: 1, sm: 3},py: {xs: 0, sm: 2}, justifyContent: "center", alignItems: "center" }}
+            sx={{ px: {xs: 1, sm: 3},py: 0, justifyContent: "center", alignItems: "center" }}
           >
             {data.map((elem, itemG) => (
               <Grid

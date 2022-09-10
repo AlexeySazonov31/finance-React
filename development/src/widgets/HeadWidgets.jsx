@@ -24,8 +24,8 @@ function HeadWidgets() {
           spacing={2}
           sx={{
             width: "2",
-            border: "1px solid green",
             padding: 1,
+            pt: 2,
             justifyContent: "center",
           }}
         >

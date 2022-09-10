@@ -5,7 +5,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import TextField from "@mui/material/TextField";
 
-import HeadWidgets from "./HeadWidgets";
 import CoinCard from "./CoinCard";
 import TableCoins from "./TableCoins";
 
@@ -146,29 +145,26 @@ function Сryptocurrency() {
         display: "flex",
         flexDirection: "column",
         width: "1",
-        border: "1px solid red",
-        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 13 },
+        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5},
       }}
     >
-      <HeadWidgets />
 
       <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
-          width: "1",
-          border: "1px solid orange",
+          width: 1,
         }}
       >
         <Box
           sx={{
-            padding: 3,
+            padding: 1,
+            px: 0,
             mx: "auto",
             height: "fit-content",
             position: { xs: "block", md: "sticky" },
             top: { xs: "0", sm: "80px" },
-            border: "1px solid red",
-            width: "350px",
+            width: "auto",
           }}
         >
           <Paper
@@ -268,9 +264,9 @@ function Сryptocurrency() {
               <Grid
                 container
                 sx={{
-                  border: "1px solid green",
                   justifyContent: "center",
-                  p: { xs: 0, md: 2 },
+                  mx: { xs: 0, sm: 2, md: 2, lg: 3, xl: 10 },
+
                 }}
               >
                 {finishData.map((elem) => (

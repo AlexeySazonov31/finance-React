@@ -1,5 +1,7 @@
 import "./styles/scrollBar.css";
 
+import HeadWidgets from "./widgets/HeadWidgets";
+
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -196,6 +198,8 @@ function App() {
 
       <Box component="main" sx={{ width: 1 }}>
         <Toolbar />
+
+        <HeadWidgets />
 
         <Routes />
 
