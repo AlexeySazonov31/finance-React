@@ -15,10 +15,10 @@ function AppRoutes() {
             <Route path='/news' element={<News />} />
             <Route path='/' element={<Сryptocurrency />} />
             <Route path='/currencies' element={<Currencies />} />
-            <Route path='/cryptocurrency/*' element={<Coin id={location.pathname.replace(/\/cryptocurrency\//, '')}/>} />
+            <Route path='/coin/*' element={<Coin id={location.pathname.replace(/\/coin\//, '')}/>} />
 
             <Route path='/not-found-404' element={<NotFound />} />
-            <Route path='*' element={<Navigate to="/not-found-404" />} />
+            <Route path='/*' element={<Navigate to="/not-found-404" />} />
 
         </Routes>
     )

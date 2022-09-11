@@ -92,7 +92,8 @@ function Сryptocurrency() {
           }
 
           controller = null;
-        });
+        })
+        .catch(e=>console.log(e));
     } else {
       fetch(
         "https://api.coinstats.app/public/v1/coins?skip=0&limit=100&currency=USD",

@@ -1,5 +1,6 @@
 import React from "react";
 import { useTheme } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 import {
   Grid,
@@ -14,6 +15,7 @@ import {
 
 function CoinCard({ elem }) {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -39,16 +41,19 @@ function CoinCard({ elem }) {
                 theme.palette.mode === "dark"
                   ? "0px 0px 17px 6px rgba(14, 18, 21, 1)"
                   : "0px 0px 17px 6px rgba(182, 182, 182, 1)",
-              '-webkit-box-shadow':
+              WebkitBoxShadow:
                 theme.palette.mode === "dark"
                   ? "0px 0px 17px 6px rgba(14, 18, 21, 1)"
                   : "0px 0px 17px 6px rgba(182, 182, 182, 1)",
-              '-moz-box-shadow':
+              MozBoxShadow:
                 theme.palette.mode === "dark"
                   ? "0px 0px 17px 6px rgba(14, 18, 21, 1)"
                   : "0px 0px 17px 6px rgba(182, 182, 182, 1)",
             },
           }}
+          onClick={ () => {
+            navigate(`/coin/${elem.id}`);
+          } }
         >
           <Box
             sx={{

@@ -99,9 +99,9 @@ function Home() {
       sx={{
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
-        width: "1",
+        width: 1,
         minHeight: "93vh",
-        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5},
+        px: { xs: 1, sm: 2, md: 3, lg: 4, xl: 4 },
       }}
     >
       <Box
@@ -111,7 +111,7 @@ function Home() {
           height: "fit-content",
           position: { xs: "block", md: "sticky" },
           top: { xs: "0", sm: "90px" },
-          my: 1
+          my: 1,
         }}
       >
         <Paper
@@ -170,88 +170,99 @@ function Home() {
         </Paper>
       </Box>
 
-      <Box
-        sx={{
-          width: "1",
-          display: "flex",
-          justifyContent: "center",
-          my: "auto",
-          mx: { xs: 1, sm: 3, md: 3, lg: 3, xl: 10 },
-        }}
-      >
-        {loading ? (
+      {loading ? (
+        <Box
+          sx={{
+            width: "1",
+            display: "flex",
+            justifyContent: "center",
+            my: "auto",
+          }}
+        >
           <CircularProgress size="5rem" />
-        ) : (
-          <Grid
-            container
-            spacing={2}
-            sx={{ px: {xs: 1, sm: 3},py: 0, justifyContent: "center", alignItems: "center" }}
-          >
-            {data.map((elem, itemG) => (
-              <Grid
-                item
-                key={itemG}
-                xs={12}
-                sm={12}
-                md={itemG % 3 !== 0 ? "6" : "12"}
-                lg={itemG % 3 === 0 ? "4" : "8"}
-              >
-                <Card sx={{ px: 1, my: 1, mx: { xs: 0, sm: 0, md: 1 } }}>
-                  <CardHeader
-                    title={elem.title}
-                    subheader={elem.author ? elem.author : elem.source}
-                  />
-                  <CardMedia
-                    component="img"
-                    image={
-                      elem.imageUrl
-                        ? elem.imageUrl
-                        : /undefined/.test(elem.imgURL)
-                        ? `https://via.placeholder.com/300x430.png?text=${elem.title}`
-                        : elem.imgURL
-                    }
-                    alt="image"
+        </Box>
+      ) : (
+        <Grid
+          container
+          sx={{
+            width: {xs: 1, md: 0.8},
+            my: 1,
+            mx: 'auto',
+            px: { xs: 1, sm: 3 },
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {data.map((elem, itemG) => (
+            <Grid
+              item
+              key={itemG}
+              xs={12}
+              sm={12}
+              md={itemG % 3 !== 0 ? 6 : 12}
+              lg={itemG % 3 === 0 ? 4 : 8}
+              sx={{
+                p: 2,
+                pt:0,
+              }}
+            >
+              <Card sx={{ px: 1 }}>
+                <CardHeader
+                  title={elem.title}
+                  subheader={elem.author ? elem.author : elem.source}
+                />
+                <CardMedia
+                  component="img"
+                  image={
+                    elem.imageUrl
+                      ? elem.imageUrl
+                      : /redd/.test(elem.imgURL)
+                      ? `https://via.placeholder.com/300x430.png?text=${elem.title}`
+                      : elem.imgURL
+                  }
+                  alt="image"
+                  sx={{
+                    borderRadius: 1,
+                    height: {
+                      xs: "250px",
+                      md: itemG % 3 !== 0 ? "200px" : "300px",
+                      lg: itemG % 3 === 0 ? "250px" : "370px",
+                    },
+                  }}
+                />
+                <CardContent>
+                  <Typography
+                    variant="h6"
                     sx={{
-                      borderRadius: 1,
-                      height: {                         xs: "250px",
-                      md: (itemG % 3 !== 0 ? "270px" : "370px"),
-                      lg: (itemG % 3 === 0 ? "250px" : "370px") }
+                      fontWeight: "500",
                     }}
-                  />
-                  <CardContent>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: "500",
-                      }}
-                      paragraph={true}
-                    >
-                      {elem.content
-                        ? decodeHtmlCharCodes(elem.content)
-                        : decodeHtmlCharCodes(elem.description)}
-                    </Typography>
-                  </CardContent>
-                  <Divider />
-                  <CardActions
-                    sx={{ display: "flex", justifyContent: "space-between" }}
+                    paragraph={true}
                   >
-                    {elem.date ? elem.date : dateFormat(elem.feedDate)}
-                    <Link
-                      href={elem.readMoreUrl ? elem.readMoreUrl : elem.link}
-                      rel="noopener"
-                      underline="none"
-                      variant="body2"
-                      target="_blank"
-                    >
-                      READ MORE
-                    </Link>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </Box>
+                    {elem.content
+                      ? decodeHTMLEntities(elem.content)
+                      : decodeHTMLEntities(elem.description)}
+                  </Typography>
+                </CardContent>
+                <Divider />
+                <CardActions
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  {elem.date ? elem.date : dateFormat(elem.feedDate)}
+                  <Link
+                    href={elem.readMoreUrl ? elem.readMoreUrl : elem.link}
+                    rel="noopener"
+                    underline="none"
+                    variant="body2"
+                    target="_blank"
+                  >
+                    READ MORE
+                  </Link>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
   );
 }
@@ -290,13 +301,17 @@ function dateFormat(timestamp) {
     months[date.getMonth()] +
     " " +
     date.getFullYear() +
-    "," +
+    ", " +
     days[date.getDay()]
   );
 }
 
-function decodeHtmlCharCodes(str) {
-  return str.replace(/(&#(\d+);)/g, function (match, capture, charCode) {
-    return String.fromCharCode(charCode);
-  });
-}
+  function decodeHTMLEntities(str) {
+      let textarea = document.createElement("textarea");
+      textarea.innerHTML = str;
+      let textHTML = textarea.value;
+      textHTML = textHTML.replace( /<.+>/g, '' );
+      return textHTML;
+
+  }
+

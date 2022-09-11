@@ -1,7 +1,7 @@
 import React from "react";
 import { useTheme } from "@mui/material/styles";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 import {
@@ -29,6 +29,7 @@ import Sort from "@mui/icons-material/Sort";
 
 function TableCoins({ rows, sorting, changeSorting }) {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const changeButton = (name) => {
     if (sorting.name !== name) {
@@ -289,10 +290,9 @@ function TableCoins({ rows, sorting, changeSorting }) {
                       ? "#e1eaed"
                       : "#ebf4f7",
                 }}
-
-
-                component={Link}
-                to={('cryptocurrency/' + row.id)}
+                onClick={ () => {
+                  navigate(`/coin/${row.id}`);
+                } }
               >
                 <TableCell
                   align="right"
