@@ -420,7 +420,7 @@ function numberSpace(x) {
       .reverse()
       .join("");
     return (
-      ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " . " + past
+      ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ." + past
     );
   } else {
     return ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
