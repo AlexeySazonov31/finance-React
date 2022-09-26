@@ -61,7 +61,7 @@ export default function Coin({ id }) {
       });
   }, []);
 
-  let shortDataTableElem;
+  let shortDataTableBody, shortDataTableHead;
   if (data && data.market_data.price_change_percentage_1h_in_currency) {
     const {
       price_change_percentage_1h_in_currency,
@@ -87,49 +87,35 @@ export default function Coin({ id }) {
       price_change_percentage_1y_in_currency[currencies],
     ];
 
-    shortDataTableElem = shortDataTableInfo.map((elem, key) => {
+    shortDataTableBody = shortDataTableInfo.map((elem, key) => {
       return (
-        <TableCell key={key}>
+        <TableCell key={key} align="center" sx={{
+          px: 1,
+          mx: 0,
+        }}>
           <Typography
             sx={{
               fontWeight: "600",
             }}
             color={elem >= 0 ? "#29cf45" : "red"}
           >
-            {elem > 0 ? "+" + elem.toFixed(2) : elem.toFixed(2)}
+            {elem > 0 ? "+" + elem.toFixed(2) : elem.toFixed(2)}%
           </Typography>
         </TableCell>
       );
     });
-  } else {
-    shortDataTableElem = <></>;
-  }
 
-  /*
-  <TableCell key={key}>
-                        <Typography
-                          sx={{
-                            fontWeight: "600",
-                          }}
-                          color={
-                            data.market_data
-                              .elem.usd >= 0
-                              ? "#29cf45"
-                              : "red"
-                          }
-                        >
-                          {data.market_data
-                            .elem.usd > 0
-                            ? "+" +
-                              data.market_data.elem.usd.toFixed(
-                                2
-                              )
-                            : data.market_data.elem.usd.toFixed(
-                                2
-                              )}
-                        </Typography>
-                      </TableCell>
-  */
+    let namesHead = ['1h', '24h', '7d', '14d', '30d', '60d', '200d', '1y'];
+    shortDataTableHead = namesHead.map( (elem, key) => {
+      return <TableCell align="center" key={key} sx={{
+        px: 1,
+        mx: 0,
+      }}><Typography>{elem}</Typography></TableCell>
+    } )
+  } else {
+    shortDataTableBody = <></>;
+    shortDataTableHead = <></>;
+  }
 
   return (
     <Box
@@ -497,44 +483,26 @@ export default function Coin({ id }) {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>
-                        <Typography>1h</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>24h</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>7d</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>14d</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>30d</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>60d</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>200d</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>1y</Typography>
-                      </TableCell>
+                      {shortDataTableHead}
+
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow>{shortDataTableElem}</TableRow>
+                    <TableRow>{shortDataTableBody}</TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
               change 7d:
               <Box
                 sx={{
-                  height: "250px",
+                  height: "300px",
+                  width: 1,
+                  p: 0,
+                  border: '1px solid #515151',
+                  borderRadius: 2,
                 }}
               >
-                <Chart data={formatData(data.market_data.sparkline_7d.price)} />
+                <Chart id={data.id} img={data.image.thumb} />
               </Box>
             </Box>
           </Box>
@@ -556,24 +524,7 @@ function decodeHTMLEntities(str) {
   return textHTML;
 }
 
-function formatData(data) {
-  let arr = [];
-  for (let i = 0; i <= data.length - 1; i++) {
-    let obj = {
-      x: i,
-      y: data[i],
-    };
-    arr.push(obj);
-  }
 
-  return [
-    {
-      id: "price",
-      color: "hsl(13, 70%, 50%)",
-      data: arr,
-    },
-  ];
-}
 
 function dateFormat(str) {
   return str.replace(/T.+/, "").split("-").reverse().join(".");
@@ -596,3 +547,4 @@ function numberSpace(x) {
     return ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
 }
+
