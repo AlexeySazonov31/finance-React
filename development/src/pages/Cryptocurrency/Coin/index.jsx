@@ -283,7 +283,15 @@ export default function Coin() {
                     DESCRIPTION
                   </Button>
 
-                  <Collapse in={expanded} timeout="auto" unmountOnExit>
+                  <Collapse sx={{
+                    position: 'absolute',
+                    width: '800px',
+                    backgroundColor: '#313c42',
+                    zIndex: 1,
+                    p: 2,
+                    borderRadius: 2,
+                    boxShadow: "0px 0px 17px 6px rgba(14, 18, 21, 0.2)",
+                  }} in={expanded} timeout="auto" unmountOnExit>
                     {decodeHTMLEntities(data.description.en)}
                   </Collapse>
                 </Box>
