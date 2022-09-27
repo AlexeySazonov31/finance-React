@@ -495,14 +495,13 @@ export default function Coin({ id }) {
               change 7d:
               <Box
                 sx={{
-                  height: "300px",
+                  height: "350px",
                   width: 1,
-                  p: 0,
                   border: '1px solid #515151',
                   borderRadius: 2,
                 }}
               >
-                <Chart id={data.id} img={data.image.thumb} />
+                <Chart id={data.id} />
               </Box>
             </Box>
           </Box>
