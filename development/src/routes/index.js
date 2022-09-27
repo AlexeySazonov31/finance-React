@@ -15,7 +15,7 @@ function AppRoutes() {
             <Route path='/news' element={<News />} />
             <Route path='/' element={<Сryptocurrency />} />
             <Route path='/currencies' element={<Currencies />} />
-            <Route path='/coin/*' element={<Coin id={location.pathname.replace(/\/coin\//, '')}/>} />
+            <Route path='/coin/*' element={<Coin />} />
 
             <Route path='/not-found-404' element={<NotFound />} />
             <Route path='/*' element={<Navigate to="/not-found-404" />} />

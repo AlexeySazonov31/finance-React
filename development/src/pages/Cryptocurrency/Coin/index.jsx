@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Chart from "./chart/chart";
+import Information from "./information/Information";
+import TopCoins from "./topCoins/TopCoins";
 
 import {
   Box,
@@ -21,6 +23,7 @@ import {
   TableRow,
   TableBody,
   TableHead,
+  Button,
 } from "@mui/material";
 
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
@@ -32,22 +35,26 @@ const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  transform: expand ? "rotate(0deg)" : "rotate(180deg)",
   marginLeft: "auto",
   transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
 }));
 
-export default function Coin({ id }) {
+export default function Coin() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  let id = location.pathname.replace( /\/coin\// ,'');
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
 
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
+    setLoading(false);
     fetch(
       `https://api.coingecko.com/api/v3/coins/${id}?tickers=true&market_data=true&community_data=true&developer_data=true&sparkline=true`
     )
@@ -59,7 +66,7 @@ export default function Coin({ id }) {
         setLoading(true);
         setData(data);
       });
-  }, []);
+  }, [id]);
 
   let shortDataTableBody, shortDataTableHead;
   if (data && data.market_data.price_change_percentage_1h_in_currency) {
@@ -89,10 +96,14 @@ export default function Coin({ id }) {
 
     shortDataTableBody = shortDataTableInfo.map((elem, key) => {
       return (
-        <TableCell key={key} align="center" sx={{
-          px: 1,
-          mx: 0,
-        }}>
+        <TableCell
+          key={key}
+          align="center"
+          sx={{
+            px: 1,
+            mx: 0,
+          }}
+        >
           <Typography
             sx={{
               fontWeight: "600",
@@ -105,13 +116,21 @@ export default function Coin({ id }) {
       );
     });
 
-    let namesHead = ['1h', '24h', '7d', '14d', '30d', '60d', '200d', '1y'];
-    shortDataTableHead = namesHead.map( (elem, key) => {
-      return <TableCell align="center" key={key} sx={{
-        px: 1,
-        mx: 0,
-      }}><Typography>{elem}</Typography></TableCell>
-    } )
+    let namesHead = ["1h", "24h", "7d", "14d", "30d", "60d", "200d", "1y"];
+    shortDataTableHead = namesHead.map((elem, key) => {
+      return (
+        <TableCell
+          align="center"
+          key={key}
+          sx={{
+            px: 1,
+            mx: 0,
+          }}
+        >
+          <Typography>{elem}</Typography>
+        </TableCell>
+      );
+    });
   } else {
     shortDataTableBody = <></>;
     shortDataTableHead = <></>;
@@ -165,7 +184,9 @@ export default function Coin({ id }) {
                 fontWeight: 600,
                 textAlign: "center",
                 mx: 1,
+                fontSize: "16px",
               }}
+              variant="overline"
             >
               {data.name}
             </Typography>
@@ -209,7 +230,7 @@ export default function Coin({ id }) {
                     mx: "auto",
                     my: 2,
                   }}
-                  variant="square"
+                  variant="around"
                 />
                 <Box
                   sx={{
@@ -238,19 +259,42 @@ export default function Coin({ id }) {
                     pt: 2,
                   }}
                 >
-                  <ExpandMore
-                    expand={expanded}
+                  <Button
+                    variant="text"
+                    sx={{
+                      color: "#fff",
+                      px: 2,
+                      my: 1,
+                    }}
+                    startIcon={
+                      <ExpandMore
+                        expand={expanded}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                        disableRipple
+                      >
+                        <ExpandMoreIcon />
+                      </ExpandMore>
+                    }
                     onClick={() => {
                       setExpanded(!expanded);
                     }}
-                    aria-expanded={expanded}
-                    aria-label="show more"
                   >
-                    <ExpandMoreIcon />
-                  </ExpandMore>
+                    DESCRIPTION
+                  </Button>
+
                   <Collapse in={expanded} timeout="auto" unmountOnExit>
                     {decodeHTMLEntities(data.description.en)}
                   </Collapse>
+                </Box>
+
+                <Box
+                  sx={{
+                    px: 3,
+                    pt: 2,
+                  }}
+                >
+                  <TopCoins id={data.id}/>
                 </Box>
               </Box>
               <Divider
@@ -267,238 +311,72 @@ export default function Coin({ id }) {
                 border: "1px solid red",
               }}
             >
-              Information:
+              <Typography
+                variant="overline"
+                sx={{
+                  pl: 4,
+                  fontSize: "15px",
+                  fontWeight: 600,
+                }}
+              >
+                Information:
+              </Typography>
+
+              <Information data={data} />
+
+              <Typography
+                variant="overline"
+                sx={{
+                  pl: 4,
+                  fontSize: "15px",
+                  fontWeight: 600,
+                }}
+              >
+                change table:
+              </Typography>
               <TableContainer
                 sx={{
-                  border: "1px solid orange",
+                  border: "1px solid #515151",
+                  borderRadius: 2,
+                  my: 1,
                 }}
               >
                 <Table>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="right">
-                        <Typography>Price:</Typography>
-                      </TableCell>
-                      <TableCell align="left">
-                        <Typography
-                          sx={{
-                            fontWeight: "600",
-                          }}
-                        >
-                          {numberSpace(data.market_data.current_price.usd)} $
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-
-                    <TableRow>
-                      <TableCell align="right">
-                        <Typography>All Time High:</Typography>
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          display: "flex",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            fontWeight: "600",
-                          }}
-                        >
-                          {numberSpace(data.market_data.ath.usd)} $
-                        </Typography>
-                        <Typography
-                          sx={{
-                            mx: 1,
-                          }}
-                        >
-                          ({dateFormat(data.market_data.ath_date.usd)})
-                        </Typography>
-                        <Typography
-                          color={
-                            data.market_data.ath_change_percentage.usd >= 0
-                              ? "#29cf45"
-                              : "red"
-                          }
-                        >
-                          {data.market_data.ath_change_percentage.usd > 0
-                            ? "+" +
-                              numberSpace(
-                                data.market_data.ath_change_percentage.usd.toFixed(
-                                  2
-                                )
-                              )
-                            : numberSpace(
-                                data.market_data.ath_change_percentage.usd.toFixed(
-                                  2
-                                )
-                              )}
-                          %
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-
-                    <TableRow>
-                      <TableCell align="right">
-                        <Typography>All Time Low:</Typography>
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          display: "flex",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            fontWeight: "600",
-                          }}
-                        >
-                          {numberSpace(data.market_data.atl.usd)} $
-                        </Typography>
-                        <Typography
-                          sx={{
-                            mx: 1,
-                          }}
-                        >
-                          ({dateFormat(data.market_data.atl_date.usd)})
-                        </Typography>
-                        <Typography
-                          color={
-                            data.market_data.atl_change_percentage.usd >= 0
-                              ? "#29cf45"
-                              : "red"
-                          }
-                        >
-                          {data.market_data.atl_change_percentage.usd > 0
-                            ? "+" +
-                              numberSpace(
-                                data.market_data.atl_change_percentage.usd.toFixed(
-                                  2
-                                )
-                              )
-                            : numberSpace(
-                                data.market_data.atl_change_percentage.usd.toFixed(
-                                  2
-                                )
-                              )}
-                          %
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-
-                    <TableRow>
-                      <TableCell align="right">
-                        <Typography>Low - High 24h:</Typography>
-                      </TableCell>
-                      <TableCell align="left">
-                        <Typography
-                          sx={{
-                            fontWeight: "600",
-                          }}
-                        >
-                          {" "}
-                          {numberSpace(data.market_data.low_24h.usd)} $ -{" "}
-                          {numberSpace(data.market_data.high_24h.usd)} $
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-
-                    <TableRow>
-                      <TableCell align="right">
-                        <Typography>Market Cap:</Typography>
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          display: "flex",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            fontWeight: "600",
-                            mr: 1,
-                          }}
-                        >
-                          {numberSpace(data.market_data.market_cap.usd)} $
-                        </Typography>
-                        <Typography
-                          color={
-                            data.market_data
-                              .market_cap_change_percentage_24h_in_currency
-                              .usd >= 0
-                              ? "#29cf45"
-                              : "red"
-                          }
-                        >
-                          {data.market_data
-                            .market_cap_change_percentage_24h_in_currency.usd >
-                          0
-                            ? "+" +
-                              data.market_data.market_cap_change_percentage_24h_in_currency.usd.toFixed(
-                                2
-                              )
-                            : data.market_data.market_cap_change_percentage_24h_in_currency.usd.toFixed(
-                                2
-                              )}
-                          %
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-
-                    <TableRow>
-                      <TableCell align="right">
-                        <Typography>Total volume:</Typography>
-                      </TableCell>
-                      <TableCell align="left">
-                        <Typography
-                          sx={{
-                            fontWeight: "600",
-                          }}
-                        >
-                          {numberSpace(data.market_data.total_volume.usd)} $
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-
-                    {data.genesis_date ? (<TableRow>
-                      <TableCell align="right">
-                        <Typography>Genesis Date:</Typography>
-                      </TableCell>
-                      <TableCell align="left">
-                        <Typography
-                          sx={{
-                            fontWeight: "600",
-                          }}
-                        >
-                          {data.genesis_date.split("-").reverse().join(".")}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>) : (<></>)}
-                    
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              change:
-              <TableContainer>
-                <Table>
                   <TableHead>
-                    <TableRow>
-                      {shortDataTableHead}
-
-                    </TableRow>
+                    <TableRow>{shortDataTableHead}</TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>{shortDataTableBody}</TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
-              change 7d:
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography
+                  variant="overline"
+                  sx={{
+                    pl: 4,
+                    fontSize: "15px",
+                    fontWeight: 600,
+                  }}
+                >
+                  change in 7 days:
+                </Typography>
+                <Button>More</Button>
+              </Box>
+
               <Box
                 sx={{
                   height: "350px",
                   width: 1,
-                  border: '1px solid #515151',
+                  border: "1px solid #515151",
                   borderRadius: 2,
+                  my: 1,
                 }}
               >
                 <Chart id={data.id} />
@@ -522,28 +400,3 @@ function decodeHTMLEntities(str) {
   textHTML = textHTML.replace(/<.+>/g, "");
   return textHTML;
 }
-
-
-
-function dateFormat(str) {
-  return str.replace(/T.+/, "").split("-").reverse().join(".");
-}
-
-function numberSpace(x) {
-  let ab = x.toString().split(".");
-  if (ab.length > 1) {
-    let past = ab[1]
-      .split("")
-      .reverse()
-      .join("")
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-      .split("")
-      .reverse()
-      .join("");
-    return ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ." + past;
-  } else {
-    return ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  }
-}
-
