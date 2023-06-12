@@ -34,14 +34,19 @@ function valuetext(value) {
 const minDistance = 10;
 
 
+<<<<<<< HEAD
 function Chartdetailed({ id, open, handleCloseModal }) {
 
   const [data, setData] = useState([]);
+=======
+function Chartdetailed({ datah, open, handleCloseModal }) {
+>>>>>>> 61e0f10 (detailed chart currecy)
 
   const [zoomDomain, handleZoom] = useState({ x: [new Date(1990, 1, 1), new Date(2009, 1, 1)] });
 
   const theme = useTheme();
 
+<<<<<<< HEAD
   console.log(theme.palette.mode);
 
   console.log(id)
@@ -59,6 +64,8 @@ function Chartdetailed({ id, open, handleCloseModal }) {
   }, []);
 
   console.log(data);
+=======
+>>>>>>> 61e0f10 (detailed chart currecy)
 
   const sharedAxisStyles = {
     axis: {
@@ -100,7 +107,11 @@ function Chartdetailed({ id, open, handleCloseModal }) {
 
   // -----
 
+<<<<<<< HEAD
   return data ? (
+=======
+  return datah ? (
+>>>>>>> 61e0f10 (detailed chart currecy)
     <Modal
       open={open}
       onClose={handleCloseModal}
@@ -138,15 +149,24 @@ function Chartdetailed({ id, open, handleCloseModal }) {
               onZoomDomainChange={handleZoom}
             />
           }
+<<<<<<< HEAD
           maxDomain={{ y: (formatData(data)).high }}
           minDomain={{ y: (formatData(data)).low }}
+=======
+          maxDomain={{ y: (formatData(datah)).high }}
+          minDomain={{ y: (formatData(datah)).low }}
+>>>>>>> 61e0f10 (detailed chart currecy)
 
         >
           <VictoryLine
             style={{
               data: { stroke: "tomato" }
             }}
+<<<<<<< HEAD
             data={formatData1(data)}
+=======
+            data={formatData1(datah)}
+>>>>>>> 61e0f10 (detailed chart currecy)
             x="a"
             y="b"
 
@@ -171,11 +191,16 @@ function Chartdetailed({ id, open, handleCloseModal }) {
             style={{
               data: { stroke: "tomato" }
             }}
+<<<<<<< HEAD
             data={formatData2(data)}
+=======
+            data={formatData2(datah)}
+>>>>>>> 61e0f10 (detailed chart currecy)
             x="key"
             y="b"
 
           />
+<<<<<<< HEAD
           {/* <VictoryAxis
         style={{
           ...sharedAxisStyles,
@@ -201,6 +226,8 @@ function Chartdetailed({ id, open, handleCloseModal }) {
         theme={VictoryTheme.material}
         data={data.data}
       />*/}
+=======
+>>>>>>> 61e0f10 (detailed chart currecy)
         </VictoryChart>
 
         <Slider
@@ -294,4 +321,8 @@ function formatData(data) {
     high: high,
     data: arr,
   };
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 61e0f10 (detailed chart currecy)

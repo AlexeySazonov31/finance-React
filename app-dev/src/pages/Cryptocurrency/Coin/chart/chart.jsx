@@ -5,13 +5,20 @@ import { useEffect, useState } from "react";
 
 import { useTheme } from "@mui/material/styles";
 
+<<<<<<< HEAD
 function Chart({ id }) {
   const [data, setData] = useState([]);
+=======
+function Chart({ data }) {
+
+  const SevendayData = data.slice(data.length - 7);
+>>>>>>> 61e0f10 (detailed chart currecy)
 
   const theme = useTheme();
 
   console.log( theme.palette.mode );
 
+<<<<<<< HEAD
 
   useEffect(() => {
     fetch(
@@ -24,6 +31,8 @@ function Chart({ id }) {
       });
   }, []);
 
+=======
+>>>>>>> 61e0f10 (detailed chart currecy)
   console.log(data);
 
   const sharedAxisStyles = {
@@ -32,7 +41,11 @@ function Chart({ id }) {
     },
     tickLabels: {
       fill: theme.palette.mode === "dark" ? "#fff" : "#000",
+<<<<<<< HEAD
       fontSize: 14,
+=======
+      fontSize: 13,
+>>>>>>> 61e0f10 (detailed chart currecy)
     },
     axisLabel: {
       fill: "#ffffff",
@@ -42,12 +55,22 @@ function Chart({ id }) {
     },
   };
 
+<<<<<<< HEAD
   return data ? (
     <VictoryChart
       maxDomain={{ y: data.high }}
       minDomain={{ y: data.low }}
       padding={{ bottom: 10, right: 10, left: 50 }}
       width={450}
+=======
+  return SevendayData ? (
+    <VictoryChart
+      maxDomain={{ y: (formatData(SevendayData)).high }}
+      minDomain={{ y: (formatData(SevendayData)).low }}
+      padding={{ bottom: 10, right: 10, left: 50 }}
+      width={450}
+      height={200}
+>>>>>>> 61e0f10 (detailed chart currecy)
 
     >
       <VictoryAxis
@@ -73,7 +96,11 @@ function Chart({ id }) {
           },
         }}
         theme={VictoryTheme.material}
+<<<<<<< HEAD
         data={data.data}
+=======
+        data={(formatData(SevendayData)).data}
+>>>>>>> 61e0f10 (detailed chart currecy)
       />
     </VictoryChart>
   ) : (
@@ -122,7 +149,10 @@ function formatData(data) {
     //
     x = 500;
   }
+<<<<<<< HEAD
   console.log(x);
+=======
+>>>>>>> 61e0f10 (detailed chart currecy)
   low = arr[0].y - x;
 
   high = arr[arr.length - 1].y + x;
