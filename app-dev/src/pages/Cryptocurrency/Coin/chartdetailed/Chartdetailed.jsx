@@ -35,18 +35,27 @@ const minDistance = 10;
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 function Chartdetailed({ id, open, handleCloseModal }) {
 
   const [data, setData] = useState([]);
 =======
 function Chartdetailed({ datah, open, handleCloseModal }) {
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+function Chartdetailed({ id, open, handleCloseModal }) {
+
+  const [data, setData] = useState([]);
+>>>>>>> 665c049 (stable version)
 
   const [zoomDomain, handleZoom] = useState({ x: [new Date(1990, 1, 1), new Date(2009, 1, 1)] });
 
   const theme = useTheme();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 665c049 (stable version)
   console.log(theme.palette.mode);
 
   console.log(id)
@@ -64,8 +73,11 @@ function Chartdetailed({ datah, open, handleCloseModal }) {
   }, []);
 
   console.log(data);
+<<<<<<< HEAD
 =======
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+>>>>>>> 665c049 (stable version)
 
   const sharedAxisStyles = {
     axis: {
@@ -108,10 +120,14 @@ function Chartdetailed({ datah, open, handleCloseModal }) {
   // -----
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   return data ? (
 =======
   return datah ? (
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+  return data ? (
+>>>>>>> 665c049 (stable version)
     <Modal
       open={open}
       onClose={handleCloseModal}
@@ -150,12 +166,17 @@ function Chartdetailed({ datah, open, handleCloseModal }) {
             />
           }
 <<<<<<< HEAD
+<<<<<<< HEAD
           maxDomain={{ y: (formatData(data)).high }}
           minDomain={{ y: (formatData(data)).low }}
 =======
           maxDomain={{ y: (formatData(datah)).high }}
           minDomain={{ y: (formatData(datah)).low }}
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+          maxDomain={{ y: (formatData(data)).high }}
+          minDomain={{ y: (formatData(data)).low }}
+>>>>>>> 665c049 (stable version)
 
         >
           <VictoryLine
@@ -163,10 +184,14 @@ function Chartdetailed({ datah, open, handleCloseModal }) {
               data: { stroke: "tomato" }
             }}
 <<<<<<< HEAD
+<<<<<<< HEAD
             data={formatData1(data)}
 =======
             data={formatData1(datah)}
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+            data={formatData1(data)}
+>>>>>>> 665c049 (stable version)
             x="a"
             y="b"
 
@@ -192,15 +217,22 @@ function Chartdetailed({ datah, open, handleCloseModal }) {
               data: { stroke: "tomato" }
             }}
 <<<<<<< HEAD
+<<<<<<< HEAD
             data={formatData2(data)}
 =======
             data={formatData2(datah)}
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+            data={formatData2(data)}
+>>>>>>> 665c049 (stable version)
             x="key"
             y="b"
 
           />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 665c049 (stable version)
           {/* <VictoryAxis
         style={{
           ...sharedAxisStyles,
@@ -226,8 +258,11 @@ function Chartdetailed({ datah, open, handleCloseModal }) {
         theme={VictoryTheme.material}
         data={data.data}
       />*/}
+<<<<<<< HEAD
 =======
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+>>>>>>> 665c049 (stable version)
         </VictoryChart>
 
         <Slider

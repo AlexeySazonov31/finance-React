@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 function Chart({ id }) {
   const [data, setData] = useState([]);
 =======
@@ -13,12 +14,19 @@ function Chart({ data }) {
 
   const SevendayData = data.slice(data.length - 7);
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+function Chart({ id }) {
+  const [data, setData] = useState([]);
+>>>>>>> 665c049 (stable version)
 
   const theme = useTheme();
 
   console.log( theme.palette.mode );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 665c049 (stable version)
 
   useEffect(() => {
     fetch(
@@ -31,8 +39,11 @@ function Chart({ data }) {
       });
   }, []);
 
+<<<<<<< HEAD
 =======
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+>>>>>>> 665c049 (stable version)
   console.log(data);
 
   const sharedAxisStyles = {
@@ -42,10 +53,14 @@ function Chart({ data }) {
     tickLabels: {
       fill: theme.palette.mode === "dark" ? "#fff" : "#000",
 <<<<<<< HEAD
+<<<<<<< HEAD
       fontSize: 14,
 =======
       fontSize: 13,
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+      fontSize: 14,
+>>>>>>> 665c049 (stable version)
     },
     axisLabel: {
       fill: "#ffffff",
@@ -56,6 +71,7 @@ function Chart({ data }) {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   return data ? (
     <VictoryChart
       maxDomain={{ y: data.high }}
@@ -64,13 +80,19 @@ function Chart({ data }) {
       width={450}
 =======
   return SevendayData ? (
+=======
+  return data ? (
+>>>>>>> 665c049 (stable version)
     <VictoryChart
-      maxDomain={{ y: (formatData(SevendayData)).high }}
-      minDomain={{ y: (formatData(SevendayData)).low }}
+      maxDomain={{ y: data.high }}
+      minDomain={{ y: data.low }}
       padding={{ bottom: 10, right: 10, left: 50 }}
       width={450}
+<<<<<<< HEAD
       height={200}
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+>>>>>>> 665c049 (stable version)
 
     >
       <VictoryAxis
@@ -97,10 +119,14 @@ function Chart({ data }) {
         }}
         theme={VictoryTheme.material}
 <<<<<<< HEAD
+<<<<<<< HEAD
         data={data.data}
 =======
         data={(formatData(SevendayData)).data}
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+        data={data.data}
+>>>>>>> 665c049 (stable version)
       />
     </VictoryChart>
   ) : (
@@ -150,9 +176,13 @@ function formatData(data) {
     x = 500;
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
   console.log(x);
 =======
 >>>>>>> 61e0f10 (detailed chart currecy)
+=======
+  console.log(x);
+>>>>>>> 665c049 (stable version)
   low = arr[0].y - x;
 
   high = arr[arr.length - 1].y + x;

@@ -50,8 +50,9 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function Coin({id}) {
+export default function Coin({data,id}) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [open, setOpen] = React.useState(false);
   const handleOpenModal = () => setOpen(true);
@@ -59,37 +60,10 @@ export default function Coin({id}) {
 
   const theme = useTheme();
 
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
-  const [dataHistory, setDataHistory] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [expanded, setExpanded] = useState(false);
 
-  console.log(id)
-  useEffect(() => {
-    setLoading(false);
-    fetch(
-      `https://api.coingecko.com/api/v3/coins/${id}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        data.hasOwnProperty("error")
-          ? navigate("/not-found-404")
-          : console.log(data);
-        setLoading(true);
-        setData(data);
-      });
-
-      fetch(
-        `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=max`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setLoading(true);
-          setDataHistory(data);
-        });
-
-  }, []);
 
   let shortDataTableBody, shortDataTableHead;
   if (data && data.market_data.price_change_percentage_1h_in_currency) {
@@ -158,7 +132,7 @@ export default function Coin({id}) {
     shortDataTableBody = <></>;
     shortDataTableHead = <></>;
   }
-
+console.log(data)
   return (
     <Box
       sx={{
@@ -172,7 +146,7 @@ export default function Coin({id}) {
         px: { xs: 2, sm: 4, md: 7, lg: 12, xl: 15 },
       }}
     >
-      {loading ? (
+      {data ? (
         <Paper
           sx={{
             py: 3,
@@ -399,7 +373,7 @@ export default function Coin({id}) {
                   change in 7 days:
                 </Typography>
                 <Button onClick={handleOpenModal}>More</Button>
-                    <Chartdetailed datah={dataHistory} open={open}  handleCloseModal={handleCloseModal}  />
+                    {/* <Chartdetailed id={id} open={open}  handleCloseModal={handleCloseModal}  /> */}
               </Box>
 
               <Box
@@ -411,7 +385,7 @@ export default function Coin({id}) {
                   my: 1,
                 }}
               >
-                <Chart data={dataHistory} />
+                {/* <Chart id={id} /> */}
               </Box>
             </Box>
           </Box>
