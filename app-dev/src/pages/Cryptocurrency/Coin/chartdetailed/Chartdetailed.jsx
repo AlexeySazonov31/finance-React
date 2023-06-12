@@ -1,6 +1,6 @@
 import React from "react";
 //import { ResponsiveLine } from "@nivo/line";
-import { VictoryChart, VictoryArea, VictoryTheme, VictoryAxis } from "victory";
+import { VictoryChart, VictoryArea, VictoryTheme, VictoryLine, VictoryAxis, VictoryZoomContainer, VictoryBrushContainer } from "victory";
 import { useEffect, useState } from "react";
 
 import {
@@ -38,9 +38,11 @@ function Chartdetailed({ id, open, handleCloseModal }) {
 
   const [data, setData] = useState([]);
 
+  const [zoomDomain, handleZoom] = useState({ x: [new Date(1990, 1, 1), new Date(2009, 1, 1)] });
+
   const theme = useTheme();
 
-  console.log( theme.palette.mode );
+  console.log(theme.palette.mode);
 
   console.log(id)
 
@@ -51,7 +53,7 @@ function Chartdetailed({ id, open, handleCloseModal }) {
     )
       .then((res) => res.json())
       .then((dt) => {
-        setData(formatData(dt.prices));
+        setData(dt.prices);
         //console.log(dt.prices);
       });
   }, []);
@@ -74,7 +76,7 @@ function Chartdetailed({ id, open, handleCloseModal }) {
     },
   };
 
-// -----
+  // -----
 
   const [value2, setValue2] = React.useState([20, 37]);
 
@@ -98,15 +100,14 @@ function Chartdetailed({ id, open, handleCloseModal }) {
 
   // -----
 
-
   return data ? (
     <Modal
-    open={open}
-    onClose={handleCloseModal}
-    aria-labelledby="modal-modal-title"
-    aria-describedby="modal-modal-description"
-  >
-    <Box sx={{
+      open={open}
+      onClose={handleCloseModal}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={{
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -118,23 +119,64 @@ function Chartdetailed({ id, open, handleCloseModal }) {
         boxShadow: 24,
         p: 4,
         color: theme.palette.mode === "dark" ? "#fff" : "#000",
-    }}>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        Hard Chart
-      </Typography>
-      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-        Please use slider below
-      </Typography>
+      }}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          Hard Chart
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          Please use slider below
+        </Typography>
 
-      <VictoryChart
-      maxDomain={{ y: data.high }}
-      minDomain={{ y: data.low }}
-      padding={{ bottom: 10, right: 10, left: 50 }}
-      height={200}
-      width={450}
+        <VictoryChart
+          height={200}
+          width={450}
+          scale={{ x: "time" }}
+          containerComponent={
+            <VictoryZoomContainer
+              zoomDimension="x"
+              zoomDomain={zoomDomain}
+              onZoomDomainChange={handleZoom}
+            />
+          }
+          maxDomain={{ y: (formatData(data)).high }}
+          minDomain={{ y: (formatData(data)).low }}
 
-    >
-      <VictoryAxis
+        >
+          <VictoryLine
+            style={{
+              data: { stroke: "tomato" }
+            }}
+            data={formatData1(data)}
+            x="a"
+            y="b"
+
+          />
+        </VictoryChart>
+        <VictoryChart
+          padding={{ top: 0, left: 50, right: 50, bottom: 30 }}
+          width={600} height={100} scale={{ x: "time" }}
+          containerComponent={
+            <VictoryBrushContainer
+              brushDimension="x"
+              brushDomain={zoomDomain}
+              onBrushDomainChange={handleZoom}
+            />
+          }
+        >
+          <VictoryAxis
+            tickFormat={(x) => new Date(x).getFullYear()}
+
+          />
+          <VictoryLine
+            style={{
+              data: { stroke: "tomato" }
+            }}
+            data={formatData2(data)}
+            x="key"
+            y="b"
+
+          />
+          {/* <VictoryAxis
         style={{
           ...sharedAxisStyles,
           grid: {
@@ -158,27 +200,42 @@ function Chartdetailed({ id, open, handleCloseModal }) {
         }}
         theme={VictoryTheme.material}
         data={data.data}
-      />
-    </VictoryChart>
+      />*/}
+        </VictoryChart>
 
-    <Slider
-        getAriaLabel={() => 'Minimum distance shift'}
-        value={value2}
-        onChange={handleChange2}
-        valueLabelDisplay="auto"
-        getAriaValueText={valuetext}
-        disableSwap
-      />
-    </Box>
-  </Modal>
+        <Slider
+          getAriaLabel={() => 'Minimum distance shift'}
+          value={value2}
+          onChange={handleChange2}
+          valueLabelDisplay="auto"
+          getAriaValueText={valuetext}
+          disableSwap
+        />
+      </Box>
+    </Modal>
 
-    
+
   ) : (
     <></>
   );
 }
 
 export default Chartdetailed;
+
+function formatData1(data) {
+  let newData = [];
+  for (let elem of data) {
+    newData.push({ a: new Date(elem[0]), b: elem[1] });
+  }
+  return newData;
+}
+function formatData2(data) {
+  let newData = [];
+  for (let elem of data) {
+    newData.push({ key: new Date(elem[0]), b: elem[1] });
+  }
+  return newData;
+}
 
 function formatData(data) {
   let arr = [];
@@ -225,6 +282,12 @@ function formatData(data) {
   high = arr[arr.length - 1].y + x;
 
   arr.sort((a, b) => parseFloat(a.x) - parseFloat(b.x));
+
+  console.log({
+    low: low,
+    high: high,
+    data: arr,
+  });
 
   return {
     low: low,
