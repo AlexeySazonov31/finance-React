@@ -84,9 +84,9 @@ export default function Coin({id}) {
         `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=max`
       )
         .then((res) => res.json())
-        .then((data) => {
+        .then((datac) => {
           setLoading(true);
-          setDataHistory(data);
+          setDataHistory(datac);
         });
 
   }, []);
