@@ -50,9 +50,8 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function Coin() {
+export default function Coin({id}) {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [open, setOpen] = React.useState(false);
   const handleOpenModal = () => setOpen(true);
@@ -60,17 +59,17 @@ export default function Coin() {
 
   const theme = useTheme();
 
-  let id = location.pathname.replace(/\/coin\//, '');
-
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+  const [dataHistory, setDataHistory] = useState(null);
 
   const [expanded, setExpanded] = useState(false);
 
+  console.log(id)
   useEffect(() => {
     setLoading(false);
     fetch(
-      `https://api.coingecko.com/api/v3/coins/${id}?tickers=true&market_data=true&community_data=true&developer_data=true&sparkline=true`
+      `https://api.coingecko.com/api/v3/coins/${id}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -80,7 +79,17 @@ export default function Coin() {
         setLoading(true);
         setData(data);
       });
-  }, [id]);
+
+      fetch(
+        `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=max`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setLoading(true);
+          setDataHistory(data);
+        });
+
+  }, []);
 
   let shortDataTableBody, shortDataTableHead;
   if (data && data.market_data.price_change_percentage_1h_in_currency) {
@@ -390,7 +399,7 @@ export default function Coin() {
                   change in 7 days:
                 </Typography>
                 <Button onClick={handleOpenModal}>More</Button>
-                    <Chartdetailed id={data.id} open={open}  handleCloseModal={handleCloseModal}  />
+                    <Chartdetailed datah={dataHistory} open={open}  handleCloseModal={handleCloseModal}  />
               </Box>
 
               <Box
@@ -402,7 +411,7 @@ export default function Coin() {
                   my: 1,
                 }}
               >
-                <Chart id={data.id} />
+                <Chart data={dataHistory} />
               </Box>
             </Box>
           </Box>
