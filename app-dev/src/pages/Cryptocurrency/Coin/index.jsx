@@ -51,8 +51,6 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function Coin({data,id}) {
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const [open, setOpen] = React.useState(false);
   const handleOpenModal = () => setOpen(true);
