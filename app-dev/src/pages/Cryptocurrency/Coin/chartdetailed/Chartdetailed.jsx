@@ -33,51 +33,27 @@ function valuetext(value) {
 
 const minDistance = 10;
 
+function Chartdetailed({ open, handleCloseModal, data }) {
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-function Chartdetailed({ id, open, handleCloseModal }) {
-
-  const [data, setData] = useState([]);
-=======
-function Chartdetailed({ datah, open, handleCloseModal }) {
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
-function Chartdetailed({ id, open, handleCloseModal }) {
-
-  const [data, setData] = useState([]);
->>>>>>> 665c049 (stable version)
-
-  const [zoomDomain, handleZoom] = useState({ x: [new Date(1990, 1, 1), new Date(2009, 1, 1)] });
+  const [zoomDomain, handleZoom] = useState({ x: [(new Date()).setDate((new Date()).getDate() - 60), new Date() ] });
 
   const theme = useTheme();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 665c049 (stable version)
   console.log(theme.palette.mode);
 
-  console.log(id)
 
-
-  useEffect(() => {
-    fetch(
-      `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=max`
-    )
-      .then((res) => res.json())
-      .then((dt) => {
-        setData(dt.prices);
-        //console.log(dt.prices);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(
+  //     `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=max`
+  //   )
+  //     .then((res) => res.json())
+  //     .then((dt) => {
+  //       setData(dt.prices);
+  //       //console.log(dt.prices);
+  //     });
+  // }, []);
 
   console.log(data);
-<<<<<<< HEAD
-=======
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
->>>>>>> 665c049 (stable version)
 
   const sharedAxisStyles = {
     axis: {
@@ -119,15 +95,7 @@ function Chartdetailed({ id, open, handleCloseModal }) {
 
   // -----
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   return data ? (
-=======
-  return datah ? (
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
-  return data ? (
->>>>>>> 665c049 (stable version)
     <Modal
       open={open}
       onClose={handleCloseModal}
@@ -165,33 +133,16 @@ function Chartdetailed({ id, open, handleCloseModal }) {
               onZoomDomainChange={handleZoom}
             />
           }
-<<<<<<< HEAD
-<<<<<<< HEAD
-          maxDomain={{ y: (formatData(data)).high }}
-          minDomain={{ y: (formatData(data)).low }}
-=======
-          maxDomain={{ y: (formatData(datah)).high }}
-          minDomain={{ y: (formatData(datah)).low }}
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
-          maxDomain={{ y: (formatData(data)).high }}
-          minDomain={{ y: (formatData(data)).low }}
->>>>>>> 665c049 (stable version)
+          maxDomain={{ y: (formatData(data.prices)).high }}
+          minDomain={{ y: (formatData(data.prices)).low }}
 
         >
           <VictoryLine
             style={{
               data: { stroke: "tomato" }
             }}
-<<<<<<< HEAD
-<<<<<<< HEAD
-            data={formatData1(data)}
-=======
-            data={formatData1(datah)}
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
-            data={formatData1(data)}
->>>>>>> 665c049 (stable version)
+
+            data={formatData1(data.prices)}
             x="a"
             y="b"
 
@@ -216,23 +167,11 @@ function Chartdetailed({ id, open, handleCloseModal }) {
             style={{
               data: { stroke: "tomato" }
             }}
-<<<<<<< HEAD
-<<<<<<< HEAD
-            data={formatData2(data)}
-=======
-            data={formatData2(datah)}
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
-            data={formatData2(data)}
->>>>>>> 665c049 (stable version)
+            data={formatData2(data.prices)}
             x="key"
             y="b"
 
           />
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 665c049 (stable version)
           {/* <VictoryAxis
         style={{
           ...sharedAxisStyles,
@@ -258,11 +197,6 @@ function Chartdetailed({ id, open, handleCloseModal }) {
         theme={VictoryTheme.material}
         data={data.data}
       />*/}
-<<<<<<< HEAD
-=======
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
->>>>>>> 665c049 (stable version)
         </VictoryChart>
 
         <Slider
@@ -304,7 +238,7 @@ function formatData(data) {
   for (let i = 0; i <= data.length - 1; i++) {
     let obj = {
       x: i,
-      y: Number(data[i][1].toFixed(4)),
+      y: Number(data[i][1].toFixed(4))
     };
     arr.push(obj);
   }
@@ -354,10 +288,5 @@ function formatData(data) {
   return {
     low: low,
     high: high,
-    data: arr,
-  };
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> 61e0f10 (detailed chart currecy)
+    data: arr
+  }}

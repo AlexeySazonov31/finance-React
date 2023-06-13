@@ -5,46 +5,12 @@ import { useEffect, useState } from "react";
 
 import { useTheme } from "@mui/material/styles";
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-function Chart({ id }) {
-  const [data, setData] = useState([]);
-=======
-function Chart({ data }) {
-
-  const SevendayData = data.slice(data.length - 7);
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
-function Chart({ id }) {
-  const [data, setData] = useState([]);
->>>>>>> 665c049 (stable version)
+function Chart({ historyData }) {
 
   const theme = useTheme();
 
   console.log( theme.palette.mode );
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 665c049 (stable version)
-
-  useEffect(() => {
-    fetch(
-      `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=7`
-    )
-      .then((res) => res.json())
-      .then((dt) => {
-        setData(formatData(dt.prices));
-        //console.log(dt.prices);
-      });
-  }, []);
-
-<<<<<<< HEAD
-=======
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
->>>>>>> 665c049 (stable version)
-  console.log(data);
 
   const sharedAxisStyles = {
     axis: {
@@ -52,15 +18,7 @@ function Chart({ id }) {
     },
     tickLabels: {
       fill: theme.palette.mode === "dark" ? "#fff" : "#000",
-<<<<<<< HEAD
-<<<<<<< HEAD
-      fontSize: 14,
-=======
       fontSize: 13,
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
-      fontSize: 14,
->>>>>>> 665c049 (stable version)
     },
     axisLabel: {
       fill: "#ffffff",
@@ -70,30 +28,13 @@ function Chart({ id }) {
     },
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  return data ? (
+  return historyData ? (
     <VictoryChart
-      maxDomain={{ y: data.high }}
-      minDomain={{ y: data.low }}
+      maxDomain={{ y: (formatData(historyData)).high }}
+      minDomain={{ y: (formatData(historyData)).low }}
       padding={{ bottom: 10, right: 10, left: 50 }}
       width={450}
-=======
-  return SevendayData ? (
-=======
-  return data ? (
->>>>>>> 665c049 (stable version)
-    <VictoryChart
-      maxDomain={{ y: data.high }}
-      minDomain={{ y: data.low }}
-      padding={{ bottom: 10, right: 10, left: 50 }}
-      width={450}
-<<<<<<< HEAD
       height={200}
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
->>>>>>> 665c049 (stable version)
-
     >
       <VictoryAxis
         style={{
@@ -118,15 +59,7 @@ function Chart({ id }) {
           },
         }}
         theme={VictoryTheme.material}
-<<<<<<< HEAD
-<<<<<<< HEAD
-        data={data.data}
-=======
-        data={(formatData(SevendayData)).data}
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
-        data={data.data}
->>>>>>> 665c049 (stable version)
+        data={(formatData(historyData)).data}
       />
     </VictoryChart>
   ) : (
@@ -137,11 +70,15 @@ function Chart({ id }) {
 export default Chart;
 
 function formatData(data) {
+
+  let arr7day = (data.prices.slice( (data.prices.length - 7) ));
+  console.log(arr7day);
+
   let arr = [];
-  for (let i = 0; i <= data.length - 1; i++) {
+  for (let i = 0; i <= arr7day.length - 1; i++) {
     let obj = {
       x: i,
-      y: Number(data[i][1].toFixed(4)),
+      y: Number(arr7day[i][1].toFixed(4)),
     };
     arr.push(obj);
   }
@@ -175,14 +112,7 @@ function formatData(data) {
     //
     x = 500;
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
   console.log(x);
-=======
->>>>>>> 61e0f10 (detailed chart currecy)
-=======
-  console.log(x);
->>>>>>> 665c049 (stable version)
   low = arr[0].y - x;
 
   high = arr[arr.length - 1].y + x;
@@ -196,22 +126,9 @@ function formatData(data) {
   };
 }
 
+
+
 /*
-
-
-function formatData(data) {
-  let arr = [];
-  for (let i = 0; i <= data.length - 1; i++) {
-    let obj = {
-      x: i,
-      y: [data[i][1],data[i][2],data[i][3],data[i][4]],
-    };
-    arr.push(obj);
-  }
-
-  return arr;
-}
-
 
 
 

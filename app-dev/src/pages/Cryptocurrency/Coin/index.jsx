@@ -50,9 +50,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function Coin({data,id}) {
-  const navigate = useNavigate();
-  const location = useLocation();
+export default function Coin({data,id, historyData}) {
 
   const [open, setOpen] = React.useState(false);
   const handleOpenModal = () => setOpen(true);
@@ -92,7 +90,7 @@ export default function Coin({data,id}) {
     ];
 
     shortDataTableBody = shortDataTableInfo.map((elem, key) => {
-      return (
+      return  shortDataTableBody ? (
         <TableCell
           key={key}
           align="center"
@@ -110,6 +108,8 @@ export default function Coin({data,id}) {
             {elem > 0 ? "+" + elem.toFixed(2) : elem.toFixed(2)}%
           </Typography>
         </TableCell>
+      ) :(
+        <></>
       );
     });
 
@@ -373,7 +373,7 @@ console.log(data)
                   change in 7 days:
                 </Typography>
                 <Button onClick={handleOpenModal}>More</Button>
-                    {/* <Chartdetailed id={id} open={open}  handleCloseModal={handleCloseModal}  /> */}
+                    <Chartdetailed open={open}  handleCloseModal={handleCloseModal} data={historyData}  />
               </Box>
 
               <Box
@@ -385,7 +385,7 @@ console.log(data)
                   my: 1,
                 }}
               >
-                {/* <Chart id={id} /> */}
+                <Chart historyData={historyData} />
               </Box>
             </Box>
           </Box>
