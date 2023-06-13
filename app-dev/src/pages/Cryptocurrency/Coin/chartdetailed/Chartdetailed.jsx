@@ -95,8 +95,6 @@ function Chartdetailed({ open, handleCloseModal, data }) {
 
   // -----
 
-  console.log(data.prices);
-
   return data ? (
     <Modal
       open={open}
