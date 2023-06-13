@@ -16,8 +16,6 @@ function CoinPage() {
 
     let { idcoin } = useParams();
 
-    return <Coin id={id} />
-
     useEffect(() => {
         fetch(
             `https://api.coingecko.com/api/v3/coins/${idcoin}`
