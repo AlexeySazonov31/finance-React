@@ -10,6 +10,7 @@ import NotFound from "../pages/NotFound";
 import Coin from "../pages/Cryptocurrency/Coin";
 
 
+
 function CoinPage() {
     const navigate = useNavigate();
 
