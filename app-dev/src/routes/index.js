@@ -14,6 +14,9 @@ import Coin from "../pages/Cryptocurrency/Coin";
 function CoinPage() {
     const navigate = useNavigate();
 
+    const [dataCoin,setDataCoin] = useState(null);
+    const [historyData, setHistoryData] = useState(null);
+
     let { idcoin } = useParams();
 
     useEffect(() => {
