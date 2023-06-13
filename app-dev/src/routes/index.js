@@ -17,6 +17,7 @@ function CoinPage() {
     let { idcoin } = useParams();
 
     const [dataCoin, setDataCoin] = useState(null);
+    const [historyData, setHistoryData] = useState(null);
 
     useEffect(() => {
         fetch(
@@ -29,8 +30,16 @@ function CoinPage() {
                     : console.log(data);
                 setDataCoin(data);
             });
-    }, []);
-    return <Coin data={dataCoin} id={idcoin} />
+        fetch(`https://api.coingecko.com/api/v3/coins/${idcoin}/market_chart?vs_currency=usd&days=max`)
+        .then((res) => res.json())
+        .then((data) => {
+            data.hasOwnProperty("error")
+                ? navigate("/not-found-404")
+                : console.log(data);
+            setHistoryData(data);
+        });
+    }, [idcoin]);
+    return <Coin data={dataCoin} id={idcoin} historyData={historyData} />
 }
 
 

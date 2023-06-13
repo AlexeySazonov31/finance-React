@@ -5,25 +5,22 @@ import { useEffect, useState } from "react";
 
 import { useTheme } from "@mui/material/styles";
 
-function Chart({ id }) {
-  const [data, setData] = useState([]);
+function Chart({ historyData }) {
 
   const theme = useTheme();
 
   console.log( theme.palette.mode );
 
-  useEffect(() => {
-    fetch(
-      `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=7`
-    )
-      .then((res) => res.json())
-      .then((dt) => {
-        setData(formatData(dt.prices));
-        //console.log(dt.prices);
-      });
-  }, []);
-
-  console.log(data);
+  // useEffect(() => {
+  //   fetch(
+  //     `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=7`
+  //   )
+  //     .then((res) => res.json())
+  //     .then((dt) => {
+  //       setData(formatData(dt.prices));
+  //       //console.log(dt.prices);
+  //     });
+  // }, []);
 
   const sharedAxisStyles = {
     axis: {
@@ -41,10 +38,10 @@ function Chart({ id }) {
     },
   };
 
-  return data ? (
+  return historyData ? (
     <VictoryChart
-      maxDomain={{ y: data.high }}
-      minDomain={{ y: data.low }}
+      maxDomain={{ y: (formatData(historyData)).high }}
+      minDomain={{ y: (formatData(historyData)).low }}
       padding={{ bottom: 10, right: 10, left: 50 }}
       width={450}
       height={200}
@@ -73,7 +70,7 @@ function Chart({ id }) {
           },
         }}
         theme={VictoryTheme.material}
-        data={(formatData(data)).data}
+        data={(formatData(historyData)).data}
       />
     </VictoryChart>
   ) : (
@@ -84,11 +81,15 @@ function Chart({ id }) {
 export default Chart;
 
 function formatData(data) {
+
+  let arr7day = (data.prices.slice( (data.prices.length - 7) ));
+  console.log(arr7day);
+
   let arr = [];
-  for (let i = 0; i <= data.length - 1; i++) {
+  for (let i = 0; i <= arr7day.length - 1; i++) {
     let obj = {
       x: i,
-      y: Number(data[i][1].toFixed(4)),
+      y: Number(arr7day[i][1].toFixed(4)),
     };
     arr.push(obj);
   }
@@ -140,22 +141,9 @@ function formatData(data) {
   };
 }
 
+
+
 /*
-
-
-function formatData(data) {
-  let arr = [];
-  for (let i = 0; i <= data.length - 1; i++) {
-    let obj = {
-      x: i,
-      y: [data[i][1],data[i][2],data[i][3],data[i][4]],
-    };
-    arr.push(obj);
-  }
-
-  return arr;
-}
-
 
 
 

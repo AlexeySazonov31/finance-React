@@ -33,29 +33,25 @@ function valuetext(value) {
 
 const minDistance = 10;
 
-function Chartdetailed({ id, open, handleCloseModal }) {
+function Chartdetailed({ open, handleCloseModal, data }) {
 
-  const [data, setData] = useState([]);
-
-  const [zoomDomain, handleZoom] = useState({ x: [new Date(1990, 1, 1), new Date(2009, 1, 1)] });
+  const [zoomDomain, handleZoom] = useState({ x: [(new Date()).setDate((new Date()).getDate() - 60), new Date() ] });
 
   const theme = useTheme();
 
   console.log(theme.palette.mode);
 
-  console.log(id)
 
-
-  useEffect(() => {
-    fetch(
-      `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=max`
-    )
-      .then((res) => res.json())
-      .then((dt) => {
-        setData(dt.prices);
-        //console.log(dt.prices);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(
+  //     `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=max`
+  //   )
+  //     .then((res) => res.json())
+  //     .then((dt) => {
+  //       setData(dt.prices);
+  //       //console.log(dt.prices);
+  //     });
+  // }, []);
 
   console.log(data);
 
@@ -99,6 +95,8 @@ function Chartdetailed({ id, open, handleCloseModal }) {
 
   // -----
 
+  console.log(data.prices);
+
   return data ? (
     <Modal
       open={open}
@@ -137,8 +135,8 @@ function Chartdetailed({ id, open, handleCloseModal }) {
               onZoomDomainChange={handleZoom}
             />
           }
-          maxDomain={{ y: (formatData(data)).high }}
-          minDomain={{ y: (formatData(data)).low }}
+          maxDomain={{ y: (formatData(data.prices)).high }}
+          minDomain={{ y: (formatData(data.prices)).low }}
 
         >
           <VictoryLine
@@ -146,7 +144,7 @@ function Chartdetailed({ id, open, handleCloseModal }) {
               data: { stroke: "tomato" }
             }}
 
-            data={formatData1(data)}
+            data={formatData1(data.prices)}
             x="a"
             y="b"
 
@@ -171,7 +169,7 @@ function Chartdetailed({ id, open, handleCloseModal }) {
             style={{
               data: { stroke: "tomato" }
             }}
-            data={formatData2(data)}
+            data={formatData2(data.prices)}
             x="key"
             y="b"
 
@@ -242,7 +240,7 @@ function formatData(data) {
   for (let i = 0; i <= data.length - 1; i++) {
     let obj = {
       x: i,
-      y: Number(data[i][1].toFixed(4)),
+      y: Number(data[i][1].toFixed(4))
     };
     arr.push(obj);
   }
@@ -292,5 +290,5 @@ function formatData(data) {
   return {
     low: low,
     high: high,
-    data: arr,
+    data: arr
   }}
