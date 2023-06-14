@@ -119,7 +119,6 @@ function TopCoins({ id }) {
       });
   }, []);
 
-  console.log(data);
   return data ? (
     <Box
       sx={{

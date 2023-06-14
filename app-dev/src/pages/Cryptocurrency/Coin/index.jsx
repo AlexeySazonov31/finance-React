@@ -132,7 +132,6 @@ export default function Coin({data,id, historyData}) {
     shortDataTableBody = <></>;
     shortDataTableHead = <></>;
   }
-console.log(data)
   return (
     <Box
       sx={{

@@ -39,22 +39,6 @@ function Chartdetailed({ open, handleCloseModal, data }) {
 
   const theme = useTheme();
 
-  console.log(theme.palette.mode);
-
-
-  // useEffect(() => {
-  //   fetch(
-  //     `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=max`
-  //   )
-  //     .then((res) => res.json())
-  //     .then((dt) => {
-  //       setData(dt.prices);
-  //       //console.log(dt.prices);
-  //     });
-  // }, []);
-
-  console.log(data);
-
   const sharedAxisStyles = {
     axis: {
       stroke: "transparent",
@@ -272,18 +256,11 @@ function formatData(data) {
     //
     x = 500;
   }
-  console.log(x);
   low = arr[0].y - x;
 
   high = arr[arr.length - 1].y + x;
 
   arr.sort((a, b) => parseFloat(a.x) - parseFloat(b.x));
-
-  console.log({
-    low: low,
-    high: high,
-    data: arr,
-  });
 
   return {
     low: low,

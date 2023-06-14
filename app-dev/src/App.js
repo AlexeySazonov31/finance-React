@@ -49,6 +49,7 @@ const navItems = [
 
 function App() {
   const theme = useTheme();
+  
   const colorMode = React.useContext(ColorModeContext);
 
   const [mobileOpen, setMobileOpen] = React.useState(false);

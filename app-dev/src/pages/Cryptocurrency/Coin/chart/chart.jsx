@@ -1,5 +1,5 @@
-import React from "react";
 //import { ResponsiveLine } from "@nivo/line";
+import React from "react";
 import { VictoryChart, VictoryArea, VictoryTheme, VictoryAxis } from "victory";
 import { useEffect, useState } from "react";
 
@@ -8,10 +8,7 @@ import { useTheme } from "@mui/material/styles";
 function Chart({ historyData }) {
 
   const theme = useTheme();
-
-  console.log( theme.palette.mode );
-
-
+  
   const sharedAxisStyles = {
     axis: {
       stroke: "transparent",
@@ -72,8 +69,6 @@ export default Chart;
 function formatData(data) {
 
   let arr7day = (data.prices.slice( (data.prices.length - 7) ));
-  console.log(arr7day);
-
   let arr = [];
   for (let i = 0; i <= arr7day.length - 1; i++) {
     let obj = {
@@ -112,7 +107,6 @@ function formatData(data) {
     //
     x = 500;
   }
-  console.log(x);
   low = arr[0].y - x;
 
   high = arr[arr.length - 1].y + x;
@@ -127,61 +121,3 @@ function formatData(data) {
 }
 
 
-
-/*
-
-
-
- (
-    <ResponsiveLine
-
-    data={data}
-    margin={{ top: 50, right: 50, bottom: 50, left: 80 }}
-    xScale={{ type: 'linear' }}
-    xFormat=" >-c"
-    yScale={{
-        type: 'linear',
-        min: 'auto',
-        max: 'auto',
-        stacked: true,
-        reverse: false
-    }}
-    axisTop={null}
-    axisRight={null}
-    axisBottom={{
-        orient: 'bottom',
-        tickSize: 5,
-        tickPadding: 6,
-        tickRotation: 90,
-        legend: 'time',
-        legendOffset: 30,
-        legendPosition: 'middle'
-    }}
-    axisLeft={{
-        orient: 'left',
-        tickSize: 6,
-        tickPadding: 4,
-        tickRotation: 0,
-        legend: 'price',
-        legendOffset: -46,
-        legendPosition: 'middle'
-    }}
-    enableGridX={false}
-    enableGridY={false}
-    enablePoints={false}
-    pointSize={8}
-    pointColor={{ from: 'color', modifiers: [] }}
-    pointBorderWidth={2}
-    pointBorderColor={{ from: 'serieColor' }}
-    pointLabelYOffset={-12}
-    enableArea={true}
-    areaOpacity={0.15}
-    debugSlices={true}
-    crosshairType="x"
-    useMesh={true}
-    legends={[]}
-    />
-  );
-
-
- */
