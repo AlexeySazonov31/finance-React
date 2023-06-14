@@ -30,10 +30,6 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 
 import {
   blueGrey,
-  common,
-  green,
-  lime,
-  lightGreen,
   grey,
   blue,
 } from "@mui/material/colors/";

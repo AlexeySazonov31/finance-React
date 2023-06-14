@@ -62,7 +62,7 @@ function TopCoins({ id }) {
             }}
 
             onClick={ () => {
-                navigate(`/coin/${elem.item.id}`);
+                navigate(`/crypto/${elem.item.id}`);
               } }
           >
             <Avatar
