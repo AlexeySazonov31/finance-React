@@ -291,7 +291,7 @@ function TableCoins({ rows, sorting, changeSorting }) {
                       : "#ebf4f7",
                 }}
                 onClick={ () => {
-                  navigate(`/coin/${row.id}`);
+                  navigate(`/crypto/${row.id}`);
                 } }
               >
                 <TableCell

@@ -52,7 +52,7 @@ function CoinCard({ elem }) {
             },
           }}
           onClick={ () => {
-            navigate(`/coin/${elem.id}`);
+            navigate(`/crypto/${elem.id}`);
           } }
         >
           <Box

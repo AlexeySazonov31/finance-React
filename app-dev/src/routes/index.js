@@ -1,27 +1,30 @@
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { Routes, Route, Navigate, useLocation, useParams, useNavigate } from 'react-router-dom';
-
+import Home from '../pages/Home';
 import News from "../pages/News";
 import Сryptocurrency from "../pages/Cryptocurrency";
 import Currencies from "../pages/Currencies";
-import NotFound from "../pages/NotFound";
 import Error from '../pages/Error/Error';
 
 import CoinPage from './CoinRoutes';
+import { ErrorProvider } from '../pages/Error/ErrorContext';
+
 
 function AppRoutes() {
-    const location = useLocation();
 
     return (
+        <ErrorProvider>
         <Routes>
-            <Route exact path='/' element={<Сryptocurrency />} />
+            <Route path='/' element={<Home />} />
             <Route path='/news' element={<News />} />
+            <Route path='/crypto' element={<Сryptocurrency />} />
+            <Route path='/crypto/:idcoin' element={<CoinPage setError={() => {}} />} />
             <Route path='/currencies' element={<Currencies />} />
-            <Route path='/coin/:idcoin' element={<CoinPage />} />
             <Route path='/error' element={<Error />} />
-            <Route path='/not-found-404' element={<NotFound />} />
-            <Route path='/*' element={<Navigate to="/not-found-404" />} />
+            <Route path='/*' element={<Navigate to="/error" />} />
         </Routes>
+        </ErrorProvider>
     )
 }
 

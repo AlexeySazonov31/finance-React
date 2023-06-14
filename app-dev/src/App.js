@@ -42,14 +42,15 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 const drawerWidth = 240;
 const navItems = [
+  { name: "Home", to: "/", icon: <NewspaperIcon /> },
   { name: "News", to: "/news", icon: <NewspaperIcon /> },
-  { name: "Сryptocurrency", to: "/" },
+  { name: "Сryptocurrency", to: "/crypto" },
   { name: "Currencies", to: "/currencies" },
 ];
 
 function App() {
   const theme = useTheme();
-  
+
   const colorMode = React.useContext(ColorModeContext);
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
