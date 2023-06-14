@@ -3,24 +3,11 @@ import { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
-
 import {
   Box,
   Typography,
-  CircularProgress,
-  Paper,
   Chip,
-  Divider,
-  Avatar,
-  Stack,
-  Collapse,
-  TableContainer,
-  Table,
-  TableCell,
-  TableRow,
-  TableBody,
-  TableHead,
-  Button,
+  Avatar
 } from "@mui/material";
 
 function TopCoins({ id }) {
@@ -28,6 +15,14 @@ function TopCoins({ id }) {
 
   const theme = useTheme();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("https://api.coingecko.com/api/v3/search/trending")
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data.coins);
+      });
+  }, []);
 
   let result = <></>;
   if (data) {
@@ -113,15 +108,13 @@ function TopCoins({ id }) {
     });
   }
 
-  useEffect(() => {
-    fetch("https://api.coingecko.com/api/v3/search/trending")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data.coins);
-      });
-  }, []);
-
   return data ? (
+    <Box
+    sx={{
+      px: 3,
+      pt: 2,
+    }}
+  >
     <Box
       sx={{
         display: "flex",
@@ -129,6 +122,7 @@ function TopCoins({ id }) {
       }}
     >
       {result}
+    </Box>
     </Box>
   ) : (
     <></>

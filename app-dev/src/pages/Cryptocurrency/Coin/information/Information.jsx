@@ -1,27 +1,17 @@
 import React from "react";
 
 import {
-    Box,
     Typography,
-    CircularProgress,
-    Paper,
-    Chip,
-    Divider,
-    Link,
-    Avatar,
-    Stack,
-    Collapse,
     TableContainer,
     Table,
     TableCell,
     TableRow,
     TableBody,
-    TableHead,
-    Button,
   } from "@mui/material";
 
 
-function Information({data}){
+export default function Information({data}){
+  console.log("render Component: Information")
     return (
       <>
       <Typography
@@ -253,9 +243,6 @@ function Information({data}){
     );
 }
 
-export default Information;
-
-
 function dateFormat(str) {
     return str.replace(/T.+/, "").split("-").reverse().join(".");
   }
@@ -272,7 +259,7 @@ function dateFormat(str) {
         .split("")
         .reverse()
         .join("");
-      return ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ." + past;
+      return ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ". " + past;
     } else {
       return ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }

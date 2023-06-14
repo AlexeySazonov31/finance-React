@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React from "react";
 
 import Chart from "./chart/chart";
 import Information from "./information/Information";
 import TopCoins from "./topCoins/TopCoins";
-import Chartdetailed from "./chartdetailed/Chartdetailed";
-
+import TableChange from "./TableChange/TableChange";
+import DescriptionCoin from "./DescriptionCoin/DescriptionCoin";
 
 import {
   Box,
@@ -15,45 +14,18 @@ import {
   Chip,
   Divider,
   Link,
-  Avatar,
-  Grow,
-  TableContainer,
-  Table,
-  TableCell,
-  TableRow,
-  TableBody,
-  TableHead,
-  Button,
-  Icon
+  Avatar
 } from "@mui/material";
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-
-import { styled } from "@mui/material/styles";
-
-import { useTheme } from "@mui/material/styles";
-import TableChange from "./TableChange/TableChange";
-
-export default function Coin({ data, id, historyData }) {
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpenModal = () => setOpen(true);
-  const handleCloseModal = () => setOpen(false);
-
-  const theme = useTheme();
-
-  const [loading, setLoading] = useState(true);
-
-  const [expanded, setExpanded] = useState(false);
+export default function Coin({ data, historyData }) {
 
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: loading ? "start" : "center",
-        minHeight: loading ? "auto" : "93vh",
+        justifyContent: data ? "start" : "center",
+        minHeight: data ? "auto" : "93vh",
         width: "1",
         alignItems: "center",
         border: "1px solid green",
@@ -71,6 +43,7 @@ export default function Coin({ data, id, historyData }) {
             maxWidth: "1300px",
           }}
         >
+          {/* Start Header Coin Page */}
           <Box
             sx={{
               display: "flex",
@@ -119,6 +92,7 @@ export default function Coin({ data, id, historyData }) {
               my: 1,
             }}
           />
+          {/* End Header Coin Page */}
           <Box
             sx={{
               display: "grid",
@@ -126,6 +100,7 @@ export default function Coin({ data, id, historyData }) {
               border: "1px solid green",
             }}
           >
+          {/* start Left Side of Page */}
             <Box
               sx={{
                 display: "flex",
@@ -164,52 +139,10 @@ export default function Coin({ data, id, historyData }) {
                     )
                   )}
                 </Box>
-                <Box
-                  sx={{
-                    px: 3,
-                    pt: 2,
-                  }}
-                >
-                  <Button
-                    variant="text"
-                    sx={{
-                      color: theme.palette.mode === "dark" ? "#fff" : "#000",
-                      px: 2,
-                      my: 1,
-                    }}
-                    startIcon={
-                      <ExpandMoreIcon />
-                    }
-                    onClick={() => {
-                      setExpanded(!expanded);
-                    }}
-                  >
-                    DESCRIPTION
-                  </Button>
 
-                  <Grow sx={{
-                    position: 'absolute',
-                    width: '800px',
-                    backgroundColor: theme.palette.mode === "dark" ? '#313c42' : "#e1e5e5",
-                    zIndex: 1,
-                    p: 2,
-                    borderRadius: 2,
-                    boxShadow: "0px 0px 17px 6px rgba(14, 18, 21, 0.2)",
-                  }} in={expanded} >
-                    <Box>
-                      {decodeHTMLEntities(data.description.en)}
-                    </Box>
-                  </Grow>
-                </Box>
+                <DescriptionCoin data={data} />
+                <TopCoins id={data.id} />
 
-                <Box
-                  sx={{
-                    px: 3,
-                    pt: 2,
-                  }}
-                >
-                  <TopCoins id={data.id} />
-                </Box>
               </Box>
               <Divider
                 sx={{
@@ -219,6 +152,8 @@ export default function Coin({ data, id, historyData }) {
                 orientation="vertical"
               />
             </Box>
+            {/* end Left Side of Page */}
+            {/* start Right Side of Page */}
             <Box
               sx={{
                 p: { xs: 0, md: 2 },
@@ -227,40 +162,9 @@ export default function Coin({ data, id, historyData }) {
             >
               <Information data={data} />
               <TableChange data={data} />
-
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography
-                  variant="overline"
-                  sx={{
-                    pl: 4,
-                    fontSize: "15px",
-                    fontWeight: 600,
-                  }}
-                >
-                  change in 7 days:
-                </Typography>
-                <Button onClick={handleOpenModal}>More</Button>
-                <Chartdetailed open={open} handleCloseModal={handleCloseModal} data={historyData} />
-              </Box>
-
-              <Box
-                sx={{
-                  height: "350px",
-                  width: 1,
-                  border: "1px solid #515151",
-                  borderRadius: 2,
-                  my: 1,
-                }}
-              >
-                <Chart historyData={historyData} />
-              </Box>
+              <Chart historyData={historyData}/>
             </Box>
+            {/* end Right Side of Page */}
           </Box>
         </Paper>
       ) : (
@@ -268,14 +172,4 @@ export default function Coin({ data, id, historyData }) {
       )}
     </Box>
   );
-}
-
-//export default Coin;
-
-function decodeHTMLEntities(str) {
-  let textarea = document.createElement("textarea");
-  textarea.innerHTML = str;
-  let textHTML = textarea.value;
-  textHTML = textHTML.replace(/<.+>/g, "");
-  return textHTML;
 }

@@ -40,5 +40,5 @@ export default function CoinPage() {
                 showError(err)
             })
     }, [idcoin, showError]);
-    return <Coin data={dataCoin} id={idcoin} historyData={historyData} />
+    return <Coin data={dataCoin} historyData={historyData} />
 }

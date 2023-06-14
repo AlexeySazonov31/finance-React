@@ -2,13 +2,19 @@
 import React from "react";
 import { VictoryChart, VictoryArea, VictoryTheme, VictoryAxis } from "victory";
 import { useEffect, useState } from "react";
+import { Box, Typography, Button } from "@mui/material";
+import Chartdetailed from "../chartdetailed/Chartdetailed";
 
 import { useTheme } from "@mui/material/styles";
 
 function Chart({ historyData }) {
 
+  const [open, setOpen] = useState(false);
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
+
   const theme = useTheme();
-  
+
   const sharedAxisStyles = {
     axis: {
       stroke: "transparent",
@@ -26,39 +32,72 @@ function Chart({ historyData }) {
   };
 
   return historyData ? (
-    <VictoryChart
-      maxDomain={{ y: (formatData(historyData)).high }}
-      minDomain={{ y: (formatData(historyData)).low }}
-      padding={{ bottom: 10, right: 10, left: 50 }}
-      width={450}
-      height={200}
-    >
-      <VictoryAxis
-        style={{
-          ...sharedAxisStyles,
-          grid: {
-            fill: "#fff",
-            stroke: theme.palette.mode === "dark" ? "#666" : "#000",
-            pointerEvents: "painted",
-            strokeWidth: 0.5,
-          },
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
         }}
-        dependentAxis
-      />
+      >
+        <Typography
+          variant="overline"
+          sx={{
+            pl: 4,
+            fontSize: "15px",
+            fontWeight: 600,
+          }}
+        >
+          change in 7 days:
+        </Typography>
+        <Button onClick={handleOpenModal}>More</Button>
+        <Chartdetailed open={open} handleCloseModal={handleCloseModal} data={historyData} />
+      </Box>
 
-      <VictoryArea
-        style={{
-          data: {
-            fill: theme.palette.mode === "dark" ? "#1f292e" : "#D0DEE5",
-            fillOpacity: 0.8,
-            stroke: "#7bacd4",
-            strokeWidth: 1.5,
-          },
+      <Box
+        sx={{
+          height: "350px",
+          width: 1,
+          border: "1px solid #515151",
+          borderRadius: 2,
+          my: 1,
         }}
-        theme={VictoryTheme.material}
-        data={(formatData(historyData)).data}
-      />
-    </VictoryChart>
+      >
+        <VictoryChart
+          maxDomain={{ y: (formatData(historyData)).high }}
+          minDomain={{ y: (formatData(historyData)).low }}
+          padding={{ bottom: 10, right: 10, left: 50 }}
+          width={450}
+          height={200}
+        >
+          <VictoryAxis
+            style={{
+              ...sharedAxisStyles,
+              grid: {
+                fill: "#fff",
+                stroke: theme.palette.mode === "dark" ? "#666" : "#000",
+                pointerEvents: "painted",
+                strokeWidth: 0.5,
+              },
+            }}
+            dependentAxis
+          />
+
+          <VictoryArea
+            style={{
+              data: {
+                fill: theme.palette.mode === "dark" ? "#1f292e" : "#D0DEE5",
+                fillOpacity: 0.8,
+                stroke: "#7bacd4",
+                strokeWidth: 1.5,
+              },
+            }}
+            theme={VictoryTheme.material}
+            data={(formatData(historyData)).data}
+          />
+        </VictoryChart>
+      </Box>
+    </>
   ) : (
     <></>
   );
@@ -68,7 +107,7 @@ export default Chart;
 
 function formatData(data) {
 
-  let arr7day = (data.prices.slice( (data.prices.length - 7) ));
+  let arr7day = (data.prices.slice((data.prices.length - 7)));
   let arr = [];
   for (let i = 0; i <= arr7day.length - 1; i++) {
     let obj = {
