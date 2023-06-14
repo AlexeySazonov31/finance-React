@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 
 import Chart from "./chart/chart";
 import Information from "./information/Information";
@@ -17,8 +16,7 @@ import {
   Divider,
   Link,
   Avatar,
-  Stack,
-  Collapse,
+  Grow,
   TableContainer,
   Table,
   TableCell,
@@ -26,31 +24,18 @@ import {
   TableBody,
   TableHead,
   Button,
-  Modal
+  Icon
 } from "@mui/material";
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 
 import { useTheme } from "@mui/material/styles";
+import TableChange from "./TableChange/TableChange";
 
-
-
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
-
-export default function Coin({data,id, historyData}) {
+export default function Coin({ data, id, historyData }) {
 
   const [open, setOpen] = React.useState(false);
   const handleOpenModal = () => setOpen(true);
@@ -62,76 +47,6 @@ export default function Coin({data,id, historyData}) {
 
   const [expanded, setExpanded] = useState(false);
 
-
-  let shortDataTableBody, shortDataTableHead;
-  if (data && data.market_data.price_change_percentage_1h_in_currency) {
-    const {
-      price_change_percentage_1h_in_currency,
-      price_change_percentage_24h_in_currency,
-      price_change_percentage_7d_in_currency,
-      price_change_percentage_14d_in_currency,
-      price_change_percentage_30d_in_currency,
-      price_change_percentage_60d_in_currency,
-      price_change_percentage_200d_in_currency,
-      price_change_percentage_1y_in_currency,
-    } = data.market_data;
-
-    const currencies = "usd";
-
-    const shortDataTableInfo = [
-      price_change_percentage_1h_in_currency[currencies],
-      price_change_percentage_24h_in_currency[currencies],
-      price_change_percentage_7d_in_currency[currencies],
-      price_change_percentage_14d_in_currency[currencies],
-      price_change_percentage_30d_in_currency[currencies],
-      price_change_percentage_60d_in_currency[currencies],
-      price_change_percentage_200d_in_currency[currencies],
-      price_change_percentage_1y_in_currency[currencies],
-    ];
-
-    shortDataTableBody = shortDataTableInfo.map((elem, key) => {
-      return  shortDataTableBody ? (
-        <TableCell
-          key={key}
-          align="center"
-          sx={{
-            px: 1,
-            mx: 0,
-          }}
-        >
-          <Typography
-            sx={{
-              fontWeight: "600",
-            }}
-            color={elem >= 0 ? "#29cf45" : "red"}
-          >
-            {elem > 0 ? "+" + elem.toFixed(2) : elem.toFixed(2)}%
-          </Typography>
-        </TableCell>
-      ) :(
-        <></>
-      );
-    });
-
-    let namesHead = ["1h", "24h", "7d", "14d", "30d", "60d", "200d", "1y"];
-    shortDataTableHead = namesHead.map((elem, key) => {
-      return (
-        <TableCell
-          align="center"
-          key={key}
-          sx={{
-            px: 1,
-            mx: 0,
-          }}
-        >
-          <Typography>{elem}</Typography>
-        </TableCell>
-      );
-    });
-  } else {
-    shortDataTableBody = <></>;
-    shortDataTableHead = <></>;
-  }
   return (
     <Box
       sx={{
@@ -263,14 +178,7 @@ export default function Coin({data,id, historyData}) {
                       my: 1,
                     }}
                     startIcon={
-                      <ExpandMore
-                        expand={expanded}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                        disableRipple
-                      >
-                        <ExpandMoreIcon />
-                      </ExpandMore>
+                      <ExpandMoreIcon />
                     }
                     onClick={() => {
                       setExpanded(!expanded);
@@ -279,7 +187,7 @@ export default function Coin({data,id, historyData}) {
                     DESCRIPTION
                   </Button>
 
-                  <Collapse sx={{
+                  <Grow sx={{
                     position: 'absolute',
                     width: '800px',
                     backgroundColor: theme.palette.mode === "dark" ? '#313c42' : "#e1e5e5",
@@ -287,9 +195,11 @@ export default function Coin({data,id, historyData}) {
                     p: 2,
                     borderRadius: 2,
                     boxShadow: "0px 0px 17px 6px rgba(14, 18, 21, 0.2)",
-                  }} in={expanded} timeout="auto" unmountOnExit>
-                    {decodeHTMLEntities(data.description.en)}
-                  </Collapse>
+                  }} in={expanded} >
+                    <Box>
+                      {decodeHTMLEntities(data.description.en)}
+                    </Box>
+                  </Grow>
                 </Box>
 
                 <Box
@@ -315,45 +225,9 @@ export default function Coin({data,id, historyData}) {
                 border: "1px solid red",
               }}
             >
-              <Typography
-                variant="overline"
-                sx={{
-                  pl: 4,
-                  fontSize: "15px",
-                  fontWeight: 600,
-                }}
-              >
-                Information:
-              </Typography>
-
               <Information data={data} />
+              <TableChange data={data} />
 
-              <Typography
-                variant="overline"
-                sx={{
-                  pl: 4,
-                  fontSize: "15px",
-                  fontWeight: 600,
-                }}
-              >
-                change table:
-              </Typography>
-              <TableContainer
-                sx={{
-                  border: "1px solid #515151",
-                  borderRadius: 2,
-                  my: 1,
-                }}
-              >
-                <Table>
-                  <TableHead>
-                    <TableRow>{shortDataTableHead}</TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>{shortDataTableBody}</TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
               <Box
                 sx={{
                   display: "flex",
@@ -372,7 +246,7 @@ export default function Coin({data,id, historyData}) {
                   change in 7 days:
                 </Typography>
                 <Button onClick={handleOpenModal}>More</Button>
-                    <Chartdetailed open={open}  handleCloseModal={handleCloseModal} data={historyData}  />
+                <Chartdetailed open={open} handleCloseModal={handleCloseModal} data={historyData} />
               </Box>
 
               <Box

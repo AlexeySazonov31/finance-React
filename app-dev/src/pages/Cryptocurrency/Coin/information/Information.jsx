@@ -23,6 +23,17 @@ import {
 
 function Information({data}){
     return (
+      <>
+      <Typography
+      variant="overline"
+      sx={{
+        pl: 4,
+        fontSize: "15px",
+        fontWeight: 600,
+      }}
+    >
+      Information:
+    </Typography>
         <TableContainer
         sx={{
           my: 1,
@@ -238,6 +249,7 @@ function Information({data}){
           </TableBody>
         </Table>
       </TableContainer>
+      </>
     );
 }
 

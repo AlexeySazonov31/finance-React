@@ -90,6 +90,7 @@ function TopCoins({ id }) {
                   }}
                   label={elem.item.market_cap_rank}
                   variant="outlined"
+                  key="1"
                 />
                 <Chip
                   label={elem.item.symbol}
@@ -98,6 +99,7 @@ function TopCoins({ id }) {
                     borderRadius: 2,
                     ml: { xs: 0.5, md: 1 },
                   }}
+                  key="2"
                 />
               </Box>
 
