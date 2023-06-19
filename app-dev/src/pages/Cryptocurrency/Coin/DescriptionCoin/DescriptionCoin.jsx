@@ -35,7 +35,7 @@ export default function DescriptionCoin({ data }) {
 
         <Grow sx={{
             position: 'absolute',
-            width: '800px',
+            width: '70vw',
             backgroundColor: theme.palette.mode === "dark" ? '#313c42' : "#e1e5e5",
             zIndex: 1,
             p: 2,

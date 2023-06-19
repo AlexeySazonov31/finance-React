@@ -34,10 +34,14 @@ export default function Information({data}){
         <Table>
           <TableBody>
             <TableRow>
-              <TableCell align="right">
+              <TableCell align="right" sx={{
+                minWidth: "100px"
+              }}>
                 <Typography>Price:</Typography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="left" sx={{
+                minWidth: "302px"
+              }}>
                 <Typography
                   sx={{
                     fontWeight: "600",
@@ -50,7 +54,7 @@ export default function Information({data}){
 
             <TableRow>
               <TableCell align="right">
-                <Typography>All Time High:</Typography>
+                <Typography>High:</Typography>
               </TableCell>
               <TableCell
                 align="left"
@@ -98,7 +102,7 @@ export default function Information({data}){
 
             <TableRow>
               <TableCell align="right">
-                <Typography>All Time Low:</Typography>
+                <Typography>Low:</Typography>
               </TableCell>
               <TableCell
                 align="left"
@@ -146,7 +150,7 @@ export default function Information({data}){
 
             <TableRow>
               <TableCell align="right">
-                <Typography>Low - High 24h:</Typography>
+                <Typography>24h:</Typography>
               </TableCell>
               <TableCell align="left">
                 <Typography
@@ -163,7 +167,7 @@ export default function Information({data}){
 
             <TableRow>
               <TableCell align="right">
-                <Typography>Market Cap:</Typography>
+                <Typography>Mkt.Cap:</Typography> 
               </TableCell>
               <TableCell
                 align="left"
@@ -205,7 +209,7 @@ export default function Information({data}){
 
             <TableRow>
               <TableCell align="right">
-                <Typography>Total volume:</Typography>
+                <Typography>Volume:</Typography>
               </TableCell>
               <TableCell align="left">
                 <Typography
@@ -221,7 +225,7 @@ export default function Information({data}){
             {data.genesis_date ? (
               <TableRow>
                 <TableCell align="right">
-                  <Typography>Genesis Date:</Typography>
+                  <Typography>Genesis:</Typography>
                 </TableCell>
                 <TableCell align="left">
                   <Typography

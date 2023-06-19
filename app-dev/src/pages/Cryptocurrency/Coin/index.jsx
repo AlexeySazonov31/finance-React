@@ -35,11 +35,11 @@ export default function Coin({ data, historyData }) {
         <Paper
           sx={{
             py: 3,
-            px: { xs: 3, sm: 3, md: 5, lg: 8, xl: 10 },
+            px: { xs: 2, sm: 3, md: 5, lg: 8, xl: 10 },
             width: 1,
             marginTop: 1,
-            mx: { xs: 2, sm: 3, md: 5, lg: 8, xl: 10 },
-            maxWidth: "1300px",
+            mx: { xs: 1, sm: 3, md: 5, lg: 8, xl: 10 },
+            maxWidth: "1000px",
           }}
         >
           {/* Start Header Coin Page */}
@@ -102,7 +102,7 @@ export default function Coin({ data, historyData }) {
             <Box
               sx={{
                 display: "flex",
-                p: { xs: 4, md: 2 },
+                p: { xs: 0, md: 2 },
               }}
             >
               <Box width={1}>

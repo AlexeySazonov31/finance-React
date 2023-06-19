@@ -1,7 +1,7 @@
 //import { ResponsiveLine } from "@nivo/line";
 import React from "react";
 import { VictoryChart, VictoryArea, VictoryTheme, VictoryAxis } from "victory";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import Chartdetailed from "../chartdetailed/Chartdetailed";
 
@@ -51,24 +51,25 @@ function Chart({ historyData }) {
           change in 7 days:
         </Typography>
         <Button onClick={handleOpenModal}>More</Button>
-        <Chartdetailed open={open} handleCloseModal={handleCloseModal} data={historyData} />
+        <Chartdetailed open={open} handleCloseModal={handleCloseModal} data={historyData} high={(formatData(historyData)).high} low={(formatData(historyData)).low} />
       </Box>
 
       <Box
         sx={{
-          height: "350px",
           width: 1,
           border: "1px solid #515151",
           borderRadius: 2,
           my: 1,
+          pt: 3,
         }}
       >
         <VictoryChart
           maxDomain={{ y: (formatData(historyData)).high }}
           minDomain={{ y: (formatData(historyData)).low }}
-          padding={{ bottom: 10, right: 10, left: 50 }}
+          padding={{ bottom: 10, right: 10, left: 60, top: 10 }}
           width={450}
-          height={200}
+          height={230}
+          style="overflow: visible!important"
         >
           <VictoryAxis
             style={{

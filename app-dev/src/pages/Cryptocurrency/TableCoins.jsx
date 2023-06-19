@@ -137,7 +137,7 @@ function TableCoins({ rows, sorting, changeSorting }) {
                   sx={{
                     m: 0,
                     fontWeight: "600",
-                    px: 1
+                    px: 1,
                   }}
                   size="small"
                 >
@@ -414,7 +414,7 @@ function numberSpace(x) {
       .reverse()
       .join("");
     return (
-      ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ." + past
+      ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "." + past
     );
   } else {
     return ab[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -422,7 +422,7 @@ function numberSpace(x) {
 }
 
 function titleAbbreviation(str) {
-  if (str.length <= 16) {
+  if (str.length <= 15) {
     return str;
   } else {
     return str.split(" ")[0] + "...";

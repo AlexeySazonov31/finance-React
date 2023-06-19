@@ -66,7 +66,7 @@ function TopCoins({ id }) {
                 width: "60px",
                 height: "min-content",
                 my: 0,
-                mx: 4
+                mx: 2
               }}
               variant="around"
             />
@@ -111,7 +111,7 @@ function TopCoins({ id }) {
   return data ? (
     <Box
     sx={{
-      px: 3,
+      px: {xs: 1, sm: 3},
       pt: 2,
     }}
   >
