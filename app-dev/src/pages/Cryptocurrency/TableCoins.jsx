@@ -1,8 +1,6 @@
 import React from "react";
 import { useTheme } from "@mui/material/styles";
-
-import { Link, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 import {
   Paper,
@@ -15,13 +13,9 @@ import {
   TableBody,
   Avatar,
   Chip,
-  IconButton,
   Button,
+  Link
 } from "@mui/material";
-
-import LinkElem from '@mui/material/Link';
-
-import { useState } from "react";
 
 import SouthIcon from "@mui/icons-material/South";
 import NorthIcon from "@mui/icons-material/North";
@@ -386,7 +380,7 @@ function TableCoins({ rows, sorting, changeSorting }) {
                   fontWeight: "600",
                 }}
               >
-                              <LinkElem
+                              <Link
                 href={row.websiteUrl}
                 rel="noopener"
                 underline="none"
@@ -394,7 +388,7 @@ function TableCoins({ rows, sorting, changeSorting }) {
                 target="_blank"
               >
                 link
-              </LinkElem>
+              </Link>
               </TableCell>
               </TableRow>
             ))}

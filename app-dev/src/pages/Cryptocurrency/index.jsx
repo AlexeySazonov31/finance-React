@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
 
-import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-
-import TextField from "@mui/material/TextField";
-
 import CoinCard from "./CoinCard";
 import TableCoins from "./TableCoins";
 
@@ -21,40 +16,31 @@ import {
   Select,
   MenuItem,
   IconButton,
-  Button,
+  Box,
+  CircularProgress,
+  TextField
 } from "@mui/material";
 
 import SouthIcon from "@mui/icons-material/South";
 import NorthIcon from "@mui/icons-material/North";
+import { useError } from "../Error/ErrorContext";
 
-function Сryptocurrency() {
+export default function Сryptocurrency() {
   const [dataCoins, setDataCoins] = useState(null);
-
   const [loading, setLoading] = useState(false);
-
   const [search, setSearch] = useState("");
-
   const [viewCoins, setViewCoins] = useState("table");
-
   const [sorting, setSorting] = useState({ name: "", reverse: false });
 
-  useEffect(() => {
-    fetch(
-      "https://api.coinstats.app/public/v1/coins?skip=0&limit=100&currency=USD"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setDataCoins(data.coins.length > 30 ? data.coins : null);
-        setLoading(true);
-      });
-  }, []);
+  const {showError} = useError()
 
   useEffect(() => {
     setLoading(false);
     let controller = new AbortController();
 
     if (search.length >= 1) {
-      fetch(`https://api.coinpaprika.com/v1/search/?q=${search}&limit=100`, {
+      console.log("search request")
+      fetch(`https://api.coinpaprika.com/v1/search/?q=${search}&limit=20`, {
         signal: controller.signal,
       })
         .then((res) => res.json())
@@ -85,26 +71,31 @@ function Сryptocurrency() {
                   setDataCoins(arr.length ? arr : null);
                 }
                 setLoading(true);
-              });
+              })
+              .catch(err => {
+                console.log(String(err))
+              })
           } else {
             setDataCoins(null);
             setLoading(true);
           }
-
           controller = null;
         })
-        .catch(e=>console.log(e));
+        .catch(err => {
+          console.log(String(err))
+        })
     } else {
       fetch(
-        "https://api.coinstats.app/public/v1/coins?skip=0&limit=100&currency=USD",
-        { signal: controller.signal }
-      )
+        "https://api.coinstats.app/public/v1/coins?skip=0&limit=100&currency=USD")
         .then((res) => res.json())
         .then((data) => {
           setDataCoins(data.coins.length > 30 ? data.coins : null);
           setLoading(true);
           controller = null;
-        });
+        })
+        .catch(err => {
+          showError(String(err))
+        })
     }
 
     return () => controller?.abort();
@@ -238,9 +229,6 @@ function Сryptocurrency() {
             }}
           >
 
-
-
-
             <TextField
               id="demo-helper-text-misaligned-no-helper"
               label="search coin"
@@ -310,8 +298,6 @@ function Сryptocurrency() {
     </Box>
   );
 }
-
-export default Сryptocurrency;
 
 const sort_by = (field, reverse, primer) => {
   const key = primer

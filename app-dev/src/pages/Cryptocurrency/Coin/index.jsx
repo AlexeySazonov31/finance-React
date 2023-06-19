@@ -28,7 +28,6 @@ export default function Coin({ data, historyData }) {
         minHeight: data ? "auto" : "93vh",
         width: "1",
         alignItems: "center",
-        border: "1px solid green",
         px: { xs: 2, sm: 4, md: 7, lg: 12, xl: 15 },
       }}
     >
@@ -97,7 +96,6 @@ export default function Coin({ data, historyData }) {
             sx={{
               display: "grid",
               gridTemplateColumns: { xs: "100%", md: "40% 1fr" },
-              border: "1px solid green",
             }}
           >
           {/* start Left Side of Page */}
@@ -157,7 +155,6 @@ export default function Coin({ data, historyData }) {
             <Box
               sx={{
                 p: { xs: 0, md: 2 },
-                border: "1px solid red",
               }}
             >
               <Information data={data} />

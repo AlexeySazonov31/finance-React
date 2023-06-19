@@ -18,7 +18,6 @@ function CoinCard({ elem }) {
   const navigate = useNavigate();
 
   return (
-    <>
       <Grid
         item
         xs={10}
@@ -211,7 +210,6 @@ function CoinCard({ elem }) {
           </Box>
         </Card>
       </Grid>
-    </>
   );
 }
 

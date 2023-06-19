@@ -12,7 +12,6 @@ export default function HeadWidgets() {
       .then((res) => res.json())
       .then((data) => {
         setDataGlobal(!data.error ? data.data : null);
-        console.log("API request HeadWidgets")
       });
   }, []);
 

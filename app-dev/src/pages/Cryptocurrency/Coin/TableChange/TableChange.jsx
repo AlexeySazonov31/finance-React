@@ -58,10 +58,10 @@ const dataTableBodyElems = ["price_change_percentage_1h_in_currency", "price_cha
 const namesHead = ["1h", "24h", "7d", "14d", "30d", "60d", "200d", "1y"];
 
 function createTableBody(dataGlobal){
-    return dataTableBodyElems.map((elem, item) => {
+    return dataTableBodyElems.map((elem, key) => {
         const valueBody = dataGlobal.market_data[elem][currencies];
         return <TableCell
-            key={item}
+            key={key}
             align="center"
             sx={{
                 px: 1,
@@ -83,7 +83,7 @@ function createTableHead(){
         return (
             <TableCell
                 align="center"
-                key={key + "-head"}
+                key={key}
                 sx={{
                     px: 1,
                     mx: 0,
