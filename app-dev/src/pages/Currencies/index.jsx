@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useError } from "../Error/ErrorContext";
 
+import "../../styles/hideArrowsCurr.css";
+
 import {
     Paper,
     Box,
@@ -15,17 +17,23 @@ import {
     TextField,
     FilledInput,
     InputAdornment,
+    CircularProgress,
+    OutlinedInput,
+    Button,
+    Divider
 } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 
 function Currencies() {
 
     const [data, setData] = useState(null);
-    const [convertCur, setConvertCur] = useState("USD");
+    const [convertCur, setConvertCur] = useState("UAH");
 
     const [inputData, setInputData] = useState([
         {
             iso: "BYN",
-            value: "13",
+            value: "",
         },
         {
             iso: "EUR",
@@ -33,7 +41,7 @@ function Currencies() {
         },
         {
             iso: "USD",
-            value: "",
+            value: "1",
         },
         {
             iso: "PLN",
@@ -46,15 +54,25 @@ function Currencies() {
     ]);
 
     const inputList = inputData.map((elem) => {
-        return <FormControl fullWidth sx={{ m: 1 }} variant="filled" key={elem.iso}>
-            <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
-            <FilledInput
-                id="filled-adornment-amount"
+        return <FormControl fullWidth sx={{ mt: 1 }} key={elem.iso}>
+            <OutlinedInput
+                id="outlined-adornment-amount"
                 startAdornment={<InputAdornment position="start">{elem.iso}</InputAdornment>}
                 value={elem.value}
                 type="number"
                 onChange={(event) => changeValueInput(event, elem.iso)}
+                endAdornment={
+                    <InputAdornment position="end">
+                        <IconButton
+                            onClick={() => {removeCurr(elem.iso)}}
+                            edge="end"
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                    </InputAdornment>
+                }
             />
+
         </FormControl>;
 
     })
@@ -104,56 +122,94 @@ function Currencies() {
         setInputData(arr);
     }
 
+    function addCurr() {
+        setInputData([...inputData, { iso: convertCur, value: "" }]);
+    }
+    function removeCurr(elemIso){
+        let newArr = inputData.filter((elem) => {
+            if(elem.iso !== elemIso){
+                return true;
+            } else {
+                return false;
+            }
+        });
+        setInputData(newArr);
+    }
+
+    console.log(data);
+
     return data ? (
-        <Box sx={{ width: 1, display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+        <Box sx={{ width: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
             <Paper
                 sx={{
                     width: 0.5,
-                    height: "fit-content",
-                    padding: 2,
+                    height: "auto",
                     display: "flex",
+                    py: 3,
+                    px: 6,
                     flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
+                    transition: "1s",
                 }}
             >
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: 0.7,
-                        mt: 1
-                    }}
-                >
-                    <FormControl sx={{ width: 1 }} size="small">
-                        <InputLabel id="demo-select">currency</InputLabel>
-                        <Select
-                            labelId="demo-select-small"
-                            id="outlined-select-currency-native"
-                            name="name"
-                            defaultValue="USD"
-                            value={convertCur}
-                            label="currency"
-                            onChange={changeconvertCur}
-                            sx={{ my: 1 }}
-                        >
-                            {data.map((menuItem) => (
-                                <MenuItem key={menuItem.iso} value={menuItem.iso}>
-                                    {menuItem.iso}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    {inputList}
-                </Box>
-
-                {/* <Typography variant="h5">
-                    {`${showRate(convertCur).quantity} ${convertCur} = ` + showRate(convertCur).rate + ` ${primaryCur}`}
-                </Typography> */}
-
+                {inputList}
             </Paper>
+            <Paper sx={{
+                display: "flex",
+                flexDirection: "row",
+                width: 0.5,
+                mt: 0.5,
+                py: 3,
+                px: 6,
+
+            }}>
+
+                <FormControl sx={{ width: 1 }} size="small">
+                    <Select
+                        labelId="demo-select-small"
+                        id="outlined-select-currency-native"
+                        name="name"
+                        defaultValue="USD"
+                        value={convertCur}
+                        onChange={changeconvertCur}
+                    >
+                        {data.map((menuItem) => (
+                            (inputData.some((elem) => {
+                                return elem.iso === menuItem.iso
+                            })) ? (
+                            <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true} disabled>
+                                {menuItem.iso}
+                            </MenuItem>
+                            ) : (
+                            <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true}>
+                                {menuItem.iso}
+                            </MenuItem>
+                            )
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <Button variant="outlined" color="success" onClick={addCurr} endIcon={<AddIcon />}>
+                    ADD
+                </Button>
+            </Paper>
+
+
         </Box>
-    ) : (<></>)
+    ) : (
+        <Box
+            sx={{
+                width: "1",
+                display: "flex",
+                justifyContent: "center",
+                minHeight: "93vh",
+                alignItems: "center",
+            }}
+        >
+            <CircularProgress size="5rem" />
+        </Box>
+    )
 }
 
 
