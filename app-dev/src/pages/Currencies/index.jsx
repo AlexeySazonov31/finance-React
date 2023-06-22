@@ -18,47 +18,48 @@ import {
 } from "@mui/material";
 
 function Currencies() {
+
     const [data, setData] = useState(null);
     const [convertCur, setConvertCur] = useState("USD");
 
-//     const [inputData, setInputData] = useState([
-//         {
-//             iso: "BYN",
-//             value: "",
-//         },
-//         {
-//             iso: "EUR",
-//             value: "",
-//         },
-//         {
-//             iso: "USD",
-//             value: "",
-//         },
-//         {
-//             iso: "PLN",
-//             value: "",
-//         },
-// ]);
-const inputData = [
-            {
-                iso: "BYN",
-                value: "",
-            },
-            {
-                iso: "EUR",
-                value: "",
-            },
-            {
-                iso: "USD",
-                value: "",
-            },
-            {
-                iso: "PLN",
-                value: "",
-            },
-    ];
+    const [inputData, setInputData] = useState([
+        {
+            iso: "BYN",
+            value: "13",
+        },
+        {
+            iso: "EUR",
+            value: "",
+        },
+        {
+            iso: "USD",
+            value: "",
+        },
+        {
+            iso: "PLN",
+            value: "",
+        },
+        {
+            iso: "RUB",
+            value: "",
+        },
+    ]);
 
-    const primaryCur = "BYN";
+    const inputList = inputData.map((elem) => {
+        return <FormControl fullWidth sx={{ m: 1 }} variant="filled" key={elem.iso}>
+            <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
+            <FilledInput
+                id="filled-adornment-amount"
+                startAdornment={<InputAdornment position="start">{elem.iso}</InputAdornment>}
+                value={elem.value}
+                type="number"
+                onChange={(event) => changeValueInput(event, elem.iso)}
+            />
+        </FormControl>;
+
+    })
+
+    // const primaryCur = "BYN";
 
     const { showError } = useError();
 
@@ -74,20 +75,34 @@ const inputData = [
             })
     }, []);
 
-    console.log(inputData)
-
     function showRate(cur) {
         return (data.find((elem) => { return elem.iso === cur }));
     }
-
-    console.log(data)
-
 
     const changeconvertCur = (event) => {
         setConvertCur(event.target.value);
     };
 
+    function changeValueInput(event, isoElem) {
+        let sumBYN;
+        if (isoElem === "BYN") {
+            sumBYN = event.target.value;
+        } else {
+            sumBYN = event.target.value * (showRate(isoElem).rate / showRate(isoElem).quantity);
+        }
+        let arr = inputData.map((elem) => {
+            if (elem.iso === isoElem) {
+                return { iso: elem.iso, value: event.target.value }
+            } else if (elem.iso === "BYN") {
+                return { iso: elem.iso, value: sumBYN.toFixed(2) };
+            } else {
+                const resValue = sumBYN / (showRate(elem.iso).rate / showRate(elem.iso).quantity);
+                return { iso: elem.iso, value: resValue.toFixed(2) };
+            }
 
+        });
+        setInputData(arr);
+    }
 
     return data ? (
         <Box sx={{ width: 1, display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
@@ -105,7 +120,7 @@ const inputData = [
                 <Box
                     sx={{
                         display: "flex",
-                        flexDirection: "row",
+                        flexDirection: "column",
                         width: 0.7,
                         mt: 1
                     }}
@@ -120,7 +135,7 @@ const inputData = [
                             value={convertCur}
                             label="currency"
                             onChange={changeconvertCur}
-                            sx={{my: 1}}
+                            sx={{ my: 1 }}
                         >
                             {data.map((menuItem) => (
                                 <MenuItem key={menuItem.iso} value={menuItem.iso}>
@@ -128,30 +143,13 @@ const inputData = [
                                 </MenuItem>
                             ))}
                         </Select>
-
-
                     </FormControl>
-
-
-                
+                    {inputList}
                 </Box>
-                {inputData.map((option) => {
-                                    <Typography>{option.iso}</Typography>
-                                    {/* <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                                    <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
-                                    <FilledInput
-                                      id="filled-adornment-amount"
-                                      startAdornment={<InputAdornment position="start">{elem.iso}</InputAdornment>}
-                                    />
-                                    {elem.value}
-                                  </FormControl> */}
-                                  
-                    })}
-                                                        <Typography>{inputData[0].iso}</Typography>
 
-                <Typography variant="h5">
+                {/* <Typography variant="h5">
                     {`${showRate(convertCur).quantity} ${convertCur} = ` + showRate(convertCur).rate + ` ${primaryCur}`}
-                </Typography>
+                </Typography> */}
 
             </Paper>
         </Box>
