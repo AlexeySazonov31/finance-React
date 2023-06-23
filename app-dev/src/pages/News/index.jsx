@@ -24,6 +24,8 @@ import Select from "@mui/material/Select";
 
 import Link from "@mui/material/Link";
 
+import { useError } from "../Error/ErrorContext";
+
 const sourcesCategorys = [
   {
     id: "finance",
@@ -31,11 +33,14 @@ const sourcesCategorys = [
     categorys: ["trending", "latest", "bullish", "bearish"],
   }
 ];
-function Home() {
+
+export default function News() {
   const [source, setSource] = useState("finance");
   const [category, setCategory] = useState("trending");
   const [loading, setLoading] = useState("false");
   const [data, setData] = useState(false);
+
+  const { showError } = useError();
 
   const handleSource = (event, newSource) => {
     setSource(newSource);
@@ -72,12 +77,23 @@ function Home() {
       .then((res) => res.json())
       .then((dt) => {
         if (source === "finance") {
-          setData(dt.news.length ? dt.news : []);
+          if( dt && dt.hasOwnProperty("news") && dt.news.length ){
+            setData(dt.news);
+          } else {
+            showError("Error: data request");
+          }
         } else {
-          setData(dt.success ? dt.data : []);
+          if( dt && dt.hasOwnProperty("success") && dt.success ){
+            setData(dt.data);
+          } else {
+            showError("Error: data request");
+          }
         }
         setLoading(false);
-      });
+      })
+      .catch(err => {
+        showError(String(err));
+      })
   }, [category, source]);
 
   return (
@@ -253,8 +269,6 @@ function Home() {
     </Box>
   );
 }
-
-export default Home;
 
 function dateFormat(timestamp) {
   const months = [
