@@ -20,7 +20,9 @@ import {
     CircularProgress,
     OutlinedInput,
     Button,
-    Divider
+    Divider,
+    Tooltip,
+    ListItemText
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
@@ -57,7 +59,7 @@ function Currencies() {
         return <FormControl fullWidth sx={{ mt: 1 }} key={elem.iso}>
             <OutlinedInput
                 id="outlined-adornment-amount"
-                startAdornment={<InputAdornment position="start">{elem.iso}</InputAdornment>}
+                startAdornment={<InputAdornment position="start">{elem.iso}<Divider orientation="vertical" sx={{height: "30px", width: "10px" }}/></InputAdornment>}
                 value={elem.value}
                 type="number"
                 onChange={(event) => changeValueInput(event, elem.iso)}
@@ -89,10 +91,10 @@ function Currencies() {
         fetch("https://developerhub.alfabank.by:8273/partner/1.0.1/public/nationalRates")
             .then((res) => res.json())
             .then((dt) => {
-                if(dt.hasOwnProperty("rates") && dt.rates.length > 0){
+                if (dt.hasOwnProperty("rates") && dt.rates.length > 0) {
                     setData(dt.rates);
                 } else {
-                 showError("Error data request");
+                    showError("Error data request");
                 }
             })
             .catch((err) => {
@@ -100,7 +102,7 @@ function Currencies() {
             })
     }, []);
     useEffect(() => {
-        if(data){
+        if (data) {
             changeValueInputDefault();
         }
     }, [data])
@@ -154,7 +156,7 @@ function Currencies() {
         setInputData(newArr);
     }
 
-    function changeValueInputDefault(){
+    function changeValueInputDefault() {
         const valueUSD = (inputData.find((elem) => {
             return elem.iso === "USD"
         })).value;
@@ -170,6 +172,10 @@ function Currencies() {
         });
         setInputData(arr);
     }
+
+    data.forEach(element => {
+        console.log(element.iso);
+    });
 
     return data ? (
         <Box sx={{ width: 1, mt: 1, display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center", minHeight: "80vh" }}>
@@ -223,17 +229,24 @@ function Currencies() {
                         defaultValue="USD"
                         value={convertCur}
                         onChange={changeconvertCur}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row"
+                        }}
                     >
                         {data.map((menuItem) => (
                             (inputData.some((elem) => {
                                 return elem.iso === menuItem.iso
                             })) ? (
                                 <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true} disabled>
-                                    {menuItem.iso}
+                                    <ListItemText primary={menuItem.iso} />
+                                    <Box component="span" sx={{ opacity: 0.5 }}>{showRate(menuItem.iso).name}</Box>                         
                                 </MenuItem>
+
                             ) : (
                                 <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true}>
-                                    {menuItem.iso}
+                                    <ListItemText primary={menuItem.iso}/>
+                                    <Box component="span" sx={{ opacity: 0.5 }}>{showRate(menuItem.iso).name}</Box>
                                 </MenuItem>
                             )
                         ))}
