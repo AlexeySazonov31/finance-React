@@ -28,9 +28,13 @@ import CloseIcon from '@mui/icons-material/Close';
 function Currencies() {
 
     const [data, setData] = useState(null);
-    const [convertCur, setConvertCur] = useState("UAH");
+    const [convertCur, setConvertCur] = useState("");
 
     const [inputData, setInputData] = useState([
+        {
+            iso: "USD",
+            value: "1",
+        },
         {
             iso: "BYN",
             value: "",
@@ -38,10 +42,6 @@ function Currencies() {
         {
             iso: "EUR",
             value: "",
-        },
-        {
-            iso: "USD",
-            value: "1",
         },
         {
             iso: "PLN",
@@ -62,10 +62,15 @@ function Currencies() {
                 type="number"
                 onChange={(event) => changeValueInput(event, elem.iso)}
                 endAdornment={
-                    <InputAdornment position="end">
+                    <InputAdornment position="end" sx={{
+                        display: (elem.iso === "USD" || elem.iso === "BYN") ? "none" : "default"
+                    }}>
                         <IconButton
-                            onClick={() => {removeCurr(elem.iso)}}
+                            onClick={() => { removeCurr(elem.iso) }}
                             edge="end"
+                            sx={{
+                                opacity: 0.5,
+                            }}
                         >
                             <CloseIcon />
                         </IconButton>
@@ -77,8 +82,6 @@ function Currencies() {
 
     })
 
-    // const primaryCur = "BYN";
-
     const { showError } = useError();
 
     useEffect(() => {
@@ -86,12 +89,21 @@ function Currencies() {
         fetch("https://developerhub.alfabank.by:8273/partner/1.0.1/public/nationalRates")
             .then((res) => res.json())
             .then((dt) => {
-                dt ? setData(dt.rates) : showError("Error data request");
+                if(dt.hasOwnProperty("rates") && dt.rates.length > 0){
+                    setData(dt.rates);
+                } else {
+                 showError("Error data request");
+                }
             })
             .catch((err) => {
                 showError(String(err));
             })
     }, []);
+    useEffect(() => {
+        if(data){
+            changeValueInputDefault();
+        }
+    }, [data])
 
     function showRate(cur) {
         return (data.find((elem) => { return elem.iso === cur }));
@@ -123,11 +135,17 @@ function Currencies() {
     }
 
     function addCurr() {
-        setInputData([...inputData, { iso: convertCur, value: "" }]);
+        const valueUSD = (inputData.find((elem) => {
+            return elem.iso === "USD"
+        })).value;
+        const valueBYN = valueUSD * (showRate("USD").rate / showRate("USD").quantity);
+        const resValue = valueBYN / (showRate(convertCur).rate / showRate(convertCur).quantity);
+        setInputData([...inputData, { iso: convertCur, value: resValue.toFixed(2) }]);
+        setConvertCur("");
     }
-    function removeCurr(elemIso){
+    function removeCurr(elemIso) {
         let newArr = inputData.filter((elem) => {
-            if(elem.iso !== elemIso){
+            if (elem.iso !== elemIso) {
                 return true;
             } else {
                 return false;
@@ -136,10 +154,40 @@ function Currencies() {
         setInputData(newArr);
     }
 
-    console.log(data);
+    function changeValueInputDefault(){
+        const valueUSD = (inputData.find((elem) => {
+            return elem.iso === "USD"
+        })).value;
+        const valueBYN = valueUSD * (showRate("USD").rate / showRate("USD").quantity);
+        let arr = inputData.map((elem) => {
+            if (elem.iso === "BYN") {
+                return { iso: elem.iso, value: valueBYN.toFixed(2) };
+            } else {
+                const resValue = valueBYN / (showRate(elem.iso).rate / showRate(elem.iso).quantity);
+                return { iso: elem.iso, value: resValue.toFixed(2) };
+            }
+
+        });
+        setInputData(arr);
+    }
 
     return data ? (
-        <Box sx={{ width: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+        <Box sx={{ width: 1, mt: 1, display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center", minHeight: "80vh" }}>
+            <Paper sx={{
+                display: "flex",
+                flexDirection: "row",
+                width: 0.5,
+                mb: 0.5,
+                py: 3,
+                px: 6,
+
+            }}>
+                <Typography variant="h1" sx={{
+                    fontSize: "24px",
+                }}>
+                    Currency converter by the National Bank of the Republic of Belarus rates
+                </Typography>
+            </Paper>
             <Paper
                 sx={{
                     width: 0.5,
@@ -166,10 +214,12 @@ function Currencies() {
             }}>
 
                 <FormControl sx={{ width: 1 }} size="small">
+                    <InputLabel id="demo-select-small">choose currency</InputLabel>
                     <Select
                         labelId="demo-select-small"
                         id="outlined-select-currency-native"
                         name="name"
+                        label="choose currency"
                         defaultValue="USD"
                         value={convertCur}
                         onChange={changeconvertCur}
@@ -178,13 +228,13 @@ function Currencies() {
                             (inputData.some((elem) => {
                                 return elem.iso === menuItem.iso
                             })) ? (
-                            <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true} disabled>
-                                {menuItem.iso}
-                            </MenuItem>
+                                <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true} disabled>
+                                    {menuItem.iso}
+                                </MenuItem>
                             ) : (
-                            <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true}>
-                                {menuItem.iso}
-                            </MenuItem>
+                                <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true}>
+                                    {menuItem.iso}
+                                </MenuItem>
                             )
                         ))}
                     </Select>
