@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useError } from "../Error/ErrorContext";
 
 import "../../styles/hideArrowsCurr.css";
@@ -6,32 +6,26 @@ import "../../styles/hideArrowsCurr.css";
 import {
     Paper,
     Box,
-    ToggleButtonGroup,
-    ToggleButton,
     FormControl,
     InputLabel,
     Select,
     MenuItem,
     IconButton,
     Typography,
-    TextField,
-    FilledInput,
     InputAdornment,
     CircularProgress,
     OutlinedInput,
     Button,
     Divider,
-    Tooltip,
     ListItemText
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
-function Currencies() {
+export default function Currencies() {
 
     const [data, setData] = useState(null);
     const [convertCur, setConvertCur] = useState("");
-
     const [inputData, setInputData] = useState([
         {
             iso: "USD",
@@ -54,6 +48,30 @@ function Currencies() {
             value: "",
         },
     ]);
+
+    const { showError } = useError();
+
+    useEffect(() => {
+
+        fetch("https://developerhub.alfabank.by:8273/partner/1.0.1/public/nationalRates")
+            .then((res) => res.json())
+            .then((dt) => {
+                if (dt.hasOwnProperty("rates") && dt.rates.length > 0) {
+                    setData(dt.rates);
+                } else {
+                    showError("Error data request");
+                }
+            })
+            .catch((err) => {
+                showError(String(err));
+            })
+    }, []);
+
+    useEffect(() => {
+        if (data) {
+            changeValueInputDefault();
+        }
+    }, [data])
 
     const inputList = inputData.map((elem) => {
         return <FormControl fullWidth sx={{ mt: 1 }} key={elem.iso}>
@@ -79,33 +97,8 @@ function Currencies() {
                     </InputAdornment>
                 }
             />
-
         </FormControl>;
-
     })
-
-    const { showError } = useError();
-
-    useEffect(() => {
-
-        fetch("https://developerhub.alfabank.by:8273/partner/1.0.1/public/nationalRates")
-            .then((res) => res.json())
-            .then((dt) => {
-                if (dt.hasOwnProperty("rates") && dt.rates.length > 0) {
-                    setData(dt.rates);
-                } else {
-                    showError("Error data request");
-                }
-            })
-            .catch((err) => {
-                showError(String(err));
-            })
-    }, []);
-    useEffect(() => {
-        if (data) {
-            changeValueInputDefault();
-        }
-    }, [data])
 
     function showRate(cur) {
         return (data.find((elem) => { return elem.iso === cur }));
@@ -215,7 +208,6 @@ function Currencies() {
                 px: { xs: 3, sm: 6 },
 
             }}>
-
                 <FormControl sx={{ width: 1 }} size="small">
                     <InputLabel id="demo-select-small">choose currency</InputLabel>
                     <Select
@@ -239,7 +231,6 @@ function Currencies() {
                                     <ListItemText primary={menuItem.iso} />
                                     <Box component="span" sx={{ opacity: 0.5 }}>{showRate(menuItem.iso).name}</Box>
                                 </MenuItem>
-
                             ) : (
                                 <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true}>
                                     <ListItemText primary={menuItem.iso} />
@@ -249,13 +240,10 @@ function Currencies() {
                         ))}
                     </Select>
                 </FormControl>
-
                 <Button variant="outlined" color="success" onClick={addCurr} endIcon={<AddIcon />}>
                     ADD
                 </Button>
             </Paper>
-
-
         </Box>
     ) : (
         <Box
@@ -271,6 +259,3 @@ function Currencies() {
         </Box>
     )
 }
-
-
-export default Currencies;

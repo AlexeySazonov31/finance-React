@@ -29,21 +29,7 @@ const sourcesCategorys = [
     id: "finance",
     url: "https://api.coinstats.app/public/v1/news/", /// add  '?skip=0&limit=20'
     categorys: ["trending", "latest", "bullish", "bearish"],
-  },
-  {
-    id: "global",
-    url: "https://inshorts.deta.dev/news?category=",
-    categorys: [
-      "business",
-      "sports",
-      "world",
-      "technology",
-      "startup",
-      "entertainment",
-      "science",
-      "automobile",
-    ],
-  },
+  }
 ];
 function Home() {
   const [source, setSource] = useState("finance");
@@ -117,6 +103,8 @@ function Home() {
         <Paper
           sx={{
             padding: 2,
+            display: "flex",
+            justifyContent: "center"
           }}
         >
           <ToggleButtonGroup
@@ -126,7 +114,6 @@ function Home() {
             color="primary"
           >
             <ToggleButton value="finance">finance</ToggleButton>
-            <ToggleButton value="global">global</ToggleButton>
           </ToggleButtonGroup>
         </Paper>
         <Divider />

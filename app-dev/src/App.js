@@ -27,6 +27,9 @@ import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
+import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+
 
 import {
   blueGrey,
@@ -38,10 +41,10 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 const drawerWidth = 240;
 const navItems = [
-  { name: "Home", to: "/", icon: <NewspaperIcon /> },
+  { name: "Home", to: "/", icon: <HomeIcon /> },
   { name: "News", to: "/news", icon: <NewspaperIcon /> },
-  { name: "Сryptocurrency", to: "/crypto" },
-  { name: "Currencies", to: "/currencies" },
+  { name: "Сryptocurrency", to: "/crypto", icon: <CurrencyBitcoinIcon /> },
+  { name: "Currencies", to: "/currencies", icon: <CurrencyExchangeIcon /> },
 ];
 
 function App() {
@@ -74,7 +77,7 @@ function App() {
                 selected
               >
                 <ListItemIcon>
-                  <HomeIcon></HomeIcon>
+                  {elem.icon}
                 </ListItemIcon>
                 <ListItemText primary={elem.name} />
               </ListItemButton>
@@ -85,7 +88,7 @@ function App() {
                 to={elem.to}
               >
                 <ListItemIcon>
-                  <HomeIcon></HomeIcon>
+                  {elem.icon}
                 </ListItemIcon>
                 <ListItemText primary={elem.name} />
               </ListItemButton>
