@@ -59,7 +59,7 @@ function Currencies() {
         return <FormControl fullWidth sx={{ mt: 1 }} key={elem.iso}>
             <OutlinedInput
                 id="outlined-adornment-amount"
-                startAdornment={<InputAdornment position="start">{elem.iso}<Divider orientation="vertical" sx={{height: "30px", width: "10px" }}/></InputAdornment>}
+                startAdornment={<InputAdornment position="start">{elem.iso}<Divider orientation="vertical" sx={{ height: "30px", width: "10px" }} /></InputAdornment>}
                 value={elem.value}
                 type="number"
                 onChange={(event) => changeValueInput(event, elem.iso)}
@@ -173,34 +173,31 @@ function Currencies() {
         setInputData(arr);
     }
 
-    data.forEach(element => {
-        console.log(element.iso);
-    });
 
     return data ? (
         <Box sx={{ width: 1, mt: 1, display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center", minHeight: "80vh" }}>
             <Paper sx={{
                 display: "flex",
                 flexDirection: "row",
-                width: 0.5,
+                width: { xs: 0.95, sm: 0.7, md: 0.5 },
                 mb: 0.5,
-                py: 3,
-                px: 6,
+                py: { xs: 2, sm: 3 },
+                px: { xs: 3, sm: 6 },
 
             }}>
                 <Typography variant="h1" sx={{
-                    fontSize: "24px",
+                    fontSize: { xs: "22px", sm: "24px" }
                 }}>
-                    Currency converter by the National Bank of the Republic of Belarus rates
+                    Belarus National Bank's Currency Converter Rates
                 </Typography>
             </Paper>
             <Paper
                 sx={{
-                    width: 0.5,
+                    width: { xs: 0.95, sm: 0.7, md: 0.5 },
                     height: "auto",
                     display: "flex",
-                    py: 3,
-                    px: 6,
+                    py: { xs: 2, sm: 3 },
+                    px: { xs: 3, sm: 6 },
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
@@ -212,10 +209,10 @@ function Currencies() {
             <Paper sx={{
                 display: "flex",
                 flexDirection: "row",
-                width: 0.5,
+                width: { xs: 0.95, sm: 0.7, md: 0.5 },
                 mt: 0.5,
-                py: 3,
-                px: 6,
+                py: { xs: 2, sm: 3 },
+                px: { xs: 3, sm: 6 },
 
             }}>
 
@@ -240,12 +237,12 @@ function Currencies() {
                             })) ? (
                                 <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true} disabled>
                                     <ListItemText primary={menuItem.iso} />
-                                    <Box component="span" sx={{ opacity: 0.5 }}>{showRate(menuItem.iso).name}</Box>                         
+                                    <Box component="span" sx={{ opacity: 0.5 }}>{showRate(menuItem.iso).name}</Box>
                                 </MenuItem>
 
                             ) : (
                                 <MenuItem key={menuItem.iso} value={menuItem.iso} divider={true}>
-                                    <ListItemText primary={menuItem.iso}/>
+                                    <ListItemText primary={menuItem.iso} />
                                     <Box component="span" sx={{ opacity: 0.5 }}>{showRate(menuItem.iso).name}</Box>
                                 </MenuItem>
                             )
