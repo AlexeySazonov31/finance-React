@@ -124,7 +124,9 @@ function App() {
       bgcolor={colorBackground}
       width="1"
     >
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{
+        maxHeight: {xs: "56px", sm: "64px" },
+      }}>
         <Toolbar
           sx={{
             display: "flex",
