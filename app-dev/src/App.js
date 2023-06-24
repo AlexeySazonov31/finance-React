@@ -19,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeIcon from "@mui/icons-material/Home";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Routes from "./routes";
 
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
@@ -37,7 +37,7 @@ import {
   blue,
 } from "@mui/material/colors/";
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 const drawerWidth = 240;
 const navItems = [
@@ -60,11 +60,15 @@ function App() {
     setMobileOpen(!mobileOpen);
   };
 
+  const navigate = useNavigate();
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+          <Button sx={{ my: 2, fontSize: "20px", color: "#fff", lineHeight: "1" }} onClick={() => {
+        navigate("/")
+      }}>
         FIN
-      </Typography>
+      </Button>
       <Divider />
       <List>
         {navItems.map((elem, item) => (
@@ -139,14 +143,11 @@ function App() {
           >
             <MenuIcon fontSize="inherit" />
           </IconButton>
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{ display: "block" }}
-            color="inherit"
-          >
+          <Button sx={{ my: 2, fontSize: "20px", color: "#fff", lineHeight: "1" }} onClick={() => {
+            navigate("/")
+          }}>
             FIN
-          </Typography>
+          </Button>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((elem, item) => (
@@ -251,25 +252,25 @@ const getDesignTokens = (mode) => ({
     mode,
     ...(mode === "light"
       ? {
-          primary: {
-            light: blueGrey[400],
-            main: blueGrey[500],
-            dark: blueGrey[600],
-            contrastText: "#fff",
-          },
-          background: {
-            paper: "#e1e5e5",
-          },
-          text: {
-            primary: "#000",
-            secondary: "#000",
-          },
-        }
+        primary: {
+          light: blueGrey[400],
+          main: blueGrey[500],
+          dark: blueGrey[600],
+          contrastText: "#fff",
+        },
+        background: {
+          paper: "#e1e5e5",
+        },
+        text: {
+          primary: "#000",
+          secondary: "#000",
+        },
+      }
       : {
-          background: {
-            paper: blueGrey[900],
-          },
-        }),
+        background: {
+          paper: blueGrey[900],
+        },
+      }),
   },
 });
 

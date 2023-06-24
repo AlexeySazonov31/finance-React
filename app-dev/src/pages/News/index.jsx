@@ -29,7 +29,7 @@ import { useError } from "../Error/ErrorContext";
 const sourcesCategorys = [
   {
     id: "finance",
-    url: "https://api.coinstats.app/public/v1/news/", /// add  '?skip=0&limit=20'
+    url: "https://api.coinstats.app/public/v1/news/",
     categorys: ["trending", "latest", "bullish", "bearish"],
   }
 ];
