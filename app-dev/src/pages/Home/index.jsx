@@ -7,7 +7,6 @@ import {
     Box,
     CircularProgress,
     Typography,
-    Grid,
     Card,
     CardHeader,
     CardMedia,
@@ -63,8 +62,6 @@ export default function Home() {
 
     }, []);
 
-    console.log(data);
-
     return data ? (
         <Box sx={{
             width: 1,
@@ -89,7 +86,7 @@ export default function Home() {
                 {/* !!!   news   !!! */}
                 {data.news.map((elem, itemG) => (
                     itemG == 0 ? (
-                        <Card sx={{
+                        <Card key={itemG} sx={{
                             px: 1,
                             width: { xs: 0.95, sm: 0.35 },
                             mt: { xs: 2, sm: 0 },
@@ -142,7 +139,7 @@ export default function Home() {
                             </CardActions>
                         </Card>
                     ) : (
-                        <></>
+                        <div key={itemG}></div>
                     )
                 ))}
                 {/* !!!   crypto coins   !!! */}
@@ -325,7 +322,7 @@ export default function Home() {
                 {/* !!!   news   !!! */}
                 {data.news.map((elem, itemG) => (
                     itemG == 1 ? (
-                        <Card sx={{
+                        <Card key={itemG} sx={{
                             px: 1,
                             width: { xs: 0.95, sm: 0.35 },
                             mt: { xs: 2, sm: 0 },
@@ -378,7 +375,7 @@ export default function Home() {
                             </CardActions>
                         </Card>
                     ) : (
-                        <></>
+                        <div key={itemG}></div>
                     )
                 ))}
 

@@ -11,7 +11,6 @@ import {
 
 
 export default function Information({data}){
-  console.log("render Component: Information")
     return (
       <>
       <Typography
